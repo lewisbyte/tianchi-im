@@ -4,13 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @program: tianchi-im
+ * @program: tianchi-tianchi.lewis.indi.im
  * @description:
  * @author: lewis
- * @create: 2021-07-01 10:15
+ * @create: 2021-07-01 10:16
  */
 @Getter
 @Setter
-public class Room {
+public class RoomList {
     private String name;
+    private String id;
 }

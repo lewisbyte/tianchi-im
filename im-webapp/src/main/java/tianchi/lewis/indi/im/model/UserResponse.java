@@ -1,7 +1,7 @@
 package tianchi.lewis.indi.im.model;
 
 /**
- * @program: tianchi-im
+ * @program: tianchi-tianchi.lewis.indi.im
  * @description:
  * @author: lewis
  * @create: 2021-07-01 10:20

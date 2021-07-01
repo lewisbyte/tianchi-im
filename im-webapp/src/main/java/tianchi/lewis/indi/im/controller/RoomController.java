@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @program: tianchi-im
+ * @program: tianchi-tianchi.lewis.indi.im
  * @description: Room 控制器
  * @author: lewis
  * @create: 2021-07-01 00:54

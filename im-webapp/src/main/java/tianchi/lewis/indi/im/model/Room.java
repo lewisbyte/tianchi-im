@@ -4,15 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @program: tianchi-im
+ * @program: tianchi-tianchi.lewis.indi.im
  * @description:
  * @author: lewis
  * @create: 2021-07-01 10:15
  */
 @Getter
 @Setter
-public class Messsage {
-    private long id;
-    private String text;
-
+public class Room {
+    private String name;
 }

@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @program: tianchi-im
+ * @program: tianchi-tianchi.lewis.indi.im
  * @description: 消息
  * @author: lewis
  * @create: 2021-07-01 00:54
