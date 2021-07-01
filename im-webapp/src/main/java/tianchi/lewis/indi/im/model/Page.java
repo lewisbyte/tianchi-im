@@ -4,15 +4,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @program: tianchi-tianchi.lewis.indi.im
+ * @program: tianchi-im
  * @description:
  * @author: lewis
- * @create: 2021-07-01 10:15
+ * @create: 2021-07-01 23:47
  */
 @Getter
 @Setter
-public class Messsage {
-    private long id;
-    private String text;
-
+public class Page {
+    private String pageIndex;
+    private String pageSize;
 }
