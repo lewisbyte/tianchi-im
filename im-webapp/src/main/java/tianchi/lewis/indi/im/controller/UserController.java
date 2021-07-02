@@ -4,12 +4,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.service.UserService;
+
+import java.util.List;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -27,21 +26,19 @@ public class UserController {
 
     @ApiOperation(value = "/user")
     @RequestMapping(path = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void f1(@RequestBody User user) {
-
+    public void user(@RequestBody User user) {
+        userService.create(user);
     }
 
     @ApiOperation(value = "/userLogin")
     @RequestMapping(path = "/userLogin", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void f2(String username,String password) {
-
+    public String userLogin(String username,String password) {
+        return userService.login(username,password);
     }
 
     @ApiOperation(value = "/user/{username}")
     @RequestMapping(path = "/user/{username}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void f3(@RequestBody String username) {
-
+    public List<User> username(@PathVariable String username) {
+        return userService.getInfo(username);
     }
-
-
 }
