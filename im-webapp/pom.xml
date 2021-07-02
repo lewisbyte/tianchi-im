@@ -18,6 +18,12 @@
 
 
     <dependencies>
+        <!--     数据存储     -->
+        <dependency>
+            <groupId>tianchi.lewis.indi</groupId>
+            <artifactId>im-datastore</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.spring4all</groupId>
             <artifactId>swagger-spring-boot-starter</artifactId>
