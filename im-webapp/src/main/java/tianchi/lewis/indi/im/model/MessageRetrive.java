@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MessageRetrive {
-    private long id;
+    private String id;
     private String text;
     private String timestamp;
 }

@@ -12,6 +12,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Page {
-    private String pageIndex;
-    private String pageSize;
+    private int pageIndex;
+    private int pageSize;
 }
