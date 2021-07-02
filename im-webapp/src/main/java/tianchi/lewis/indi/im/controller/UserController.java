@@ -18,7 +18,8 @@ import tianchi.lewis.indi.im.service.UserService;
  * @create: 2021-07-01 00:54
  */
 @Api(tags = "[UserController]")
-@RestController(value = "/v1")
+@RestController
+@RequestMapping(value = "/v1")
 public class UserController {
 
     @Autowired

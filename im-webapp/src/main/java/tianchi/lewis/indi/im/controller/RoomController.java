@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.model.Room;
-import tianchi.lewis.indi.im.model.RoomList;
 import tianchi.lewis.indi.im.service.RoomService;
 
 /**
@@ -20,7 +19,8 @@ import tianchi.lewis.indi.im.service.RoomService;
  * @create: 2021-07-01 00:54
  */
 @Api(tags = "[Room]")
-@RestController(value = "/v1")
+@RestController
+@RequestMapping(value = "/v1")
 public class RoomController {
 
     @Autowired
