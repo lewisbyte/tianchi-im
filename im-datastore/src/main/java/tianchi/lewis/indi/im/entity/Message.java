@@ -18,4 +18,5 @@ import lombok.NoArgsConstructor;
 @Builder
 @TableName(value = "t_message")
 public class Message {
+    private String text;
 }

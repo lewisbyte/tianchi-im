@@ -18,4 +18,5 @@ import lombok.NoArgsConstructor;
 @Builder
 @TableName(value = "t_user")
 public class User {
+    String username;
 }
