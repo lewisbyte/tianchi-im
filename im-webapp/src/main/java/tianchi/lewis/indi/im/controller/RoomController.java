@@ -20,7 +20,7 @@ import tianchi.lewis.indi.im.service.RoomService;
  * @create: 2021-07-01 00:54
  */
 @Api(tags = "[Room]")
-@RestController
+@RestController(value = "/v1")
 public class RoomController {
 
     @Autowired

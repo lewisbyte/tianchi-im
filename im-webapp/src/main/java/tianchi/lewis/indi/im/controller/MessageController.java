@@ -19,7 +19,7 @@ import tianchi.lewis.indi.im.service.MessageService;
  * @create: 2021-07-01 00:54
  */
 @Api(tags = "[Message]")
-@RestController
+@RestController(value = "/v1")
 public class MessageController {
 
     @Autowired
