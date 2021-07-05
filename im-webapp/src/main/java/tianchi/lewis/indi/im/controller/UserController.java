@@ -37,8 +37,8 @@ public class UserController {
     }
 
     @ApiOperation(value = "/user/{username}")
-    @RequestMapping(path = "/user/{username}", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> username(@PathVariable String username) {
+    @RequestMapping(path = "/user/{username}", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public User username(@PathVariable(value="username") String username) {
         return userService.getInfo(username);
     }
 }

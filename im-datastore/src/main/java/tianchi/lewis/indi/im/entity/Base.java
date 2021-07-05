@@ -1,5 +1,6 @@
 package tianchi.lewis.indi.im.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 /**
@@ -10,5 +11,6 @@ import lombok.Data;
  */
 @Data
 public class Base {
-    protected long id;
+    @TableId
+    protected Long id;
 }

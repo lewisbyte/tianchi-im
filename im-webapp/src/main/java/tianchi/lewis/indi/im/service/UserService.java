@@ -9,6 +9,6 @@ public interface UserService {
 
     String login(String username, String password);
 
-    List<User> getInfo(String username);
+    User getInfo(String username);
 
 }

@@ -1,10 +1,12 @@
 package tianchi.lewis.indi.im.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tianchi.lewis.indi.im.entity.TUser;
 import tianchi.lewis.indi.im.model.User;
+import tianchi.lewis.indi.im.serivce.UserDataStoreService;
 import tianchi.lewis.indi.im.service.UserService;
-
-import java.util.List;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -14,18 +16,27 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private UserDataStoreService userDataStoreService;
+
     @Override
     public void create(User user) {
-
+        TUser tUser = TUser.builder().build();
+        BeanUtil.copyProperties(user, tUser);
+        userDataStoreService.create(tUser);
     }
 
     @Override
     public String login(String username, String password) {
-        return null;
+        return userDataStoreService.login(username, password);
     }
 
     @Override
-    public List<User> getInfo(String username) {
-        return null;
+    public User getInfo(String username) {
+        User user = new User();
+        TUser tuser = userDataStoreService.getInfo(username);
+        BeanUtil.copyProperties(tuser, user);
+        return user;
     }
 }
