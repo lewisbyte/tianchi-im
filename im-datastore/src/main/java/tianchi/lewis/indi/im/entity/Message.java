@@ -1,5 +1,6 @@
 package tianchi.lewis.indi.im.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @TableName(value = "t_message")
-public class Message {
+public class Message extends Base {
+    @TableId
+    private String id;
     private String text;
 }

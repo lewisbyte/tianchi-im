@@ -27,9 +27,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>
  * sharding-jdbc 的数据源配置
  * </p>
- *
- * @author yangkai.shen
- * @date Created in 2019-03-26 16:47
  */
 @Configuration
 public class DataSourceShardingConfig {
@@ -37,7 +34,6 @@ public class DataSourceShardingConfig {
 
     @Autowired
     private DSConfig dsConfig;
-
 
     /**
      * 需要手动配置事务管理器
@@ -66,39 +62,46 @@ public class DataSourceShardingConfig {
         return ShardingDataSourceFactory.createDataSource(dataSourceMap(), shardingRuleConfig, new ConcurrentHashMap<>(16), properties);
     }
 
-    private TableRuleConfiguration orderTableRule() {
+
+    /**
+     *  消息表分片规则
+     * @return
+     */
+    private TableRuleConfiguration messageRule(){
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
-        // 设置逻辑表名
-        tableRule.setLogicTable("t_order");
-        // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
-        tableRule.setActualDataNodes("ds${0..1}.t_order_${0..2}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
-        tableRule.setKeyGenerator(customKeyGenerator());
-        tableRule.setKeyGeneratorColumnName("order_id");
+        return tableRule;
+    }
+
+    /**
+     *  用户表分片规则
+     * @return
+     */
+    private TableRuleConfiguration userRule(){
+        TableRuleConfiguration tableRule = new TableRuleConfiguration();
+        return tableRule;
+    }
+
+
+    /**
+     *  房间表分片规则
+     * @return
+     */
+    private TableRuleConfiguration roomRule(){
+        TableRuleConfiguration tableRule = new TableRuleConfiguration();
         return tableRule;
     }
 
     private Map<String, DataSource> dataSourceMap() {
         Map<String, DataSource> dataSourceMap = new HashMap<>(16);
-
-        // 配置第一个数据源
+        // 配置数据源
         HikariDataSource ds0 = new HikariDataSource();
-        ds0.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds0.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/spring-boot-demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8");
-        ds0.setUsername("root");
-        ds0.setPassword("admin");
-
-        // 配置第二个数据源
-        HikariDataSource ds1 = new HikariDataSource();
-        ds1.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds1.setJdbcUrl("jdbc:mysql://127.0.0.1:3306/spring-boot-demo-2?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8");
-        ds1.setUsername("root");
-        ds1.setPassword("admin");
-
+        ds0.setDriverClassName(dsConfig.getClassName());
+        ds0.setJdbcUrl(dsConfig.getUrl());
+        ds0.setUsername(dsConfig.getUsername());
+        ds0.setPassword(dsConfig.getPassword());
         dataSourceMap.put("ds0", ds0);
         return dataSourceMap;
     }
-
     /**
      * 自定义主键生成器
      */
