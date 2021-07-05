@@ -18,5 +18,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @TableName(value = "t_room")
 public class Room {
-    String roomid;
+    private String roomid;
+    private String name;
 }

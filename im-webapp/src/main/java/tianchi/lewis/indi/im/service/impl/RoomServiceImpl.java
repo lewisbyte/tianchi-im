@@ -1,10 +1,13 @@
 package tianchi.lewis.indi.im.service.impl;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.model.Room;
 import tianchi.lewis.indi.im.model.RoomList;
 import tianchi.lewis.indi.im.model.RoomUser;
+import tianchi.lewis.indi.im.serivce.RoomDataStoreService;
 import tianchi.lewis.indi.im.service.RoomService;
 
 import java.util.List;
@@ -17,9 +20,12 @@ import java.util.List;
  */
 @Service
 public class RoomServiceImpl implements RoomService {
+    @Autowired
+    private RoomDataStoreService roomDataStoreService;
+
     @Override
     public void createRoom(Room room) {
-
+        roomDataStoreService.save(tianchi.lewis.indi.im.entity.Room.builder().name(room.getName()).build());
     }
 
     @Override
