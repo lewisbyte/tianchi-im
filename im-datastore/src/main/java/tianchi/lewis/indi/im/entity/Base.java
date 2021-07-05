@@ -11,6 +11,4 @@ import lombok.Data;
 @Data
 public class Base {
     protected long id;
-    protected String createTime;
-    protected String updateTime;
 }

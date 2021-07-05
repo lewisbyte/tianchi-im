@@ -18,6 +18,5 @@ import lombok.NoArgsConstructor;
 @Builder
 @TableName(value = "t_room")
 public class TRoom extends Base {
-    private String roomid;
     private String name;
 }

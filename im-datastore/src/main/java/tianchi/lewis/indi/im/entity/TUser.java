@@ -19,4 +19,9 @@ import lombok.NoArgsConstructor;
 @TableName(value = "t_user")
 public class TUser extends Base {
     private String username;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private String phone;
 }
