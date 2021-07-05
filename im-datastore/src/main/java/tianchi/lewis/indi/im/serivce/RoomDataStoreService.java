@@ -1,7 +1,7 @@
 package tianchi.lewis.indi.im.serivce;
 
-import tianchi.lewis.indi.im.entity.Room;
+import tianchi.lewis.indi.im.entity.TRoom;
 
 public interface RoomDataStoreService {
-    void save(Room room);
+    void save(TRoom room);
 }

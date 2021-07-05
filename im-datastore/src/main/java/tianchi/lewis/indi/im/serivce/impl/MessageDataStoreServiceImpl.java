@@ -15,8 +15,4 @@ import tianchi.lewis.indi.im.serivce.MessageDataStoreService;
 public class MessageDataStoreServiceImpl implements MessageDataStoreService {
     @Autowired
     private MessageMapper mapper;
-
-    public void test(){
-    }
-
 }

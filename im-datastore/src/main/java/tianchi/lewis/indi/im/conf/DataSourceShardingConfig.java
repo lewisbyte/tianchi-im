@@ -50,10 +50,15 @@ public class DataSourceShardingConfig {
         // 设置分库策略
         shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
         // 设置规则适配的表
-        shardingRuleConfig.getBindingTableGroups().add("t_order");
+        shardingRuleConfig.getBindingTableGroups().add("t_user");
+        shardingRuleConfig.getBindingTableGroups().add("t_message");
+        shardingRuleConfig.getBindingTableGroups().add("t_room");
         // 设置分表策略
-//        shardingRuleConfig.getTableRuleConfigs().add(orderTableRule());
-        shardingRuleConfig.setDefaultDataSourceName("ds0");
+        shardingRuleConfig.getTableRuleConfigs().add(messageRule());
+        shardingRuleConfig.getTableRuleConfigs().add(userRule());
+        shardingRuleConfig.getTableRuleConfigs().add(roomRule());
+
+        shardingRuleConfig.setDefaultDataSourceName(dsConfig.getDsName());
         shardingRuleConfig.setDefaultTableShardingStrategyConfig(new NoneShardingStrategyConfiguration());
 
         Properties properties = new Properties();
@@ -64,30 +69,49 @@ public class DataSourceShardingConfig {
 
 
     /**
-     *  消息表分片规则
+     * 消息表分片规则
      * @return
      */
-    private TableRuleConfiguration messageRule(){
+    private TableRuleConfiguration messageRule() {
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
+        // 设置逻辑表名
+        tableRule.setLogicTable("t_message");
+        tableRule.setActualDataNodes("ds${0}.t_message_${0}");
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setKeyGenerator(customKeyGenerator());
+        tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
     }
 
     /**
-     *  用户表分片规则
+     * 用户表分片规则
      * @return
      */
-    private TableRuleConfiguration userRule(){
+    private TableRuleConfiguration userRule() {
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
+        // 设置逻辑表名
+        tableRule.setLogicTable("t_user");
+        // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
+        tableRule.setActualDataNodes("ds${0}.t_user_${0}");
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setKeyGenerator(customKeyGenerator());
+        tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
     }
 
-
     /**
-     *  房间表分片规则
+     * 房间表分片规则
      * @return
      */
-    private TableRuleConfiguration roomRule(){
+    private TableRuleConfiguration roomRule() {
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
+        // 设置逻辑表名
+        tableRule.setLogicTable("t_room");
+        // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
+        tableRule.setActualDataNodes("ds${0}.t_room_${0}");
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setKeyGenerator(customKeyGenerator());
+        tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
     }
 
@@ -99,7 +123,7 @@ public class DataSourceShardingConfig {
         ds0.setJdbcUrl(dsConfig.getUrl());
         ds0.setUsername(dsConfig.getUsername());
         ds0.setPassword(dsConfig.getPassword());
-        dataSourceMap.put("ds0", ds0);
+        dataSourceMap.put(dsConfig.getDsName(), ds0);
         return dataSourceMap;
     }
     /**

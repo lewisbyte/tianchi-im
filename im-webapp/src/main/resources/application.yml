@@ -3,3 +3,4 @@ ds:
   driver-class-name: com.mysql.cj.jdbc.Driver
   username: root
   password: admin
+  ds-name: ds0

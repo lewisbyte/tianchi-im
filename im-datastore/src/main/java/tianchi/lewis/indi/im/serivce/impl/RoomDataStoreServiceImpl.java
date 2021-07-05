@@ -3,7 +3,7 @@ package tianchi.lewis.indi.im.serivce.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.dao.RoomMapper;
-import tianchi.lewis.indi.im.entity.Room;
+import tianchi.lewis.indi.im.entity.TRoom;
 import tianchi.lewis.indi.im.serivce.RoomDataStoreService;
 
 /**
@@ -20,7 +20,7 @@ public class RoomDataStoreServiceImpl implements RoomDataStoreService {
 
 
     @Override
-    public void save(Room room) {
+    public void save(TRoom room) {
         roomMapper.insert(room);
     }
 }

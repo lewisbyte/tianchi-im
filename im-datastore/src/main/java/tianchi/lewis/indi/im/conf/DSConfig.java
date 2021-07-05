@@ -24,4 +24,7 @@ public class DSConfig {
 
     @Value("${ds.password}")
     private String password;
+
+    @Value("${ds.ds-name}")
+    private String dsName;
 }
