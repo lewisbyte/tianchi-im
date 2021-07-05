@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @program: tianchi-im
- * @description: t_user
+ * @description: t_room
  * @author: lewis
  * @create: 2021-07-03 01:18
  */

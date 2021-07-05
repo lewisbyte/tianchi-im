@@ -77,7 +77,7 @@ public class DataSourceShardingConfig {
         // 设置逻辑表名
         tableRule.setLogicTable("t_message");
         tableRule.setActualDataNodes("ds${0}.t_message_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("roomid", "t_message_$->{roomid % 3}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
@@ -91,9 +91,8 @@ public class DataSourceShardingConfig {
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
         // 设置逻辑表名
         tableRule.setLogicTable("t_user");
-        // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
         tableRule.setActualDataNodes("ds${0}.t_user_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_user_$->{id % 3}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
@@ -107,9 +106,8 @@ public class DataSourceShardingConfig {
         TableRuleConfiguration tableRule = new TableRuleConfiguration();
         // 设置逻辑表名
         tableRule.setLogicTable("t_room");
-        // ds${0..1}.t_order_${0..2} 也可以写成 ds$->{0..1}.t_order_$->{0..1}
         tableRule.setActualDataNodes("ds${0}.t_room_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("order_id", "t_order_$->{order_id % 3}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_room_$->{id % 3}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;

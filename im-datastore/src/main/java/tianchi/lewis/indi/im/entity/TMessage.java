@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @program: tianchi-im
- * @description: t_user
+ * @description: t_message
  * @author: lewis
  * @create: 2021-07-03 01:18
  */
@@ -19,4 +19,7 @@ import lombok.NoArgsConstructor;
 @TableName(value = "t_message")
 public class TMessage extends Base {
     private String text;
+
+    // 按照消息 id 分片
+    private String roomid;
 }

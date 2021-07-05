@@ -3,6 +3,7 @@ package tianchi.lewis.indi.im.serivce.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.dao.MessageMapper;
+import tianchi.lewis.indi.im.entity.TMessage;
 import tianchi.lewis.indi.im.serivce.MessageDataStoreService;
 
 /**
@@ -15,4 +16,9 @@ import tianchi.lewis.indi.im.serivce.MessageDataStoreService;
 public class MessageDataStoreServiceImpl implements MessageDataStoreService {
     @Autowired
     private MessageMapper mapper;
+
+    @Override
+    public void save(TMessage tMessage) {
+        mapper.insert(tMessage);
+    }
 }

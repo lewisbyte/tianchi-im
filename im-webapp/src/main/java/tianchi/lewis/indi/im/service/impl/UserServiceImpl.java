@@ -7,6 +7,7 @@ import tianchi.lewis.indi.im.entity.TUser;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.serivce.UserDataStoreService;
 import tianchi.lewis.indi.im.service.UserService;
+import tianchi.lewis.indi.im.utils.SessionUtils;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -29,7 +30,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(String username, String password) {
-        return userDataStoreService.login(username, password);
+
+        String token = userDataStoreService.login(username, password);
+        SessionUtils.login(token);
+        return token;
     }
 
     @Override
