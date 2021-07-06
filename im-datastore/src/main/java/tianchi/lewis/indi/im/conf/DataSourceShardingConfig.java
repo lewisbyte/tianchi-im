@@ -70,6 +70,7 @@ public class DataSourceShardingConfig {
 
     /**
      * 消息表分片规则
+     *
      * @return
      */
     private TableRuleConfiguration messageRule() {
@@ -77,7 +78,7 @@ public class DataSourceShardingConfig {
         // 设置逻辑表名
         tableRule.setLogicTable("t_message");
         tableRule.setActualDataNodes("ds${0}.t_message_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("roomid", "t_message_$->{roomid % 2}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("roomid", "t_message_$->{roomid % 1}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
@@ -85,6 +86,7 @@ public class DataSourceShardingConfig {
 
     /**
      * 用户表分片规则
+     *
      * @return
      */
     private TableRuleConfiguration userRule() {
@@ -92,7 +94,7 @@ public class DataSourceShardingConfig {
         // 设置逻辑表名
         tableRule.setLogicTable("t_user");
         tableRule.setActualDataNodes("ds${0}.t_user_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_user_$->{id % 2}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_user_$->{id % 1}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
@@ -100,6 +102,7 @@ public class DataSourceShardingConfig {
 
     /**
      * 房间表分片规则
+     *
      * @return
      */
     private TableRuleConfiguration roomRule() {
@@ -107,7 +110,7 @@ public class DataSourceShardingConfig {
         // 设置逻辑表名
         tableRule.setLogicTable("t_room");
         tableRule.setActualDataNodes("ds${0}.t_room_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_room_$->{id % 2}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_room_$->{id % 1}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
@@ -124,6 +127,7 @@ public class DataSourceShardingConfig {
         dataSourceMap.put(dsConfig.getDsName(), ds0);
         return dataSourceMap;
     }
+
     /**
      * 自定义主键生成器
      */
