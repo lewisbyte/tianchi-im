@@ -8,7 +8,7 @@ package tianchi.lewis.indi.im.constants;
  */
 public class FieldConst {
 
-    public static final String TOKEN = "";
+    public static final String TOKEN = "Authorization";
 
 
 }

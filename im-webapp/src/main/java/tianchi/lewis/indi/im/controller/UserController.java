@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.service.UserService;
 
-import java.util.List;
-
 /**
  * @program: tianchi-tianchi.lewis.indi.im
  * @description: User 控制器
@@ -31,14 +29,14 @@ public class UserController {
     }
 
     @ApiOperation(value = "/userLogin")
-    @RequestMapping(path = "/userLogin", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String userLogin(String username,String password) {
-        return userService.login(username,password);
+    @RequestMapping(path = "/userLogin", method = RequestMethod.GET)
+    public String userLogin(String username, String password) {
+        return userService.login(username, password);
     }
 
     @ApiOperation(value = "/user/{username}")
-    @RequestMapping(path = "/user/{username}", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
-    public User username(@PathVariable(value="username") String username) {
+    @RequestMapping(path = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public User username(@PathVariable(value = "username") String username) {
         return userService.getInfo(username);
     }
 }
