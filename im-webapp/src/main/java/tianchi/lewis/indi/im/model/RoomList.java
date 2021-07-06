@@ -18,8 +18,8 @@ public class RoomList {
     private String name;
     private String id;
 
-    public RoomList(TRoom room){
-        this.setId(room.getName());
-        this.setId(room.getName());
+    public RoomList(TRoom room) {
+        this.setId(room.getId().toString());
+        this.setName(room.getName());
     }
 }

@@ -1,5 +1,7 @@
 package tianchi.lewis.indi.im.serivce.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.dao.RoomMapper;
@@ -27,11 +29,12 @@ public class RoomDataStoreServiceImpl implements RoomDataStoreService {
 
     @Override
     public TRoom getRoomInfo(String roomid) {
-        return null;
+        return roomMapper.selectById(roomid);
     }
 
     @Override
     public List<TRoom> getRoomList(int pageIndex, int pageSize) {
-        return null;
+        Page<TRoom> page = new Page<>(pageIndex, pageIndex);
+        return roomMapper.selectPage(page, new QueryWrapper<>()).getRecords();
     }
 }
