@@ -34,7 +34,7 @@ public class RoomDataStoreServiceImpl implements RoomDataStoreService {
 
     @Override
     public List<TRoom> getRoomList(int pageIndex, int pageSize) {
-        Page<TRoom> page = new Page<>(pageIndex, pageIndex);
+        Page<TRoom> page = new Page<>(pageIndex, pageSize);
         return roomMapper.selectPage(page, new QueryWrapper<>()).getRecords();
     }
 }

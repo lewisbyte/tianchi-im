@@ -14,6 +14,7 @@ import tianchi.lewis.indi.im.service.MessageService;
 import tianchi.lewis.indi.im.utils.SessionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -29,7 +30,11 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> retrieve(Page page, String token) {
-        return null;
+        String roomid = SessionUtils.getRoomInfoByToken(token);
+        return messageDataStoreService.getMessage(page.getPageIndex(), page.getPageSize(), roomid)
+                .stream()
+                .map(Message::new)
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -1,7 +1,9 @@
 package tianchi.lewis.indi.im.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import tianchi.lewis.indi.im.entity.TMessage;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -11,8 +13,13 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@AllArgsConstructor
 public class Message {
     private String id;
     private String text;
 
+    public Message(TMessage tMessage) {
+        this.setId(tMessage.getId().toString());
+        this.setText(tMessage.getText());
+    }
 }
