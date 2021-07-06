@@ -1,5 +1,6 @@
 package tianchi.lewis.indi.im.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.entity.TRoom;
@@ -9,8 +10,10 @@ import tianchi.lewis.indi.im.model.RoomList;
 import tianchi.lewis.indi.im.model.RoomUser;
 import tianchi.lewis.indi.im.serivce.RoomDataStoreService;
 import tianchi.lewis.indi.im.service.RoomService;
+import tianchi.lewis.indi.im.utils.SessionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -30,26 +33,32 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void enterRoom(String roomid, String token) {
-
+        SessionUtils.entryRoom(token, roomid);
     }
 
     @Override
     public void leaveRoom(String token) {
-
+        SessionUtils.leaveRoom(token);
     }
 
     @Override
     public Room getRoomInfo(String roomid) {
-        return null;
+        TRoom troom = roomDataStoreService.getRoomInfo(roomid);
+        Room room = new Room();
+        BeanUtil.copyProperties(troom, room);
+        return room;
     }
 
     @Override
     public List<RoomUser> getRoomUserInfo(String roomid) {
-        return null;
+        return SessionUtils.getRoomUsers(roomid);
     }
 
     @Override
     public List<RoomList> getRoomList(Page page) {
-        return null;
+        return roomDataStoreService.getRoomList(page.getPageIndex(), page.getPageSize())
+                .stream()
+                .map(RoomList::new)
+                .collect(Collectors.toList());
     }
 }

@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     public String login(String username, String password) {
 
         String token = userDataStoreService.login(username, password);
-        SessionUtils.login(token);
+        SessionUtils.login(token,username);
         return token;
     }
 
