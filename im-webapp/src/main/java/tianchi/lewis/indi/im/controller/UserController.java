@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "/user")
-    @RequestMapping(path = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void user(@RequestBody User user) {
         userService.create(user);
     }

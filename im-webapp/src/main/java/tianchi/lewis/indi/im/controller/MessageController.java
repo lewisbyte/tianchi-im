@@ -29,7 +29,7 @@ public class MessageController {
 
     @ResponseBody
     @ApiOperation(value = "/message/retrieve")
-    @RequestMapping(path = "/message/retrieve", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/message/retrieve", method = {RequestMethod.POST}, consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<Message> retrieve(@RequestBody Page page, HttpServletRequest request) {
         return messageService.retrieve(page, UserUtils.getToken(request));
     }
