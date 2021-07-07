@@ -1,53 +1,55 @@
 # room test
 
-#room
+#room API 测试
 curl -X 'POST' \
-  'https://editor.swagger.io/room' \
+  'http://localhost:8080/room' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer woshitokenhhhh' \
+  -H 'Authorization: Bearer test_only_token' \
   -H 'Content-Type: application/json' \
   -d '{
   "name": "string"
 }';
+echo '\n #room \n';
 
 #/room/{roomid}/enter
 curl -X 'PUT' \
-  'https://editor.swagger.io/room/roomiddhaskhka/enter' \
+  'http://localhost:8080/room/test_only_room_id/enter' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer woshitokenhhhh';
-
+  -H 'Authorization: Bearer test_only_token';
+echo '\n  #/room/{roomid}/enter \n';
 
 #/roomLeave
 curl -X 'PUT' \
-  'https://editor.swagger.io/roomLeave' \
+  'http://localhost:8080/roomLeave' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer woshitokenhhhh';
+  -H 'Authorization: Bearer test_only_token';
+echo '\n #/roomLeave \n';
 
 #/room/{roomid}
 curl -X 'GET' \
-  'https://editor.swagger.io/room/roomiddhaskhka' \
+  'http://localhost:8080/room/test_only_room_id' \
   -H 'accept: */*';
-
+echo '\n #/room/{roomid} \n';
 #/room/{roomid}/users
 curl -X 'GET' \
-  'https://editor.swagger.io/room/roomiddhaskhka/users' \
+  'http://localhost:8080/room/test_only_room_id/users' \
   -H 'accept: application/json';
-
+echo '\n #/room/{roomid}/users \n';
 #/roomList
 curl -X 'POST' \
-  'https://editor.swagger.io/roomList' \
+  'http://localhost:8080/roomList' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
   "pageIndex": 0,
   "pageSize": 100
 }';
+echo '\n #/roomList \n';
 
-
-#user
+#user api 测试
 #/user
 curl -X 'POST' \
-  'https://editor.swagger.io/user' \
+  'http://localhost:8080/user' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -58,41 +60,41 @@ curl -X 'POST' \
   "password": "zhangsan",
   "phone": "zhangsan"
 }';
-
+echo '\n #/user \n';
 # /userLogin
 curl -X 'GET' \
-  'https://editor.swagger.io/userLogin?username=zhangsan&password=zhangsan' \
+  'http://localhost:8080/userLogin?username=zhangsan&password=zhangsan' \
   -H 'accept: */*';
-
+echo '\n # /userLogin \n';
 #/user/{username}
 curl -X 'GET' \
-  'https://editor.swagger.io/user/zhangsan' \
+  'http://localhost:8080/user/zhangsan' \
   -H 'accept: application/json';
+echo '\n #/user/{username} \n';
 
-
-# message
-
+# message api 测试
 #/message/send
 curl -X 'POST' \
-  'https://editor.swagger.io/message/send' \
+  'http://localhost:8080/message/send' \
   -H 'accept: */*' \
-  -H 'Authorization: Bearer woshitokenhhhh' \
+  -H 'Authorization: Bearer test_only_token' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "wobushixiaoxi",
   "text": "wobushixiaoxi"
 }';
+echo '\n #/message/send \n';
 #/message/retrieve
 curl -X 'POST' \
-  'https://editor.swagger.io/message/retrieve' \
+  'http://localhost:8080/message/retrieve' \
   -H 'accept: application/json' \
-  -H 'Authorization: Bearer woshitokenhhhh' \
+  -H 'Authorization: Bearer test_only_token' \
   -H 'Content-Type: application/json' \
   -d '{
   "pageIndex": -1,
   "pageSize": 100
 }';
-
+echo '\n #/message/retrieve \n';
 
 
 
