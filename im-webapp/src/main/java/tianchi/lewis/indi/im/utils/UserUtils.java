@@ -23,8 +23,10 @@ public class UserUtils {
     public static String getToken(HttpServletRequest request) {
         String auth = request.getHeader(FieldConst.TOKEN);
         if (StringUtils.isEmpty(auth)){
-            return null;
+            ControllerException.InvalidExceptionAccess.error();
         }
+
+
         String token = auth.replace("Bearer ", "");
         if (StringUtils.isEmpty(token)){
             ControllerException.InvalidExceptionAccess.error();

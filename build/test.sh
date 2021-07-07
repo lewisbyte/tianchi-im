@@ -10,8 +10,6 @@ curl -X 'POST' \
   "name": "string"
 }';
 echo '\n #room \n';
-
-#room API 测试
 ## 测试没有token场景
 curl -X 'POST' \
   'http://localhost:8080/room' \
@@ -23,13 +21,14 @@ curl -X 'POST' \
 echo '\n #room \n';
 
 
+
+
 #/room/{roomid}/enter
 curl -X 'PUT' \
   'http://localhost:8080/room/test_only_room_id/enter' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer test_only_token';
 echo '\n  #/room/{roomid}/enter \n';
-
 #/room/{roomid}/enter
 # 测试没有token场景
 curl -X 'PUT' \
@@ -37,23 +36,41 @@ curl -X 'PUT' \
   -H 'accept: */*' \
 echo '\n  #/room/{roomid}/enter \n';
 
+
+
+
+
 #/roomLeave
 curl -X 'PUT' \
   'http://localhost:8080/roomLeave' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer test_only_token';
 echo '\n #/roomLeave \n';
+#/roomLeave
+curl -X 'PUT' \
+  'http://localhost:8080/roomLeave' \
+  -H 'accept: */*' \
+echo '\n #/roomLeave \n';
+
+
 
 #/room/{roomid}
 curl -X 'GET' \
   'http://localhost:8080/room/test_only_room_id' \
   -H 'accept: */*';
 echo '\n #/room/{roomid} \n';
+
+
+
+
 #/room/{roomid}/users
 curl -X 'GET' \
   'http://localhost:8080/room/test_only_room_id/users' \
   -H 'accept: application/json';
 echo '\n #/room/{roomid}/users \n';
+
+
+
 #/roomList
 curl -X 'POST' \
   'http://localhost:8080/roomList' \
@@ -64,6 +81,10 @@ curl -X 'POST' \
   "pageSize": 100
 }';
 echo '\n #/roomList \n';
+
+
+
+
 
 #user api 测试
 #/user
@@ -80,16 +101,28 @@ curl -X 'POST' \
   "phone": "zhangsan"
 }';
 echo '\n #/user \n';
+
+
+
+
 # /userLogin
 curl -X 'GET' \
   'http://localhost:8080/userLogin?username=zhangsan&password=zhangsan' \
   -H 'accept: */*';
 echo '\n # /userLogin \n';
+
+
+
+
 #/user/{username}
 curl -X 'GET' \
   'http://localhost:8080/user/zhangsan' \
   -H 'accept: application/json';
 echo '\n #/user/{username} \n';
+
+
+
+
 
 # message api 测试
 #/message/send
@@ -103,6 +136,20 @@ curl -X 'POST' \
   "text": "wobushixiaoxi"
 }';
 echo '\n #/message/send \n';
+#/message/send
+curl -X 'POST' \
+  'http://localhost:8080/message/send' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "wobushixiaoxi",
+  "text": "wobushixiaoxi"
+}';
+echo '\n #/message/send \n';
+
+
+
+
 #/message/retrieve
 curl -X 'POST' \
   'http://localhost:8080/message/retrieve' \
@@ -114,6 +161,14 @@ curl -X 'POST' \
   "pageSize": 100
 }';
 echo '\n #/message/retrieve \n';
-
+curl -X 'POST' \
+  'http://localhost:8080/message/retrieve' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "pageIndex": -1,
+  "pageSize": 100
+}';
+echo '\n #/message/retrieve \n';
 
 
