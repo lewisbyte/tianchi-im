@@ -4,7 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.model.Room;
 import tianchi.lewis.indi.im.model.RoomList;
@@ -31,7 +33,8 @@ public class RoomController {
 
     @ApiOperation(value = "room")
     @RequestMapping(path = "/room", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void room(@RequestBody Room room) {
+    public void room(@RequestBody Room room, HttpServletRequest request) {
+        UserUtils.getToken(request);
         roomService.createRoom(room);
     }
 

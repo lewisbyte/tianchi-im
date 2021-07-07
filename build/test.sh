@@ -11,11 +11,30 @@ curl -X 'POST' \
 }';
 echo '\n #room \n';
 
+#room API 测试
+## 测试没有token场景
+curl -X 'POST' \
+  'http://localhost:8080/room' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "string"
+}';
+echo '\n #room \n';
+
+
 #/room/{roomid}/enter
 curl -X 'PUT' \
   'http://localhost:8080/room/test_only_room_id/enter' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer test_only_token';
+echo '\n  #/room/{roomid}/enter \n';
+
+#/room/{roomid}/enter
+# 测试没有token场景
+curl -X 'PUT' \
+  'http://localhost:8080/room/test_only_room_id/enter' \
+  -H 'accept: */*' \
 echo '\n  #/room/{roomid}/enter \n';
 
 #/roomLeave

@@ -2,6 +2,7 @@ package tianchi.lewis.indi.im.utils;
 
 import org.springframework.util.StringUtils;
 import tianchi.lewis.indi.im.constants.FieldConst;
+import tianchi.lewis.indi.im.exception.ControllerException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,10 +22,13 @@ public class UserUtils {
      */
     public static String getToken(HttpServletRequest request) {
         String auth = request.getHeader(FieldConst.TOKEN);
-
         if (StringUtils.isEmpty(auth)){
             return null;
         }
-        return auth.replace("Bearer ","");
+        String token = auth.replace("Bearer ", "");
+        if (StringUtils.isEmpty(token)){
+            ControllerException.InvalidExceptionAccess.error();
+        }
+        return token;
     }
 }

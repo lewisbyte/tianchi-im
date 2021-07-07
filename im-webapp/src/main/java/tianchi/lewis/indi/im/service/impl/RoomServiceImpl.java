@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.entity.TRoom;
+import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.model.Room;
 import tianchi.lewis.indi.im.model.RoomList;
@@ -28,17 +29,29 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void createRoom(Room room) {
-        roomDataStoreService.save(TRoom.builder().name(room.getName()).build());
+        try {
+            roomDataStoreService.save(TRoom.builder().name(room.getName()).build());
+        } catch (Exception e) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
     }
 
     @Override
     public void enterRoom(String roomid, String token) {
-        SessionUtils.entryRoom(token, roomid);
+        try {
+            SessionUtils.entryRoom(token, roomid);
+        } catch (Exception e) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
     }
 
     @Override
     public void leaveRoom(String token) {
-        SessionUtils.leaveRoom(token);
+        try {
+            SessionUtils.leaveRoom(token);
+        } catch (Exception e) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
     }
 
     @Override
