@@ -9,7 +9,7 @@ curl -X 'POST' \
   -d '{
   "name": "string"
 }';
-echo '\n #room \n';
+echo '\n 1#room \n';
 ## 测试没有token场景
 curl -X 'POST' \
   'http://localhost:8080/room' \
@@ -18,7 +18,7 @@ curl -X 'POST' \
   -d '{
   "name": "string"
 }';
-echo '\n #room \n';
+echo '\n 2#room \n';
 
 
 
@@ -28,13 +28,13 @@ curl -X 'PUT' \
   'http://localhost:8080/room/test_only_room_id/enter' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer test_only_token';
-echo '\n  #/room/{roomid}/enter \n';
+echo '\n  3#/room/{roomid}/enter \n';
 #/room/{roomid}/enter
 # 测试没有token场景
 curl -X 'PUT' \
   'http://localhost:8080/room/test_only_room_id/enter' \
-  -H 'accept: */*' \
-echo '\n  #/room/{roomid}/enter \n';
+  -H 'accept: */*' ;
+echo '\n  4#/room/{roomid}/enter \n';
 
 
 
@@ -45,12 +45,12 @@ curl -X 'PUT' \
   'http://localhost:8080/roomLeave' \
   -H 'accept: */*' \
   -H 'Authorization: Bearer test_only_token';
-echo '\n #/roomLeave \n';
+echo '\n 5#/roomLeave \n';
 #/roomLeave
 curl -X 'PUT' \
   'http://localhost:8080/roomLeave' \
-  -H 'accept: */*' \
-echo '\n #/roomLeave \n';
+  -H 'accept: */*' ;
+echo '\n 6#/roomLeave \n';
 
 
 
@@ -58,7 +58,7 @@ echo '\n #/roomLeave \n';
 curl -X 'GET' \
   'http://localhost:8080/room/test_only_room_id' \
   -H 'accept: */*';
-echo '\n #/room/{roomid} \n';
+echo '\n 7#/room/{roomid} \n';
 
 
 
@@ -67,7 +67,7 @@ echo '\n #/room/{roomid} \n';
 curl -X 'GET' \
   'http://localhost:8080/room/test_only_room_id/users' \
   -H 'accept: application/json';
-echo '\n #/room/{roomid}/users \n';
+echo '\n 8#/room/{roomid}/users \n';
 
 
 
@@ -80,7 +80,7 @@ curl -X 'POST' \
   "pageIndex": 0,
   "pageSize": 100
 }';
-echo '\n #/roomList \n';
+echo '\n 9#/roomList \n';
 
 
 
@@ -100,7 +100,7 @@ curl -X 'POST' \
   "password": "zhangsan",
   "phone": "zhangsan"
 }';
-echo '\n #/user \n';
+echo '\n 10#/user \n';
 
 
 
@@ -109,7 +109,7 @@ echo '\n #/user \n';
 curl -X 'GET' \
   'http://localhost:8080/userLogin?username=zhangsan&password=zhangsan' \
   -H 'accept: */*';
-echo '\n # /userLogin \n';
+echo '\n 11# /userLogin \n';
 
 
 
@@ -118,7 +118,7 @@ echo '\n # /userLogin \n';
 curl -X 'GET' \
   'http://localhost:8080/user/zhangsan' \
   -H 'accept: application/json';
-echo '\n #/user/{username} \n';
+echo '\n 12#/user/{username} \n';
 
 
 
@@ -135,7 +135,7 @@ curl -X 'POST' \
   "id": "wobushixiaoxi",
   "text": "wobushixiaoxi"
 }';
-echo '\n #/message/send \n';
+echo '\n 13#/message/send \n';
 #/message/send
 curl -X 'POST' \
   'http://localhost:8080/message/send' \
@@ -145,7 +145,7 @@ curl -X 'POST' \
   "id": "wobushixiaoxi",
   "text": "wobushixiaoxi"
 }';
-echo '\n #/message/send \n';
+echo '\n 14#/message/send \n';
 
 
 
@@ -160,7 +160,7 @@ curl -X 'POST' \
   "pageIndex": -1,
   "pageSize": 100
 }';
-echo '\n #/message/retrieve \n';
+echo '\n 15#/message/retrieve \n';
 curl -X 'POST' \
   'http://localhost:8080/message/retrieve' \
   -H 'accept: application/json' \
@@ -169,6 +169,6 @@ curl -X 'POST' \
   "pageIndex": -1,
   "pageSize": 100
 }';
-echo '\n #/message/retrieve \n';
+echo '\n 16#/message/retrieve \n';
 
 
