@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Api(tags = "[Message]")
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping
 public class MessageController {
 
     @Autowired

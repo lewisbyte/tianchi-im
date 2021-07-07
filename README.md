@@ -1,4 +1,11 @@
 # tianchi - im
+
+### 使用
+使用 `tianchi.lewis.indi.im.ImApplication` 启动应用
+
+### 测试
+执行: `build/test.sh` 脚本对项目进行基本的shell自动化测试
+
 ### 模块介绍
 
 #### im-webapp

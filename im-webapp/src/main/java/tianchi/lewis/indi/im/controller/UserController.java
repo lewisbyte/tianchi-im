@@ -16,7 +16,7 @@ import tianchi.lewis.indi.im.service.UserService;
  */
 @Api(tags = "[UserController]")
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping
 public class UserController {
 
     @Autowired

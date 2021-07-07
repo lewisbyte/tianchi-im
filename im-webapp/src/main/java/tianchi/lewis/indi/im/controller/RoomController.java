@@ -23,7 +23,7 @@ import java.util.List;
  */
 @Api(tags = "[Room]")
 @RestController
-@RequestMapping(value = "/v1")
+@RequestMapping
 public class RoomController {
 
     @Autowired
