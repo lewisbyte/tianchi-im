@@ -1,6 +1,7 @@
 package tianchi.lewis.indi.im.serivce.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,7 @@ public class RoomDataStoreServiceImpl implements RoomDataStoreService {
 
     @Override
     public TRoom getRoomInfo(String roomid) {
-        return roomMapper.selectById(roomid);
+        return roomMapper.selectOne(Wrappers.<TRoom>query().lambda().eq(TRoom::getId,Long.valueOf(roomid)));
     }
 
     @Override

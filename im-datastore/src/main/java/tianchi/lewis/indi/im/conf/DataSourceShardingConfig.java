@@ -47,8 +47,6 @@ public class DataSourceShardingConfig {
     @Primary
     public DataSource dataSource() throws SQLException {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
-        // 设置分库策略
-        shardingRuleConfig.setDefaultDatabaseShardingStrategyConfig(new InlineShardingStrategyConfiguration("user_id", "ds${user_id % 2}"));
         // 设置规则适配的表
         shardingRuleConfig.getBindingTableGroups().add("t_user");
         shardingRuleConfig.getBindingTableGroups().add("t_message");
