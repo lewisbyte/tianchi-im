@@ -1,4 +1,8 @@
 # room test
+echo '\n --------------start test ------------------ \n';
+date;
+
+
 
 #room API 测试
 curl -X 'POST' \
@@ -7,7 +11,7 @@ curl -X 'POST' \
   -H 'Authorization: Bearer test_only_token' \
   -H 'Content-Type: application/json' \
   -d '{
-  "name": "string"
+  "name": "stringjjojojoojo"
 }';
 echo '\n 1#room \n';
 ## 测试没有token场景
@@ -170,5 +174,7 @@ curl -X 'POST' \
   "pageSize": 100
 }';
 echo '\n 16#/message/retrieve \n';
+
+echo '\n --------------end test ------------------ \n';
 
 
