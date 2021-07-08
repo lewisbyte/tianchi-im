@@ -21,5 +21,5 @@ public class TMessage extends Base {
     private String text;
 
     // 按照消息 id 分片
-    private String roomid;
+    private Long roomid;
 }
