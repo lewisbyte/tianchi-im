@@ -7,7 +7,7 @@ import java.util.List;
 public interface MessageDataStoreService {
     void save(TMessage tMessage);
 
-    List<TMessage> getMessage(int pageIndex, int pageSize, String roomid);
+    List<TMessage> getMessage(int pageIndex, int pageSize, Long roomid);
 
 }
 

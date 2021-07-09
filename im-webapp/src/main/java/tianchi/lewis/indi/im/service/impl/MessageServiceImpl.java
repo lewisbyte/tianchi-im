@@ -31,7 +31,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public List<Message> retrieve(Page page, String token) {
         String roomid = SessionUtils.getRoomInfoByToken(token);
-        return messageDataStoreService.getMessage(page.getPageIndex(), page.getPageSize(), roomid)
+        return messageDataStoreService.getMessage(page.getPageIndex(), page.getPageSize(), Long.valueOf(roomid))
                 .stream()
                 .map(Message::new)
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class MessageServiceImpl implements MessageService {
             return;
         }
 
-        TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).text(message.getText()).build();
+        TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).text(message.getText()).timestamp(System.currentTimeMillis()).build();
         messageDataStoreService.save(tMessage);
     }
 }

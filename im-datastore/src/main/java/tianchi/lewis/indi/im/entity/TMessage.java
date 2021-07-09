@@ -22,4 +22,6 @@ public class TMessage extends Base {
 
     // 按照消息 id 分片
     private Long roomid;
+
+    private Long timestamp;
 }

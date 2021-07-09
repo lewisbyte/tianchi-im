@@ -2,6 +2,7 @@ package tianchi.lewis.indi.im.utils;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
 import org.springframework.util.StringUtils;
+import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.RoomUser;
 
 import java.util.List;
@@ -65,8 +66,9 @@ public class SessionUtils {
      */
     public static String getRoomInfoByToken(String token) {
         if (StringUtils.isEmpty(token)) {
-            return null;
+            ControllerException.InvalidExceptionAccess.error();
         }
+
         // 1. 获取用户房间信息
         return roomSessionMap.get(token);
     }

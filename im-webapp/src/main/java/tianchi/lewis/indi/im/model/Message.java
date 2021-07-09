@@ -15,11 +15,13 @@ import tianchi.lewis.indi.im.entity.TMessage;
 @Setter
 @AllArgsConstructor
 public class Message {
-    private String id;
+    private Long id;
     private String text;
+    private Long timestamp;
 
     public Message(TMessage tMessage) {
-        this.setId(tMessage.getId().toString());
+        this.setId(tMessage.getId());
         this.setText(tMessage.getText());
+        this.setTimestamp(tMessage.getTimestamp());
     }
 }
