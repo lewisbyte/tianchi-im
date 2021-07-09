@@ -51,7 +51,7 @@ public class MessageServiceImpl implements MessageService {
             return;
         }
 
-        TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).text(message.getText()).timestamp(System.currentTimeMillis()).build();
+        TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).text(message.getText()).id(message.getId()).timestamp(System.currentTimeMillis()).build();
         messageDataStoreService.save(tMessage);
     }
 }

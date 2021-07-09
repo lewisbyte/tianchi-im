@@ -15,7 +15,7 @@ import tianchi.lewis.indi.im.entity.TMessage;
 @Setter
 @AllArgsConstructor
 public class Message {
-    private Long id;
+    private String id;
     private String text;
     private Long timestamp;
 
