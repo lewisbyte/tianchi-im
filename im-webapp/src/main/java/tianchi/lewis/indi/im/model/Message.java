@@ -20,7 +20,7 @@ public class Message {
     private Long timestamp;
 
     public Message(TMessage tMessage) {
-        this.setId(tMessage.getId());
+        this.setId(tMessage.getMid());
         this.setText(tMessage.getText());
         this.setTimestamp(tMessage.getTimestamp());
     }

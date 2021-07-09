@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @TableName(value = "t_message")
-public class TMessage {
+public class TMessage extends Base{
     private String text;
 
     // 按照消息 id 分片
     private Long roomid;
 
-    private String id;
+    private String mid;
 
     private Long timestamp;
 }
