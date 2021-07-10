@@ -87,7 +87,10 @@ public class SessionUtils {
             return;
         }
         // 从房间的用户列表中移除
-        roomUserInfoMap.get(roomSessionMap.get(token)).remove(token);
+        Set<String> set = roomUserInfoMap.get(roomSessionMap.get(token));
+        if (!CollectionUtils.isEmpty(set)) {
+            set.remove(token);
+        }
         // 注销，移除用户信息
         roomSessionMap.remove(token);
     }
@@ -125,7 +128,7 @@ public class SessionUtils {
      */
     public static List<RoomUser> getRoomUsers(String roomid) {
         Set<String> list = roomUserInfoMap.get(roomid);
-        if (CollectionUtils.isEmpty(list)){
+        if (CollectionUtils.isEmpty(list)) {
             return Lists.newArrayList();
         }
         return list.stream().map(RoomUser::new).collect(Collectors.toList());
