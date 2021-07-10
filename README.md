@@ -1,5 +1,8 @@
 # tianchi - im
 
+# 打包
+` mvn clean install -Dmaven.test.skip=true `
+
 ### 使用
 使用 `tianchi.lewis.indi.im.ImApplication` 启动应用
 
