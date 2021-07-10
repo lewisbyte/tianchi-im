@@ -127,7 +127,7 @@
                 "en": "Image ID",
                 "zh-cn": "镜像ID"
             },
-            "Default": "centos_8_0_x64_20G_alibase_20200218.vhd"
+            "Default": "m-2ze3978tmw042vwyfphk"
         },
         "ecs_system_disk_category": {
             "Type": "String",
