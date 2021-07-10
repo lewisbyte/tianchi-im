@@ -76,7 +76,7 @@ public class DataSourceShardingConfig {
         // 设置逻辑表名
         tableRule.setLogicTable("t_message");
         tableRule.setActualDataNodes("ds${0}.t_message_${0}");
-        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("id", "t_message_$->{ id % 1}"));
+        tableRule.setTableShardingStrategyConfig(new InlineShardingStrategyConfiguration("roomid", "t_message_$->{ roomid % 1}"));
         tableRule.setKeyGenerator(customKeyGenerator());
         tableRule.setKeyGeneratorColumnName("id");
         return tableRule;
