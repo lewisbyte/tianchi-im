@@ -39,3 +39,6 @@ metastore_db
 /config
 
 .evosuite
+
+/deploy_application/application/
+/deploy_application/application.zip
