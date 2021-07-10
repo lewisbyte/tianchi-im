@@ -40,7 +40,7 @@ function run() {
 }
 start() {
     echo "start ..."
-    nohup java -‐XX:+UseG1GC \
+    nohup java -XX:+UseConcMarkSweepGC \
     -Xms6114m -Xmx6114m -XX:+PrintGCDateStamps \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
