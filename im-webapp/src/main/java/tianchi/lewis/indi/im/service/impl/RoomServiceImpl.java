@@ -1,8 +1,11 @@
 package tianchi.lewis.indi.im.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollectionUtil;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import tianchi.lewis.indi.im.entity.TRoom;
 import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.Page;
@@ -64,7 +67,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomUser> getRoomUserInfo(String roomid) {
-        return SessionUtils.getRoomUsers(roomid);
+        List<RoomUser> users = SessionUtils.getRoomUsers(roomid);
+        return CollectionUtils.isEmpty(users) ? Lists.newArrayList() : users;
     }
 
     @Override

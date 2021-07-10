@@ -16,13 +16,14 @@ import java.util.Objects;
  * @create: 2021-07-03 12:04
  */
 @Service
-public class UserDataStoreServiceImpl implements UserDataStoreService {
+public class UserDataStoreServiceImpl extends BaseDataService implements UserDataStoreService {
 
     @Autowired
     private UserMapper userMapper;
 
     @Override
     public void create(TUser user) {
+        user.setId(snowflake.nextId());
         userMapper.insert(user);
     }
 

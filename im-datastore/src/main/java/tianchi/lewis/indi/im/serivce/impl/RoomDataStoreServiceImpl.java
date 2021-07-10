@@ -18,24 +18,25 @@ import java.util.List;
  * @create: 2021-07-03 12:04
  */
 @Service
-public class RoomDataStoreServiceImpl implements RoomDataStoreService {
+public class RoomDataStoreServiceImpl extends BaseDataService implements RoomDataStoreService {
 
     @Autowired
     private RoomMapper roomMapper;
 
     @Override
     public void save(TRoom room) {
+        room.setId(snowflake.nextId());
         roomMapper.insert(room);
     }
 
     @Override
     public TRoom getRoomInfo(String roomid) {
-        return roomMapper.selectOne(Wrappers.<TRoom>query().lambda().eq(TRoom::getId,Long.valueOf(roomid)));
+        return roomMapper.selectOne(Wrappers.<TRoom>query().lambda().eq(TRoom::getId, Long.valueOf(roomid)));
     }
 
     @Override
     public List<TRoom> getRoomList(int pageIndex, int pageSize) {
-        Page<TRoom> page = new Page<>(pageIndex, pageSize,false);
+        Page<TRoom> page = new Page<>(pageIndex, pageSize, false);
         return roomMapper.selectPage(page, new QueryWrapper<>()).getRecords();
     }
 }

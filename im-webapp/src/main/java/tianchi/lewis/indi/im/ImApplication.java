@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @EnableSwagger2
 @EnableSwagger2Doc
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication
 @EnableTransactionManagement(proxyTargetClass = true)
 @MapperScan("tianchi.lewis.indi.im.dao")
 public class ImApplication {
