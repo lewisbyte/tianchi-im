@@ -36,15 +36,15 @@ function deploy() {
 # shellcheck disable=SC2112
 function run() {
   cd ~ || exit
-  run
+  start
 }
 start() {
     echo "start ..."
-    nohup java -XX:+UseConcMarkSweepGC \
-    -Xms2048m -Xmx2048m -XX:+PrintGCDateStamps \
+    nohup java -‐XX:+UseG1GC \
+    -Xms6114m -Xmx6114m -XX:+PrintGCDateStamps \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
-    -XX:+HeapDumpOnOutOfMemoryError -jar /~/${app_file_name} \
-    --isJar=true > /dev/null 2>&1 &
+    -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
+    --isJar=true > ${binDir}/im.log 2>&1 &
 }
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
