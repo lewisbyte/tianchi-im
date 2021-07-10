@@ -29,7 +29,7 @@ public class MessageDataStoreServiceImpl implements MessageDataStoreService {
     @Override
     public List<TMessage> getMessage(int pageIndex, int pageSize, Long roomid) {
         return mapper.selectPage(
-                new Page<>(Math.abs(pageIndex), pageSize),
+                new Page<>(Math.abs(pageIndex), pageSize,false),
                 Wrappers.<TMessage>query().lambda().
                         eq(TMessage::getRoomid, roomid).
                         orderByDesc(TMessage::getStamp)

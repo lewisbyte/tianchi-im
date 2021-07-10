@@ -2,6 +2,7 @@ package tianchi.lewis.indi.im.conf;
 
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
@@ -41,6 +42,14 @@ public class DataSourceShardingConfig {
     @Bean
     public DataSourceTransactionManager transactionManager(@Qualifier("dataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
+    }
+
+    /**
+     * 分页插件
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        return new PaginationInterceptor();
     }
 
     @Bean(name = "dataSource")
