@@ -25,5 +25,5 @@ public class TMessage extends Base{
 
     private String mid;
 
-    private Long timestamp;
+    private Long stamp;
 }

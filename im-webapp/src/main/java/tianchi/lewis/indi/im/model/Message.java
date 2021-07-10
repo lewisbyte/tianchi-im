@@ -22,6 +22,6 @@ public class Message {
     public Message(TMessage tMessage) {
         this.setId(tMessage.getMid());
         this.setText(tMessage.getText());
-        this.setTimestamp(tMessage.getTimestamp());
+        this.setTimestamp(tMessage.getStamp());
     }
 }
