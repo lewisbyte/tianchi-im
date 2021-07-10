@@ -18,14 +18,13 @@ import java.util.List;
  * @create: 2021-07-03 12:04
  */
 @Service
-public class RoomDataStoreServiceImpl extends BaseDataService implements RoomDataStoreService {
+public class RoomDataStoreServiceImpl implements RoomDataStoreService {
 
     @Autowired
     private RoomMapper roomMapper;
 
     @Override
     public void save(TRoom room) {
-        room.setId(snowflake.nextId());
         roomMapper.insert(room);
     }
 

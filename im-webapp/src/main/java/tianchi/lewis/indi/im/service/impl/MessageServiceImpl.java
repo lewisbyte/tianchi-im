@@ -1,9 +1,11 @@
 package tianchi.lewis.indi.im.service.impl;
 
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tianchi.lewis.indi.im.entity.TMessage;
+import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.Message;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.serivce.MessageDataStoreService;
@@ -27,11 +29,17 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public List<Message> retrieve(Page page, String token) {
-        String roomid = SessionUtils.getRoomInfoByToken(token);
-        return messageDataStoreService.getMessage(page.getPageIndex(), page.getPageSize(), Long.valueOf(roomid))
-                .stream()
-                .map(Message::new)
-                .collect(Collectors.toList());
+        try {
+            String roomid = SessionUtils.getRoomInfoByToken(token);
+            return messageDataStoreService.getMessage(page.getPageIndex(), page.getPageSize(), Long.valueOf(roomid))
+                    .stream()
+                    .map(Message::new)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
+        return Lists.newArrayList();
     }
 
     @Override
@@ -48,7 +56,12 @@ public class MessageServiceImpl implements MessageService {
             return;
         }
 
-        TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).mid(message.getId()).text(message.getText()).stamp(System.currentTimeMillis()).build();
-        messageDataStoreService.save(tMessage);
+        try {
+            TMessage tMessage = TMessage.builder().roomid(Long.valueOf(roomid)).mid(message.getId()).text(message.getText()).stamp(System.currentTimeMillis()).build();
+            messageDataStoreService.save(tMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
     }
 }

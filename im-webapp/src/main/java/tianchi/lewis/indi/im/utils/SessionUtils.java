@@ -1,10 +1,13 @@
 package tianchi.lewis.indi.im.utils;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import com.google.common.collect.Lists;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.RoomUser;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -121,7 +124,11 @@ public class SessionUtils {
      * @return
      */
     public static List<RoomUser> getRoomUsers(String roomid) {
-        return roomUserInfoMap.get(roomid).stream().map(RoomUser::new).collect(Collectors.toList());
+        Set<String> list = roomUserInfoMap.get(roomid);
+        if (CollectionUtils.isEmpty(list)){
+            return Lists.newArrayList();
+        }
+        return list.stream().map(RoomUser::new).collect(Collectors.toList());
     }
 
 }

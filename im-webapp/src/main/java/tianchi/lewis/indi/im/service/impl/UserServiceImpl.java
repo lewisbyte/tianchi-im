@@ -4,10 +4,13 @@ import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tianchi.lewis.indi.im.entity.TUser;
+import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.serivce.UserDataStoreService;
 import tianchi.lewis.indi.im.service.UserService;
 import tianchi.lewis.indi.im.utils.SessionUtils;
+
+import java.util.Objects;
 
 /**
  * @program: tianchi-tianchi.lewis.indi.im
@@ -23,23 +26,37 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
-        TUser tUser = TUser.builder().build();
-        BeanUtil.copyProperties(user, tUser);
-        userDataStoreService.create(tUser);
+        try {
+            TUser tUser = TUser.builder().build();
+            BeanUtil.copyProperties(user, tUser);
+            userDataStoreService.create(tUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
     }
 
     @Override
     public String login(String username, String password) {
 
-        String token = userDataStoreService.login(username, password);
-        SessionUtils.login(token,username);
-        return token;
+        try {
+            String token = userDataStoreService.login(username, password);
+            SessionUtils.login(token, username);
+            return token;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
+        return "login error";
     }
 
     @Override
     public User getInfo(String username) {
         User user = new User();
         TUser tuser = userDataStoreService.getInfo(username);
+        if (Objects.isNull(tuser)) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
         BeanUtil.copyProperties(tuser, user);
         return user;
     }

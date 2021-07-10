@@ -17,6 +17,7 @@ import tianchi.lewis.indi.im.service.RoomService;
 import tianchi.lewis.indi.im.utils.SessionUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +36,7 @@ public class RoomServiceImpl implements RoomService {
         try {
             roomDataStoreService.save(TRoom.builder().name(room.getName()).build());
         } catch (Exception e) {
+            e.printStackTrace();
             ControllerException.InvalidExceptionAccess.error();
         }
     }
@@ -44,6 +46,7 @@ public class RoomServiceImpl implements RoomService {
         try {
             SessionUtils.entryRoom(token, roomid);
         } catch (Exception e) {
+            e.printStackTrace();
             ControllerException.InvalidExceptionAccess.error();
         }
     }
@@ -53,6 +56,7 @@ public class RoomServiceImpl implements RoomService {
         try {
             SessionUtils.leaveRoom(token);
         } catch (Exception e) {
+            e.printStackTrace();
             ControllerException.InvalidExceptionAccess.error();
         }
     }
@@ -60,6 +64,9 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Room getRoomInfo(String roomid) {
         TRoom troom = roomDataStoreService.getRoomInfo(roomid);
+        if (Objects.isNull(troom)) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
         Room room = new Room();
         BeanUtil.copyProperties(troom, room);
         return room;
@@ -67,15 +74,28 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomUser> getRoomUserInfo(String roomid) {
-        List<RoomUser> users = SessionUtils.getRoomUsers(roomid);
-        return CollectionUtils.isEmpty(users) ? Lists.newArrayList() : users;
+        try {
+            List<RoomUser> users = SessionUtils.getRoomUsers(roomid);
+            return CollectionUtils.isEmpty(users) ? Lists.newArrayList() : users;
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
+        return Lists.newArrayList();
     }
 
     @Override
     public List<RoomList> getRoomList(Page page) {
-        return roomDataStoreService.getRoomList(page.getPageIndex(), page.getPageSize())
-                .stream()
-                .map(RoomList::new)
-                .collect(Collectors.toList());
+        try {
+            return roomDataStoreService.getRoomList(page.getPageIndex(), page.getPageSize())
+                    .stream()
+                    .map(RoomList::new)
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
+        return Lists.newArrayList();
     }
 }

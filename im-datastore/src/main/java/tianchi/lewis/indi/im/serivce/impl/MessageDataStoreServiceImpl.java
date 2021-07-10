@@ -17,13 +17,12 @@ import java.util.List;
  * @create: 2021-07-03 12:04
  */
 @Service
-public class MessageDataStoreServiceImpl extends BaseDataService implements MessageDataStoreService {
+public class MessageDataStoreServiceImpl implements MessageDataStoreService {
     @Autowired
     private MessageMapper mapper;
 
     @Override
     public void save(TMessage tMessage) {
-        tMessage.setId(snowflake.nextId());
         mapper.insert(tMessage);
     }
 
