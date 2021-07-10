@@ -19,7 +19,6 @@ option=$1
 echo $1
 zip_file_name="application.zip"
 app_file_name="im-datastore-0.0.1-SNAPSHOT.jar"
-binDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # shellcheck disable=SC2120
 # shellcheck disable=SC2112
@@ -38,11 +37,11 @@ function run() {
   run
 }
 start() {
-    echo "start ${moduleName}..."
+    echo "start ..."
     nohup java -XX:+UseConcMarkSweepGC \
     -Xms2048m -Xmx2048m -XX:+PrintGCDateStamps \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
-    -XX:+HeapDumpOnOutOfMemoryError -jar ${binDir}/${app_file_name} \
+    -XX:+HeapDumpOnOutOfMemoryError -jar /~/${app_file_name} \
     --isJar=true > /dev/null 2>&1 &
 }
 # shellcheck disable=SC2166
