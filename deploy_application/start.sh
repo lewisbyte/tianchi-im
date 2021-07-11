@@ -11,8 +11,6 @@
 # */
 
 # shellcheck disable=SC2039
-binDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 if [[ $# != 1 ]]; then
    echo "USAGE $0 option<deploy | run>"
    exit 1
@@ -44,7 +42,7 @@ start() {
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
     --isJar=true > ./im.log 2>&1 &
-    sleep 30;
+    sleep 15;
 }
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
