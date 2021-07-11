@@ -45,6 +45,7 @@ start() {
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
     --isJar=true > ${binDir}/im.log 2>&1 &
+    sleep 30;
 }
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
