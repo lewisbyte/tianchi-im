@@ -25,6 +25,8 @@ app_file_name="im-webapp-0.0.1-SNAPSHOT.jar"
 function deploy() {
   cd /tmp || exit
   unzip "${zip_file_name}" -d ~/
+  unzip "${zip_file_name}" -d /tmp/
+  mv /tmp/"${app_file_name}" ~/
   cd ~ || exit
   # +x and execute
   chmod +x "${app_file_name}"
@@ -40,9 +42,10 @@ start() {
     echo "start ..."
     nohup java -XX:+UseConcMarkSweepGC \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
-    -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
+    -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
     sleep 15;
+    echo "start end ..."
 }
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
