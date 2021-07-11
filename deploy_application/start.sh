@@ -40,11 +40,8 @@ function run() {
 }
 start() {
     echo "start ..."
-    nohup java -XX:+UseConcMarkSweepGC \
-    -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
-    -XX:+HeapDumpOnOutOfMemoryError -jar ${app_file_name} \
-    --isJar=true > ./im.log 2>&1 &
-    sleep 30;
+    nohup java -jar ${app_file_name} > /dev/null 2>&1 &
+    sleep 20;
 }
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
