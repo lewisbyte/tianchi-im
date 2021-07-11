@@ -47,12 +47,14 @@ public class MessageServiceImpl implements MessageService {
 
         // 用户未登录
         if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+            ControllerException.InvalidExceptionAccess.error();
             return;
         }
 
         String roomid = SessionUtils.getRoomInfoByToken(token);
 
         if (StringUtils.isEmpty(roomid)) {
+            ControllerException.InvalidExceptionAccess.error();
             return;
         }
 
