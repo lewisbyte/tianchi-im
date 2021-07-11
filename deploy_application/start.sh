@@ -44,9 +44,17 @@ start() {
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
+    service mysqld start
+    warmup
     sleep 15;
     echo "start end ..."
 }
+warmup(){
+  curl -X 'GET' \
+  'http://localhost:8080/userLogin?username=djka01wq&password=string' \
+  -H 'accept: */*';
+}
+
 # shellcheck disable=SC2166
 if [ "$option" == 'deploy' ]
 then
