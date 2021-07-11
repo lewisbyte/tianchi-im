@@ -1,7 +1,6 @@
 package tianchi.lewis.indi.im.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.Page;
 import tianchi.lewis.indi.im.model.Room;
 import tianchi.lewis.indi.im.model.RoomList;
-import tianchi.lewis.indi.im.model.RoomUser;
 import tianchi.lewis.indi.im.serivce.RoomDataStoreService;
 import tianchi.lewis.indi.im.service.RoomService;
 import tianchi.lewis.indi.im.utils.SessionUtils;
@@ -43,7 +41,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void enterRoom(String roomid, String token) {
-        if(Objects.isNull(roomDataStoreService.getRoomInfo(roomid))){
+        if (Objects.isNull(roomDataStoreService.getRoomInfo(roomid))) {
             ControllerException.InvalidExceptionAccess.error();
         }
         try {

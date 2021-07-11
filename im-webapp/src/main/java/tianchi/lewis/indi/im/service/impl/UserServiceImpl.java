@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             String token = userDataStoreService.login(username, password);
-            if (StringUtils.isEmpty(token)){
+            if (StringUtils.isEmpty(token)) {
                 ControllerException.InvalidExceptionAccess.error();
             }
             SessionUtils.login(token, username);
