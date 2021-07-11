@@ -3,8 +3,10 @@ package tianchi.lewis.indi.im.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import tianchi.lewis.indi.im.entity.TUser;
 import tianchi.lewis.indi.im.exception.ControllerException;
+import tianchi.lewis.indi.im.model.RespUser;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.serivce.UserDataStoreService;
 import tianchi.lewis.indi.im.service.UserService;
@@ -41,6 +43,9 @@ public class UserServiceImpl implements UserService {
 
         try {
             String token = userDataStoreService.login(username, password);
+            if (StringUtils.isEmpty(token)){
+                ControllerException.InvalidExceptionAccess.error();
+            }
             SessionUtils.login(token, username);
             return token;
         } catch (Exception e) {
@@ -51,8 +56,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getInfo(String username) {
-        User user = new User();
+    public RespUser getInfo(String username) {
+        RespUser user = new RespUser();
         TUser tuser = userDataStoreService.getInfo(username);
         if (Objects.isNull(tuser)) {
             ControllerException.InvalidExceptionAccess.error();

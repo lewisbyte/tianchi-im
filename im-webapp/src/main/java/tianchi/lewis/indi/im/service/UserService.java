@@ -1,5 +1,6 @@
 package tianchi.lewis.indi.im.service;
 
+import tianchi.lewis.indi.im.model.RespUser;
 import tianchi.lewis.indi.im.model.User;
 
 import java.util.List;
@@ -9,6 +10,6 @@ public interface UserService {
 
     String login(String username, String password);
 
-    User getInfo(String username);
+    RespUser getInfo(String username);
 
 }

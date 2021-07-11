@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import tianchi.lewis.indi.im.model.RespUser;
 import tianchi.lewis.indi.im.model.User;
 import tianchi.lewis.indi.im.service.UserService;
 
@@ -36,7 +37,7 @@ public class UserController {
 
     @ApiOperation(value = "/user/{username}")
     @RequestMapping(path = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public User username(@PathVariable(value = "username") String username) {
+    public RespUser username(@PathVariable(value = "username") String username) {
         return userService.getInfo(username);
     }
 }
