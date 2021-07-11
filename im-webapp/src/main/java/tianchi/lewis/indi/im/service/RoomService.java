@@ -17,7 +17,7 @@ public interface RoomService {
 
     Room getRoomInfo(String roomid);
 
-    List<RoomUser> getRoomUserInfo(String roomid);
+    List<String> getRoomUserInfo(String roomid);
 
     List<RoomList> getRoomList(Page page);
 

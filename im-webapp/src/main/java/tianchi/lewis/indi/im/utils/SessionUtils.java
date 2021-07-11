@@ -7,10 +7,7 @@ import org.springframework.util.StringUtils;
 import tianchi.lewis.indi.im.exception.ControllerException;
 import tianchi.lewis.indi.im.model.RoomUser;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -51,6 +48,10 @@ public class SessionUtils {
         if (StringUtils.isEmpty(token) || StringUtils.isEmpty(roomid)) {
             return false;
         }
+        // 用户未登录
+        if (StringUtils.isEmpty(userInfo.get(token))) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
         // 1. 存储用户所在房间
         roomSessionMap.put(token, roomid);
 
@@ -87,9 +88,15 @@ public class SessionUtils {
             return;
         }
         // 从房间的用户列表中移除
-        Set<String> set = roomUserInfoMap.get(roomSessionMap.get(token));
+        String roomid = roomSessionMap.get(token);
+
+        if (StringUtils.isEmpty(roomid)) {
+            return;
+        }
+
+        Set<String> set = roomUserInfoMap.get(roomid);
         if (!CollectionUtils.isEmpty(set)) {
-            set.remove(token);
+            set.remove(userInfo.get(token));
         }
         // 注销，移除用户信息
         roomSessionMap.remove(token);
@@ -126,12 +133,12 @@ public class SessionUtils {
      * @param roomid
      * @return
      */
-    public static List<RoomUser> getRoomUsers(String roomid) {
+    public static List<String> getRoomUsers(String roomid) {
         Set<String> list = roomUserInfoMap.get(roomid);
         if (CollectionUtils.isEmpty(list)) {
             return Lists.newArrayList();
         }
-        return list.stream().map(RoomUser::new).collect(Collectors.toList());
+        return new ArrayList<>(list);
     }
 
 }

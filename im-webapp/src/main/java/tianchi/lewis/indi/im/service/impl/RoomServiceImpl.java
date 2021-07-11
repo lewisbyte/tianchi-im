@@ -43,7 +43,11 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void enterRoom(String roomid, String token) {
+        if(Objects.isNull(roomDataStoreService.getRoomInfo(roomid))){
+            ControllerException.InvalidExceptionAccess.error();
+        }
         try {
+            leaveRoom(token);
             SessionUtils.entryRoom(token, roomid);
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +67,13 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getRoomInfo(String roomid) {
-        TRoom troom = roomDataStoreService.getRoomInfo(roomid);
+        TRoom troom = null;
+        try {
+            troom = roomDataStoreService.getRoomInfo(roomid);
+        } catch (Exception e) {
+            e.printStackTrace();
+            ControllerException.InvalidExceptionAccess.error();
+        }
         if (Objects.isNull(troom)) {
             ControllerException.InvalidExceptionAccess.error();
         }
@@ -73,9 +83,9 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public List<RoomUser> getRoomUserInfo(String roomid) {
+    public List<String> getRoomUserInfo(String roomid) {
         try {
-            List<RoomUser> users = SessionUtils.getRoomUsers(roomid);
+            List<String> users = SessionUtils.getRoomUsers(roomid);
             return CollectionUtils.isEmpty(users) ? Lists.newArrayList() : users;
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,8 +96,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomList> getRoomList(Page page) {
+        if (page.getPageIndex() < 0 || page.getPageSize() < 0) {
+            ControllerException.InvalidExceptionAccess.error();
+        }
+
         try {
-            return roomDataStoreService.getRoomList(page.getPageIndex(), page.getPageSize())
+            return roomDataStoreService.getRoomList(page.getPageIndex() + 1, page.getPageSize())
                     .stream()
                     .map(RoomList::new)
                     .collect(Collectors.toList());

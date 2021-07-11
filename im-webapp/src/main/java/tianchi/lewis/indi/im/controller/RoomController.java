@@ -58,7 +58,7 @@ public class RoomController {
 
     @ApiOperation(value = "/room/{roomid}/users")
     @RequestMapping(path = "/room/{roomid}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RoomUser> users(@PathVariable String roomid) {
+    public List<String> users(@PathVariable String roomid) {
         return roomService.getRoomUserInfo(roomid);
     }
 
