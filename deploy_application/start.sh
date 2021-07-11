@@ -45,8 +45,8 @@ start() {
     -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
     service mysqld start
-    warmup
     sleep 15;
+    warmup
     echo "start end ..."
 }
 warmup(){
