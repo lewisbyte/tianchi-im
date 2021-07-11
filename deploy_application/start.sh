@@ -20,7 +20,7 @@ fi
 option=$1
 echo $1
 zip_file_name="application.zip"
-app_file_name="${binDir}/application/im-webapp-0.0.1-SNAPSHOT.jar"
+app_file_name="im-webapp-0.0.1-SNAPSHOT.jar"
 
 # shellcheck disable=SC2120
 # shellcheck disable=SC2112
