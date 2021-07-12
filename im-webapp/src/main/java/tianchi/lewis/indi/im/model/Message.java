@@ -17,11 +17,11 @@ import tianchi.lewis.indi.im.entity.TMessage;
 public class Message {
     private String id;
     private String text;
-    private Long timestamp;
+    private String timestamp;
 
     public Message(TMessage tMessage) {
         this.setId(tMessage.getMid());
         this.setText(tMessage.getText());
-        this.setTimestamp(tMessage.getStamp());
+        this.setTimestamp(tMessage.getStamp().toString());
     }
 }
