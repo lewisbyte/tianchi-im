@@ -41,6 +41,7 @@ function run() {
 start() {
     echo "start ..."
     nohup java -XX:+UseConcMarkSweepGC \
+    -Xms5120m -Xmx5120m -XX:+PrintGCDateStamps \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
@@ -51,7 +52,7 @@ start() {
 }
 warmup(){
   curl -X 'GET' \
-  'http://localhost:8080/userLogin?username=djka01wq&password=string' \
+  'http://localhost:8080/userLogin?username=1&password=1' \
   -H 'accept: */*';
 }
 
