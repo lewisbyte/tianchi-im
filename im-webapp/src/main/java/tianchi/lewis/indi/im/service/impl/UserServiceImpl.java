@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
             userDataStoreService.create(tUser);
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
     }
 
@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService {
         try {
             String token = userDataStoreService.login(username, password);
             if (StringUtils.isEmpty(token)) {
-                ControllerException.InvalidExceptionAccess.error();
+                ControllerException.InvalidExceptionAccess.error(new RuntimeException("登录失败，获取 token 为空"));
             }
             SessionUtils.login(token, username);
             return token;
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
         return "login error";
     }
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
         RespUser user = new RespUser();
         TUser tuser = userDataStoreService.getInfo(username);
         if (Objects.isNull(tuser)) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("获取用户信息失败，用户为空"));
         }
         BeanUtil.copyProperties(tuser, user);
         return user;

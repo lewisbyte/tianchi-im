@@ -37,7 +37,7 @@ public class MessageServiceImpl implements MessageService {
                     .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
         return Lists.newArrayList();
     }
@@ -47,14 +47,14 @@ public class MessageServiceImpl implements MessageService {
 
         // 用户未登录
         if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("auth token 非法"));
             return;
         }
 
         String roomid = SessionUtils.getRoomInfoByToken(token);
 
         if (StringUtils.isEmpty(roomid)) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("用户没有进入房间"));
             return;
         }
 
@@ -63,7 +63,7 @@ public class MessageServiceImpl implements MessageService {
             messageDataStoreService.save(tMessage);
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
     }
 }

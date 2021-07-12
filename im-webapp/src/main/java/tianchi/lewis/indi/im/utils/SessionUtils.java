@@ -50,7 +50,7 @@ public class SessionUtils {
         }
         // 用户未登录
         if (StringUtils.isEmpty(userInfo.get(token))) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("entryRoom 用户未登录"));
         }
         // 1. 存储用户所在房间
         roomSessionMap.put(token, roomid);
@@ -70,7 +70,7 @@ public class SessionUtils {
      */
     public static String getRoomInfoByToken(String token) {
         if (StringUtils.isEmpty(token)) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("获取用户房间信息错误，token为空"));
         }
 
         // 1. 获取用户房间信息
@@ -140,5 +140,4 @@ public class SessionUtils {
         }
         return new ArrayList<>(list);
     }
-
 }

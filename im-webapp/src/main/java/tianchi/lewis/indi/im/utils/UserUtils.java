@@ -23,13 +23,13 @@ public class UserUtils {
     public static String getToken(HttpServletRequest request) {
         String auth = request.getHeader(FieldConst.TOKEN);
         if (StringUtils.isEmpty(auth)){
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("Bearer Token 获取header令牌为空"));
         }
 
 
         String token = auth.replace("Bearer ", "");
         if (StringUtils.isEmpty(token)){
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("Bearer token 解析header令牌为空"));
         }
         return token;
     }

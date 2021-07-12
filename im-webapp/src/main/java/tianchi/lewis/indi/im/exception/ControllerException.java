@@ -13,8 +13,13 @@ public class ControllerException {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public static class InvalidExceptionAccess extends RuntimeException{
-        public static void error(){
-            throw new InvalidExceptionAccess();
+        public InvalidExceptionAccess(Exception e){
+            super(e);
+        }
+
+
+        public static void error(Exception e){
+            throw new InvalidExceptionAccess(e);
         }
     }
 }

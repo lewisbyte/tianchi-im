@@ -35,21 +35,21 @@ public class RoomServiceImpl implements RoomService {
             roomDataStoreService.save(TRoom.builder().name(room.getName()).build());
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
     }
 
     @Override
     public void enterRoom(String roomid, String token) {
         if (Objects.isNull(roomDataStoreService.getRoomInfo(roomid))) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("roomid 非法，无此房间信息"));
         }
         try {
             leaveRoom(token);
             SessionUtils.entryRoom(token, roomid);
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
     }
 
@@ -59,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
             SessionUtils.leaveRoom(token);
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
     }
 
@@ -70,10 +70,10 @@ public class RoomServiceImpl implements RoomService {
             troom = roomDataStoreService.getRoomInfo(roomid);
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
         if (Objects.isNull(troom)) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("roomid 非法，无此房间信息"));
         }
         Room room = new Room();
         BeanUtil.copyProperties(troom, room);
@@ -87,7 +87,7 @@ public class RoomServiceImpl implements RoomService {
             return CollectionUtils.isEmpty(users) ? Lists.newArrayList() : users;
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
         return Lists.newArrayList();
     }
@@ -95,7 +95,7 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomList> getRoomList(Page page) {
         if (page.getPageIndex() < 0 || page.getPageSize() < 0) {
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(new RuntimeException("分页查询错误，页码小于0"));
         }
 
         try {
@@ -106,7 +106,7 @@ public class RoomServiceImpl implements RoomService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            ControllerException.InvalidExceptionAccess.error();
+            ControllerException.InvalidExceptionAccess.error(e);
         }
         return Lists.newArrayList();
     }
