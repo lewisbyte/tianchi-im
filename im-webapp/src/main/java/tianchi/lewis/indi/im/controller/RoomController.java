@@ -32,38 +32,38 @@ public class RoomController {
     private RoomService roomService;
 
     @ApiOperation(value = "room")
-    @RequestMapping(path = "/room", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/room", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void room(@RequestBody Room room, HttpServletRequest request) {
         UserUtils.getToken(request);
         roomService.createRoom(room);
     }
 
     @ApiOperation(value = "/room/{roomid}")
-    @RequestMapping(path = "/room/{roomid}")
+    @RequestMapping(path = "/room/{roomid}", method = RequestMethod.GET)
     public Room roomRoomid(@PathVariable String roomid, HttpServletRequest request) {
         return roomService.getRoomInfo(roomid);
     }
 
     @ApiOperation(value = "/roomLeave")
-    @RequestMapping(path = "/roomLeave")
+    @RequestMapping(path = "/roomLeave", method = RequestMethod.PUT)
     public void roomLeave(HttpServletRequest request) {
         roomService.leaveRoom(UserUtils.getToken(request));
     }
 
     @ApiOperation(value = "/room/{roomid}/enter")
-    @RequestMapping(path = "/room/{roomid}/enter")
+    @RequestMapping(path = "/room/{roomid}/enter", method = RequestMethod.PUT)
     public void enter(@PathVariable String roomid, HttpServletRequest request) {
         roomService.enterRoom(roomid, UserUtils.getToken(request));
     }
 
     @ApiOperation(value = "/room/{roomid}/users")
-    @RequestMapping(path = "/room/{roomid}/users", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/room/{roomid}/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<String> users(@PathVariable String roomid) {
         return roomService.getRoomUserInfo(roomid);
     }
 
     @ApiOperation(value = "/roomList")
-    @RequestMapping(path = "/roomList", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/roomList", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RoomList> roomList(@RequestBody Page page) {
         return roomService.getRoomList(page);
     }

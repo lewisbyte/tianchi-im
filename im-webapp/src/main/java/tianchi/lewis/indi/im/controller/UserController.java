@@ -24,19 +24,19 @@ public class UserController {
     private UserService userService;
 
     @ApiOperation(value = "/user")
-    @RequestMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/user", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void user(@RequestBody User user) {
         userService.create(user);
     }
 
     @ApiOperation(value = "/userLogin")
-    @RequestMapping(path = "/userLogin")
+    @RequestMapping(path = "/userLogin", method = RequestMethod.GET)
     public String userLogin(String username, String password) {
         return userService.login(username, password);
     }
 
     @ApiOperation(value = "/user/{username}")
-    @RequestMapping(path = "/user/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(path = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public RespUser username(@PathVariable(value = "username") String username) {
         return userService.getInfo(username);
     }
