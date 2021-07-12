@@ -33,14 +33,14 @@ public class RoomController {
 
     @ApiOperation(value = "room")
     @RequestMapping(path = "/room", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void room(@RequestBody Room room, HttpServletRequest request) {
+    public String room(@RequestBody Room room, HttpServletRequest request) {
         UserUtils.getToken(request);
-        roomService.createRoom(room);
+        return roomService.createRoom(room);
     }
 
     @ApiOperation(value = "/room/{roomid}")
     @RequestMapping(path = "/room/{roomid}", method = RequestMethod.GET)
-    public Room roomRoomid(@PathVariable String roomid, HttpServletRequest request) {
+    public String roomRoomid(@PathVariable String roomid, HttpServletRequest request) {
         return roomService.getRoomInfo(roomid);
     }
 

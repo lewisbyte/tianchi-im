@@ -13,5 +13,5 @@ import lombok.Data;
 @Data
 public class Base {
     @TableId(type = IdType.ASSIGN_ID)
-    protected Long id;
+    Long id;
 }

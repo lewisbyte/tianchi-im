@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface RoomService {
 
-    void createRoom(Room room);
+    String createRoom(Room room);
 
     void enterRoom(String roomid, String token);
 
     void leaveRoom(String token);
 
-    Room getRoomInfo(String roomid);
+    String getRoomInfo(String roomid);
 
     List<String> getRoomUserInfo(String roomid);
 

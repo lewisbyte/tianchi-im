@@ -30,13 +30,16 @@ public class RoomServiceImpl implements RoomService {
     private RoomDataStoreService roomDataStoreService;
 
     @Override
-    public void createRoom(Room room) {
+    public String createRoom(Room room) {
         try {
-            roomDataStoreService.save(TRoom.builder().name(room.getName()).build());
+            TRoom troom = TRoom.builder().name(room.getName()).build();
+            roomDataStoreService.save(troom);
+            return troom.getId().toString();
         } catch (Exception e) {
             e.printStackTrace();
             ControllerException.InvalidExceptionAccess.error(e);
         }
+        return null;
     }
 
     @Override
@@ -64,7 +67,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room getRoomInfo(String roomid) {
+    public String getRoomInfo(String roomid) {
         TRoom troom = null;
         try {
             troom = roomDataStoreService.getRoomInfo(roomid);
@@ -75,9 +78,7 @@ public class RoomServiceImpl implements RoomService {
         if (Objects.isNull(troom)) {
             ControllerException.InvalidExceptionAccess.error(new RuntimeException("roomid 非法，无此房间信息"));
         }
-        Room room = new Room();
-        BeanUtil.copyProperties(troom, room);
-        return room;
+        return troom.getName();
     }
 
     @Override
