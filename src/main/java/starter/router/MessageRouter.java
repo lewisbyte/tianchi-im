@@ -1,0 +1,43 @@
+package starter.router;
+
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Router;
+
+/**
+ * @program: tianchi-im-vert.x
+ * @description: 消息路由
+ * @author: lewis
+ * @create: 2021-07-17 16:43
+ */
+public class MessageRouter implements RouterConf {
+
+    @Override
+    public void configRouter(Router router) {
+        messageSend(router);
+        messageRetrieve(router);
+    }
+
+    /**
+     * 消息发送
+     * @param router
+     */
+    private void messageSend(Router router) {
+        router.post("/message/send").handler(ctx->{
+            // This handler will be called for every request
+            HttpServerResponse response = ctx.response();
+            response.putHeader("content-type", "text/plain");
+            // Write to the response and end it
+            response.end("/message/send");
+        });
+    }
+
+    /**
+     * 消息拉取
+     * @param router
+     */
+    private void messageRetrieve(Router router) {
+        router.post("/message/retrieve").handler(ctx->{
+
+        });
+    }
+}

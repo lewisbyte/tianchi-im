@@ -2,22 +2,43 @@ package starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Route;
+import io.vertx.ext.web.Router;
+import starter.router.MessageRouter;
+import starter.router.RoomRouter;
+import starter.router.UserRouter;
 
 public class MainVerticle extends AbstractVerticle {
 
-  @Override
-  public void start(Promise<Void> startPromise) throws Exception {
-    vertx.createHttpServer().requestHandler(req -> {
-      req.response()
-        .putHeader("content-type", "text/plain")
-        .end("Hello from Vert.x!");
-    }).listen(8080, http -> {
-      if (http.succeeded()) {
-        startPromise.complete();
-        System.out.println("HTTP server started on port 8080");
-      } else {
-        startPromise.fail(http.cause());
-      }
-    });
-  }
+    @Override
+    public void start(Promise<Void> startPromise) throws Exception {
+        HttpServer server = vertx.createHttpServer();
+
+        Router router = Router.router(vertx);
+
+        configRouter(router);
+
+        router.route().handler(ctx -> {
+
+            // This handler will be called for every request
+            HttpServerResponse response = ctx.response();
+
+            response.putHeader("content-type", "text/plain");
+            // Write to the response and end it
+            response.end("Hello World from Vert.x-Web!");
+        });
+
+        server.requestHandler(router).listen(8080);
+
+        System.out.println("server start ......");
+    }
+
+    // 配置路由
+    void configRouter(Router router) {
+      new MessageRouter().configRouter(router);
+      new RoomRouter().configRouter(router);
+      new UserRouter().configRouter(router);
+    }
 }
