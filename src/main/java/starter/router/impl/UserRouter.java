@@ -2,6 +2,7 @@ package starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
 import starter.router.RouterConf;
@@ -26,9 +27,12 @@ public class UserRouter implements RouterConf {
         router.post("/user").handler(ctx -> {
             try {
                 HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
+                JsonObject body = ctx.getBodyAsJson();
+
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+
+                response.end(body.toString());
             } catch (Exception e) {
                 ctx.fail(400);
             }
@@ -41,6 +45,8 @@ public class UserRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String username = request.getParam("username");
+                String password = request.getParam("password");
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -54,6 +60,8 @@ public class UserRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String username = request.getParam("username");
+
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
                 ctx.fail(400);

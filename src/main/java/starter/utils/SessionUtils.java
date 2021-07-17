@@ -1,6 +1,8 @@
 package starter.utils;
 
 import cn.hutool.core.collection.ConcurrentHashSet;
+import io.vertx.core.http.HttpServerRequest;
+import starter.constants.HttpHeaderConstant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +35,26 @@ public class SessionUtils {
     //value: username
     private static Map<String, String> userInfo = new ConcurrentHashMap<>();
 
+
+    /**
+     * 令牌格式
+     * <p>
+     * Authorization: Bearer <token>
+     *
+     * @param request
+     */
+    public static String getToken(HttpServerRequest request) {
+        String auth = request.getHeader(HttpHeaderConstant.Authorization);
+        if (StringUtils.isEmpty(auth)) {
+            throw (new RuntimeException("Bearer Token 获取header令牌为空"));
+        }
+
+        String token = auth.replace("Bearer ", "");
+        if (StringUtils.isEmpty(token)) {
+            throw (new RuntimeException("Bearer token 解析header令牌为空"));
+        }
+        return token;
+    }
 
     /**
      * 进入房间

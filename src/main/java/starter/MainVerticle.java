@@ -2,6 +2,7 @@ package starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
+import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -14,8 +15,8 @@ public class MainVerticle extends AbstractVerticle {
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
-        var server = vertx.createHttpServer();
-        var router = Router.router(vertx);
+        HttpServer server = vertx.createHttpServer();
+        Router router = Router.router(vertx);
         // 处理post 请求参数
         router.route().handler(BodyHandler.create());
 

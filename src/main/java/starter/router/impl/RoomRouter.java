@@ -2,9 +2,11 @@ package starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
 import starter.router.RouterConf;
+import starter.utils.SessionUtils;
 
 /**
  * @program: tianchi-im-vert.x
@@ -28,7 +30,7 @@ public class RoomRouter implements RouterConf {
         router.post("/room").handler(ctx -> {
             try {
                 HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
+                JsonObject body = ctx.getBodyAsJson();
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
@@ -43,7 +45,7 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
-
+                String roomid = request.getParam("roomid");
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -57,6 +59,7 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String token = SessionUtils.getToken(request);
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
@@ -71,6 +74,9 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String token = SessionUtils.getToken(request);
+                String roomid = request.getParam("roomid");
+
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -84,6 +90,7 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String roomid = request.getParam("roomid");
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
@@ -98,7 +105,7 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
-
+                JsonObject body = ctx.getBodyAsJson();
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
                 ctx.fail(400);

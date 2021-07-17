@@ -5,6 +5,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
 import starter.router.RouterConf;
+import starter.utils.SessionUtils;
 
 /**
  * @program: tianchi-im-vert.x
@@ -30,6 +31,7 @@ public class MessageRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String token = SessionUtils.getToken(request);
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
                 response.end();
@@ -49,6 +51,7 @@ public class MessageRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
+                String token = SessionUtils.getToken(request);
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                 response.end();
