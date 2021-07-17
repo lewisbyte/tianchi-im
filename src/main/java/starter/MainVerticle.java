@@ -1,4 +1,4 @@
-package tianchi.im.starter;
+package starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
