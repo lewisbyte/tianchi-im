@@ -5,6 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import starter.constants.HttpHeaderConstant;
 import starter.router.impl.MessageRouter;
 import starter.router.impl.RoomRouter;
 import starter.router.impl.UserRouter;
@@ -24,7 +25,7 @@ public class MainVerticle extends AbstractVerticle {
             // This handler will be called for every request
             HttpServerResponse response = ctx.response();
 
-            response.putHeader("content-type", "text/plain");
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             // Write to the response and end it
             response.end("Hello World from Vert.x-Web!");
         });
