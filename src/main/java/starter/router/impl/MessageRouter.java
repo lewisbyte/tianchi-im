@@ -1,8 +1,9 @@
-package starter.router;
+package starter.router.impl;
 
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
+import starter.router.RouterConf;
 
 /**
  * @program: tianchi-im-vert.x

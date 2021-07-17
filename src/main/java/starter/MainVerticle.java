@@ -4,11 +4,10 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
-import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
-import starter.router.MessageRouter;
-import starter.router.RoomRouter;
-import starter.router.UserRouter;
+import starter.router.impl.MessageRouter;
+import starter.router.impl.RoomRouter;
+import starter.router.impl.UserRouter;
 
 public class MainVerticle extends AbstractVerticle {
 
