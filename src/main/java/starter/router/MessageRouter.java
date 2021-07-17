@@ -2,6 +2,7 @@ package starter.router;
 
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import starter.constants.HttpHeaderConstant;
 
 /**
  * @program: tianchi-im-vert.x
@@ -19,13 +20,14 @@ public class MessageRouter implements RouterConf {
 
     /**
      * 消息发送
+     *
      * @param router
      */
     private void messageSend(Router router) {
-        router.post("/message/send").handler(ctx->{
+        router.post("/message/send").handler(ctx -> {
             // This handler will be called for every request
             HttpServerResponse response = ctx.response();
-            response.putHeader("content-type", "text/plain");
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             // Write to the response and end it
             response.end("/message/send");
         });
@@ -33,11 +35,13 @@ public class MessageRouter implements RouterConf {
 
     /**
      * 消息拉取
+     *
      * @param router
      */
     private void messageRetrieve(Router router) {
-        router.post("/message/retrieve").handler(ctx->{
-
+        router.post("/message/retrieve").handler(ctx -> {
+            HttpServerResponse response = ctx.response();
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
         });
     }
 }
