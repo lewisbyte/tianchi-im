@@ -1,5 +1,6 @@
 package starter.router.impl;
 
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
@@ -26,9 +27,15 @@ public class MessageRouter implements RouterConf {
      */
     private void messageSend(Router router) {
         router.post("/message/send").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            response.end();
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+                response.end();
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
@@ -39,9 +46,15 @@ public class MessageRouter implements RouterConf {
      */
     private void messageRetrieve(Router router) {
         router.post("/message/retrieve").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-            response.end();
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+                response.end();
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 }

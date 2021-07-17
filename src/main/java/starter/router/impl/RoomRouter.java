@@ -1,5 +1,6 @@
 package starter.router.impl;
 
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
@@ -25,48 +26,83 @@ public class RoomRouter implements RouterConf {
     //    @ApiOperation(value = "room")
     public void room(Router router) {
         router.post("/room").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}")
     public void roomRoomid(Router router) {
         router.get("/room/:roomid").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/roomLeave")
     public void roomLeave(Router router) {
         router.put("/roomLeave").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}/enter")
     public void enter(Router router) {
         router.put("/room/:roomid/enter").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}/users")
     public void users(Router router) {
         router.get("/room/:roomid/users").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/roomList")
     public void roomList(Router router) {
         router.post("/roomList").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 }

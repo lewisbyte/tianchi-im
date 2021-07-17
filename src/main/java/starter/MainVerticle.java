@@ -5,6 +5,7 @@ import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import starter.constants.HttpHeaderConstant;
 import starter.router.impl.MessageRouter;
 import starter.router.impl.RoomRouter;
@@ -17,6 +18,9 @@ public class MainVerticle extends AbstractVerticle {
         HttpServer server = vertx.createHttpServer();
 
         Router router = Router.router(vertx);
+
+        // 处理post 请求参数
+        router.route().handler(BodyHandler.create());
 
         configRouter(router);
 

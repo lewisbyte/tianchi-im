@@ -1,5 +1,6 @@
 package starter.router.impl;
 
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
@@ -23,24 +24,40 @@ public class UserRouter implements RouterConf {
     //    @ApiOperation(value = "/user")
     public void user(Router router) {
         router.post("/user").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/userLogin")
     public void userLogin(Router router) {
         router.get("/userLogin").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
     //    @ApiOperation(value = "/user/{username}")
     public void username(Router router) {
         router.get("/user/:username").handler(ctx -> {
-            HttpServerResponse response = ctx.response();
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            try {
+                HttpServerResponse response = ctx.response();
+                HttpServerRequest request = ctx.request();
+                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            } catch (Exception e) {
+                ctx.fail(400);
+            }
         });
     }
 
