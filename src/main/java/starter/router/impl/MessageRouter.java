@@ -2,6 +2,7 @@ package starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
 import starter.router.RouterConf;
@@ -33,6 +34,10 @@ public class MessageRouter implements RouterConf {
                 HttpServerRequest request = ctx.request();
                 String token = SessionUtils.getToken(request);
 
+                JsonObject body = ctx.getBodyAsJson();
+                body.getString("id");
+                body.getString("text");
+
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
                 response.end();
             } catch (Exception e) {
@@ -52,6 +57,10 @@ public class MessageRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String token = SessionUtils.getToken(request);
+                JsonObject body = ctx.getBodyAsJson();
+
+                body.getInteger("pageIndex");
+                body.getInteger("pageSize");
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                 response.end();

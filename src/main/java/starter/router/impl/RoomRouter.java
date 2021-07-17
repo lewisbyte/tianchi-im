@@ -31,6 +31,7 @@ public class RoomRouter implements RouterConf {
             try {
                 HttpServerResponse response = ctx.response();
                 JsonObject body = ctx.getBodyAsJson();
+                String name = body.getString("name");
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
@@ -106,6 +107,8 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 JsonObject body = ctx.getBodyAsJson();
+                body.getInteger("pageIndex");
+                body.getInteger("pageSize");
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
                 ctx.fail(400);
