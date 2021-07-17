@@ -48,12 +48,7 @@ public class SessionUtils {
         if (StringUtils.isEmpty(auth)) {
             throw (new RuntimeException("Bearer Token 获取header令牌为空"));
         }
-
-        String token = auth.replace("Bearer ", "");
-        if (StringUtils.isEmpty(token)) {
-            throw (new RuntimeException("Bearer token 解析header令牌为空"));
-        }
-        return token;
+        return auth;
     }
 
     /**
