@@ -26,11 +26,9 @@ public class MessageRouter implements RouterConf {
      */
     private void messageSend(Router router) {
         router.post("/message/send").handler(ctx -> {
-            // This handler will be called for every request
             HttpServerResponse response = ctx.response();
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            // Write to the response and end it
-            response.end("/message/send");
+            response.end();
         });
     }
 
@@ -43,6 +41,7 @@ public class MessageRouter implements RouterConf {
         router.post("/message/retrieve").handler(ctx -> {
             HttpServerResponse response = ctx.response();
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            response.end();
         });
     }
 }
