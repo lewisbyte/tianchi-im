@@ -71,7 +71,33 @@
             <artifactId>hutool-all</artifactId>
             <version>5.7.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.65.Final</version>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <!--    mac-os 本地配置 ，记得在idea的maven插件选择这个配置才能运行   -->
+        <profile>
+            <id>mac-os</id>
+            <dependencies>
+                <!-- https://mvnrepository.com/artifact/io.netty/netty-resolver-dns-native-macos -->
+                <dependency>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-resolver-dns-native-macos</artifactId>
+                    <scope>runtime</scope>
+                    <classifier>osx-x86_64</classifier>
+                    <version>4.1.65.Final</version>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>linux-prod</id>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>

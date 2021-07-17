@@ -7,6 +7,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import starter.constants.HttpHeaderConstant;
+import starter.dao.PGSQLUtils;
 import starter.router.impl.MessageRouter;
 import starter.router.impl.RoomRouter;
 import starter.router.impl.UserRouter;
@@ -19,6 +20,9 @@ public class MainVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         // 处理post 请求参数
         router.route().handler(BodyHandler.create());
+
+        // 创建数据库连接池
+        PGSQLUtils.configAndCreatePool(vertx);
 
         // 业务配置
         configRouter(router);
