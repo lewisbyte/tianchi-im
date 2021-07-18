@@ -47,8 +47,6 @@ public class RoomRouter implements RouterConf {
 
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             response.end();
-        }).failureHandler(ctx -> {
-            ctx.response().setStatusCode(400).end("Sorry! Not today");
         });
     }
 

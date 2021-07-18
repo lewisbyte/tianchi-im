@@ -63,26 +63,22 @@ public class UserRouter implements RouterConf {
                         if (ar.succeeded()) {
                             RowSet<Row> rows = ar.result();
                             if (rows.size() == 0) {
-                                ControllerException.InvalidExceptionAccess.error(new RuntimeException("登录失败"));
                                 ctx.fail(400);
+                                return;
                             }
 
                             for (Row row : rows) {
                                 SessionUtils.login(row.getLong(0).toString(), username);
                             }
+                            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+                            response.end();
                         } else {
-                            ControllerException.InvalidExceptionAccess.error(new RuntimeException("登录失败"));
                             ctx.fail(400);
+                            return;
                         }
                         sqlConnection.close();
                     })
             );
-
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            response.end();
-
-        }).failureHandler(ctx -> {
-            ctx.response().setStatusCode(400).end("Sorry! Not today");
         });
     }
 
@@ -98,8 +94,6 @@ public class UserRouter implements RouterConf {
 
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             response.end();
-        }).failureHandler(ctx -> {
-            ctx.response().setStatusCode(400).end("Sorry! Not today");
         });
     }
 

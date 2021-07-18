@@ -3,6 +3,8 @@ package starter;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Route;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import starter.dao.PGSQLUtils;
@@ -24,6 +26,9 @@ public class MainVerticle extends AbstractVerticle {
 
         // 业务配置
         configRouter(router);
+        router.errorHandler(400, (ctx) -> {
+            ctx.response().setStatusCode(400).end("Got something bad");
+        });
 
         server.requestHandler(router).listen(8080);
 
