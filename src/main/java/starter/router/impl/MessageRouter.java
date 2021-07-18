@@ -52,7 +52,7 @@ public class MessageRouter implements RouterConf {
                 String text = body.getString("text");
 
                 PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                        sqlConnection.preparedQuery("INSERT INTO t_message (name) VALUES ($1)").execute().onComplete(ar->sqlConnection.close())
                 );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);

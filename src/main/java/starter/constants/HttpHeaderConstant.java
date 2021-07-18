@@ -12,5 +12,6 @@ public class HttpHeaderConstant {
     public static final String text_plain = "text/plain";
     public static final String application_json = "application/json";
     public static final String Authorization = "Authorization";
+    public static final String bearer = "Bearer ";
 
 }

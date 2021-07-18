@@ -137,7 +137,7 @@ public class SessionUtils {
         if (StringUtils.isEmpty(token) || StringUtils.isEmpty(username)) {
             return false;
         }
-        userInfo.put(token, username);
+        userInfo.put(HttpHeaderConstant.bearer + token, username);
         return true;
     }
 

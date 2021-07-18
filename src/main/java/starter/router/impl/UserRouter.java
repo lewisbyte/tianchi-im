@@ -4,10 +4,13 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.sqlclient.Row;
+import io.vertx.sqlclient.RowSet;
 import io.vertx.sqlclient.Tuple;
 import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
 import starter.router.RouterConf;
+import starter.utils.SessionUtils;
 
 /**
  * @program: tianchi-im-vert.x
@@ -32,14 +35,14 @@ public class UserRouter implements RouterConf {
                 JsonObject body = ctx.getBodyAsJson();
                 PGSQLUtils.getConnection().compose(sqlConnection ->
                         sqlConnection.
-                        preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
-                        .execute(Tuple.of(body.getString("username"),
-                                body.getString("firstName"),
-                                body.getString("lastName"),
-                                body.getString("email"),
-                                body.getString("password"),
-                                body.getString("phone"))
-                        ).onComplete(ar->sqlConnection.close()));
+                                preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
+                                .execute(Tuple.of(body.getString("username"),
+                                        body.getString("firstName"),
+                                        body.getString("lastName"),
+                                        body.getString("email"),
+                                        body.getString("password"),
+                                        body.getString("phone"))
+                                ).onComplete(ar -> sqlConnection.close()));
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
                 response.end(body.toString());
             } catch (Exception e) {
@@ -56,8 +59,16 @@ public class UserRouter implements RouterConf {
                 HttpServerRequest request = ctx.request();
                 String username = request.getParam("username");
                 String password = request.getParam("password");
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                PGSQLUtils.getConnection().compose(sqlConnection -> sqlConnection.
+                        preparedQuery("select id from t_user where username=$1 and password=$2").
+                                execute(Tuple.of(username, password)).onComplete(ar -> {
+                            if (ar.succeeded()) {
+                                RowSet<Row> rows = ar.result();
+
+                                SessionUtils.login(null, username);
+                            }
+                            sqlConnection.close();
+                        })
                 );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
@@ -75,7 +86,7 @@ public class UserRouter implements RouterConf {
                 HttpServerRequest request = ctx.request();
                 String username = request.getParam("username");
                 PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                        sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
                 );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
