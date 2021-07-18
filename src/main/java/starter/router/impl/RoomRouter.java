@@ -36,117 +36,99 @@ public class RoomRouter implements RouterConf {
     //    @ApiOperation(value = "room")
     public void room(Router router) {
         router.post("/room").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                JsonObject body = ctx.getBodyAsJson();
-                String name = body.getString("name");
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1)")
-                                .execute(Tuple.of(name)).
-                                onComplete(ar -> sqlConnection.close())
-                );
+            HttpServerResponse response = ctx.response();
+            JsonObject body = ctx.getBodyAsJson();
+            String name = body.getString("name");
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1)")
+                            .execute(Tuple.of(name)).
+                            onComplete(ar -> sqlConnection.close())
+            );
 
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            response.end();
+        }).failureHandler(ctx -> {
+            ctx.response().setStatusCode(400).end("Sorry! Not today");
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}")
     public void roomRoomid(Router router) {
         router.get("/room/:roomid").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String roomid = request.getParam("roomid");
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
-                );
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String roomid = request.getParam("roomid");
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
+            );
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            response.end();
         });
     }
 
     //    @ApiOperation(value = "/roomLeave")
     public void roomLeave(Router router) {
         router.put("/roomLeave").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String token = SessionUtils.getToken(request);
-                SessionUtils.leaveRoom(token);
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String token = SessionUtils.getToken(request);
+            SessionUtils.leaveRoom(token);
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            response.end();
+
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}/enter")
     public void enter(Router router) {
         router.put("/room/:roomid/enter").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String token = SessionUtils.getToken(request);
-                String roomid = request.getParam("roomid");
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String token = SessionUtils.getToken(request);
+            String roomid = request.getParam("roomid");
 
-                // 检查 房间id 是否合法
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
-                );
-
-
-                SessionUtils.leaveRoom(token);
-                SessionUtils.entryRoom(token, roomid);
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            // 检查 房间id 是否合法
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
+            );
+            SessionUtils.leaveRoom(token);
+            SessionUtils.entryRoom(token, roomid);
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            response.end();
         });
     }
 
     //    @ApiOperation(value = "/room/{roomid}/users")
     public void users(Router router) {
         router.get("/room/:roomid/users").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String roomid = request.getParam("roomid");
-                List<String> users = SessionUtils.getRoomUsers(roomid);
-                List<String> list = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-                response.end(Json.encode(list));
-
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String roomid = request.getParam("roomid");
+            List<String> users = SessionUtils.getRoomUsers(roomid);
+            List<String> list = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            response.end(Json.encode(list));
         });
     }
 
     //    @ApiOperation(value = "/roomList")
     public void roomList(Router router) {
         router.post("/roomList").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                JsonObject body = ctx.getBodyAsJson();
-                Integer pageIndex = body.getInteger("pageIndex");
-                Integer pageSize = body.getInteger("pageSize");
-                if (pageIndex < 0 || pageSize < 0) {
-                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("分页查询错误，页码小于0"));
-                }
-
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
-                );
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-            } catch (Exception e) {
-                ctx.fail(400);
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            JsonObject body = ctx.getBodyAsJson();
+            Integer pageIndex = body.getInteger("pageIndex");
+            Integer pageSize = body.getInteger("pageSize");
+            if (pageIndex < 0 || pageSize < 0) {
+                ControllerException.InvalidExceptionAccess.error(new RuntimeException("分页查询错误，页码小于0"));
             }
+
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
+            );
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            response.end();
+
         });
     }
 }

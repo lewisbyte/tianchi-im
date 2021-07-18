@@ -3,10 +3,8 @@ package starter;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
 import starter.router.impl.MessageRouter;
 import starter.router.impl.RoomRouter;
@@ -27,16 +25,6 @@ public class MainVerticle extends AbstractVerticle {
         // 业务配置
         configRouter(router);
 
-        router.route().handler(ctx -> {
-
-            // This handler will be called for every request
-            HttpServerResponse response = ctx.response();
-
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            // Write to the response and end it
-            response.end("Hello World from Vert.x-Web!");
-        });
-
         server.requestHandler(router).listen(8080);
 
         System.out.println("server start ......");
@@ -44,8 +32,8 @@ public class MainVerticle extends AbstractVerticle {
 
     // 配置路由
     void configRouter(Router router) {
-      new MessageRouter().configRouter(router);
-      new RoomRouter().configRouter(router);
-      new UserRouter().configRouter(router);
+        new MessageRouter().configRouter(router);
+        new RoomRouter().configRouter(router);
+        new UserRouter().configRouter(router);
     }
 }

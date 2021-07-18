@@ -32,34 +32,30 @@ public class MessageRouter implements RouterConf {
      */
     private void messageSend(Router router) {
         router.post("/message/send").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String token = SessionUtils.getToken(request);
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String token = SessionUtils.getToken(request);
 
-                // 用户未登录
-                if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("auth token 非法"));
-                }
-
-                String roomid = SessionUtils.getRoomInfoByToken(token);
-                if (StringUtils.isEmpty(roomid)) {
-                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("用户没有进入房间"));
-                }
-
-                JsonObject body = ctx.getBodyAsJson();
-                String id = body.getString("id");
-                String text = body.getString("text");
-
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("INSERT INTO t_message (name) VALUES ($1)").execute().onComplete(ar->sqlConnection.close())
-                );
-
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-                response.end();
-            } catch (Exception e) {
-                ctx.fail(400);
+            // 用户未登录
+            if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                ControllerException.InvalidExceptionAccess.error(new RuntimeException("auth token 非法"));
             }
+
+            String roomid = SessionUtils.getRoomInfoByToken(token);
+            if (StringUtils.isEmpty(roomid)) {
+                ControllerException.InvalidExceptionAccess.error(new RuntimeException("用户没有进入房间"));
+            }
+
+            JsonObject body = ctx.getBodyAsJson();
+            String id = body.getString("id");
+            String text = body.getString("text");
+
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("INSERT INTO t_message (name) VALUES ($1)").execute().onComplete(ar -> sqlConnection.close())
+            );
+
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
+            response.end();
         });
     }
 
@@ -70,25 +66,21 @@ public class MessageRouter implements RouterConf {
      */
     private void messageRetrieve(Router router) {
         router.post("/message/retrieve").handler(ctx -> {
-            try {
-                HttpServerResponse response = ctx.response();
-                HttpServerRequest request = ctx.request();
-                String token = SessionUtils.getToken(request);
-                String roomid = SessionUtils.getRoomInfoByToken(token);
+            HttpServerResponse response = ctx.response();
+            HttpServerRequest request = ctx.request();
+            String token = SessionUtils.getToken(request);
+            String roomid = SessionUtils.getRoomInfoByToken(token);
 
-                JsonObject body = ctx.getBodyAsJson();
+            JsonObject body = ctx.getBodyAsJson();
 
-                body.getInteger("pageIndex");
-                body.getInteger("pageSize");
-                PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
-                );
+            body.getInteger("pageIndex");
+            body.getInteger("pageSize");
+            PGSQLUtils.getConnection().compose(sqlConnection ->
+                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
+            );
 
-                response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-                response.end();
-            } catch (Exception e) {
-                ctx.fail(400);
-            }
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+            response.end();
         });
     }
 }
