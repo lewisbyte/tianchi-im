@@ -5,8 +5,11 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import starter.constants.HttpHeaderConstant;
+import starter.dao.PGSQLUtils;
+import starter.exception.ControllerException;
 import starter.router.RouterConf;
 import starter.utils.SessionUtils;
+import starter.utils.StringUtils;
 
 /**
  * @program: tianchi-im-vert.x
@@ -34,9 +37,23 @@ public class MessageRouter implements RouterConf {
                 HttpServerRequest request = ctx.request();
                 String token = SessionUtils.getToken(request);
 
+                // 用户未登录
+                if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("auth token 非法"));
+                }
+
+                String roomid = SessionUtils.getRoomInfoByToken(token);
+                if (StringUtils.isEmpty(roomid)) {
+                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("用户没有进入房间"));
+                }
+
                 JsonObject body = ctx.getBodyAsJson();
-                body.getString("id");
-                body.getString("text");
+                String id = body.getString("id");
+                String text = body.getString("text");
+
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
                 response.end();
@@ -57,10 +74,15 @@ public class MessageRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String token = SessionUtils.getToken(request);
+                String roomid = SessionUtils.getRoomInfoByToken(token);
+
                 JsonObject body = ctx.getBodyAsJson();
 
                 body.getInteger("pageIndex");
                 body.getInteger("pageSize");
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                 response.end();

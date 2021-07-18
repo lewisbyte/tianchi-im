@@ -4,9 +4,16 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.sqlclient.Tuple;
 import starter.constants.HttpHeaderConstant;
+import starter.dao.PGSQLUtils;
+import starter.exception.ControllerException;
 import starter.router.RouterConf;
+import starter.utils.CollectionUtils;
 import starter.utils.SessionUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @program: tianchi-im-vert.x
@@ -32,6 +39,11 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 JsonObject body = ctx.getBodyAsJson();
                 String name = body.getString("name");
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1)")
+                                .execute(Tuple.of(name)).
+                                onComplete(ar -> sqlConnection.close())
+                );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
@@ -47,6 +59,9 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String roomid = request.getParam("roomid");
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -61,7 +76,7 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String token = SessionUtils.getToken(request);
-
+                SessionUtils.leaveRoom(token);
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -78,6 +93,14 @@ public class RoomRouter implements RouterConf {
                 String token = SessionUtils.getToken(request);
                 String roomid = request.getParam("roomid");
 
+                // 检查 房间id 是否合法
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
+
+
+                SessionUtils.leaveRoom(token);
+                SessionUtils.entryRoom(token, roomid);
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -92,8 +115,11 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String roomid = request.getParam("roomid");
-
+                List<String> users = SessionUtils.getRoomUsers(roomid);
+                List<String> list = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+
+
             } catch (Exception e) {
                 ctx.fail(400);
             }
@@ -107,8 +133,15 @@ public class RoomRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 JsonObject body = ctx.getBodyAsJson();
-                body.getInteger("pageIndex");
-                body.getInteger("pageSize");
+                Integer pageIndex = body.getInteger("pageIndex");
+                Integer pageSize = body.getInteger("pageSize");
+                if (pageIndex < 0 || pageSize < 0) {
+                    ControllerException.InvalidExceptionAccess.error(new RuntimeException("分页查询错误，页码小于0"));
+                }
+
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
                 ctx.fail(400);

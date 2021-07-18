@@ -56,6 +56,10 @@ public class UserRouter implements RouterConf {
                 HttpServerRequest request = ctx.request();
                 String username = request.getParam("username");
                 String password = request.getParam("password");
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
+
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             } catch (Exception e) {
                 ctx.fail(400);
@@ -70,6 +74,9 @@ public class UserRouter implements RouterConf {
                 HttpServerResponse response = ctx.response();
                 HttpServerRequest request = ctx.request();
                 String username = request.getParam("username");
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("").execute().onComplete(ar->sqlConnection.close())
+                );
 
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             } catch (Exception e) {
