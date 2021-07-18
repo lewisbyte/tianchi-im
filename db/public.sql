@@ -1,10 +1,10 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : pgsql
+ Source Server         : 60.205.216.34-pg
  Source Server Type    : PostgreSQL
  Source Server Version : 130003
- Source Host           : localhost:5432
+ Source Host           : 60.205.216.34:5432
  Source Catalog        : postgres
  Source Schema         : public
 
@@ -12,7 +12,7 @@
  Target Server Version : 130003
  File Encoding         : 65001
 
- Date: 17/07/2021 18:00:23
+ Date: 18/07/2021 20:33:59
 */
 
 
@@ -20,7 +20,7 @@
 -- Sequence structure for t_message_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."t_message_id_seq";
-CREATE SEQUENCE "public"."t_message_id_seq" 
+CREATE SEQUENCE "public"."t_message_id_seq"
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
@@ -32,7 +32,7 @@ ALTER SEQUENCE "public"."t_message_id_seq" OWNER TO "postgres";
 -- Sequence structure for t_room_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."t_room_id_seq";
-CREATE SEQUENCE "public"."t_room_id_seq" 
+CREATE SEQUENCE "public"."t_room_id_seq"
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
@@ -44,7 +44,7 @@ ALTER SEQUENCE "public"."t_room_id_seq" OWNER TO "postgres";
 -- Sequence structure for t_user_id_seq
 -- ----------------------------
 DROP SEQUENCE IF EXISTS "public"."t_user_id_seq";
-CREATE SEQUENCE "public"."t_user_id_seq" 
+CREATE SEQUENCE "public"."t_user_id_seq"
 INCREMENT 1
 MINVALUE  1
 MAXVALUE 9223372036854775807
@@ -98,21 +98,21 @@ ALTER TABLE "public"."t_user" OWNER TO "postgres";
 -- ----------------------------
 ALTER SEQUENCE "public"."t_message_id_seq"
 OWNED BY "public"."t_message"."id";
-SELECT setval('"public"."t_message_id_seq"', 2, false);
+SELECT setval('"public"."t_message_id_seq"', 3, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."t_room_id_seq"
 OWNED BY "public"."t_room"."id";
-SELECT setval('"public"."t_room_id_seq"', 2, false);
+SELECT setval('"public"."t_room_id_seq"', 3, false);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."t_user_id_seq"
 OWNED BY "public"."t_user"."id";
-SELECT setval('"public"."t_user_id_seq"', 2, false);
+SELECT setval('"public"."t_user_id_seq"', 3, false);
 
 -- ----------------------------
 -- Primary Key structure for table t_message
@@ -123,6 +123,19 @@ ALTER TABLE "public"."t_message" ADD CONSTRAINT "t_message_pkey" PRIMARY KEY ("i
 -- Primary Key structure for table t_room
 -- ----------------------------
 ALTER TABLE "public"."t_room" ADD CONSTRAINT "t_room_pkey" PRIMARY KEY ("id");
+
+-- ----------------------------
+-- Indexes structure for table t_user
+-- ----------------------------
+CREATE UNIQUE INDEX "t_user_idx1" ON "public"."t_user" USING btree (
+  "username" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "password" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+
+-- ----------------------------
+-- Uniques structure for table t_user
+-- ----------------------------
+ALTER TABLE "public"."t_user" ADD CONSTRAINT "t_user_uk1" UNIQUE ("username");
 
 -- ----------------------------
 -- Primary Key structure for table t_user
