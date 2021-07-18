@@ -44,7 +44,7 @@ public class UserRouter implements RouterConf {
                                         body.getString("phone"))
                                 ).onComplete(ar -> sqlConnection.close()));
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-                response.end(body.toString());
+                response.end();
             } catch (Exception e) {
                 ctx.fail(400);
             }

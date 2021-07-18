@@ -2,6 +2,7 @@ package starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Tuple;
@@ -118,7 +119,7 @@ public class RoomRouter implements RouterConf {
                 List<String> users = SessionUtils.getRoomUsers(roomid);
                 List<String> list = CollectionUtils.isEmpty(users) ? new ArrayList<>() : users;
                 response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-
+                response.end(Json.encode(list));
 
             } catch (Exception e) {
                 ctx.fail(400);

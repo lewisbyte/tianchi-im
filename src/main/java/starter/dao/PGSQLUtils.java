@@ -16,10 +16,10 @@ public class PGSQLUtils {
 
     private static PgConnectOptions connectOptions = new PgConnectOptions()
             .setPort(5432)
-            .setHost("localhost")
+            .setHost("60.205.216.34")
             .setDatabase("postgres")
             .setUser("postgres")
-            .setPassword("root");
+            .setPassword("tkmk@123");
 
     // Pool options
     private static PoolOptions poolOptions = new PoolOptions().setMaxSize(32);
