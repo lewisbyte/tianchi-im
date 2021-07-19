@@ -22,7 +22,7 @@ public class PGSQLUtils {
             .setPassword("tkmk@123");
 
     // Pool options
-    private static PoolOptions poolOptions = new PoolOptions().setMaxSize(32);
+    private static PoolOptions poolOptions = new PoolOptions().setMaxSize(100);
 
     // 保存池对象
     private static PgPool pool;

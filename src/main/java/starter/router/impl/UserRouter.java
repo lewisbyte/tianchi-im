@@ -57,28 +57,6 @@ public class UserRouter implements RouterConf {
             HttpServerRequest request = ctx.request();
             String username = request.getParam("username");
             String password = request.getParam("password");
-            PGSQLUtils.getConnection().compose(sqlConnection -> sqlConnection.
-                            preparedQuery("select id from t_user where username=$1 and password=$2").
-                            execute(Tuple.of(username, password)).onComplete(ar -> {
-                        if (ar.succeeded()) {
-                            RowSet<Row> rows = ar.result();
-                            if (rows.size() == 0) {
-                                ctx.fail(400);
-                                return;
-                            }
-
-                            for (Row row : rows) {
-                                SessionUtils.login(row.getLong(0).toString(), username);
-                            }
-                            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-                            response.end();
-                        } else {
-                            ctx.fail(400);
-                            return;
-                        }
-                        sqlConnection.close();
-                    })
-            );
         });
     }
 
