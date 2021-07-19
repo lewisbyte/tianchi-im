@@ -67,7 +67,7 @@ public class UserRouter implements RouterConf {
             }
             PGSQLUtils.getConnection().compose(
                     sqlConnection -> sqlConnection.
-                            preparedQuery("select count(*) from t_user where username=$1 and password=$2").
+                            preparedQuery("select username, first_name,last_name,email,password,phone from t_user where username=$1 and password=$2").
                             execute(Tuple.of(username, password)).
                             onComplete(a -> sqlConnection.close())
             ).onSuccess(event -> {
