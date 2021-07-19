@@ -8,7 +8,7 @@ import io.vertx.sqlclient.Tuple;
 import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
 import starter.router.RouterConf;
-import starter.utils.CacheUser;
+import starter.cache.CacheUser;
 
 /**
  * @program: tianchi-im-vert.x

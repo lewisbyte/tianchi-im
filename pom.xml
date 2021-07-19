@@ -77,6 +77,17 @@
             <artifactId>netty-all</artifactId>
             <version>4.1.65.Final</version>
         </dependency>
+        <!--   本地缓存依赖     -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>30.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok-maven-plugin</artifactId>
+            <version>1.18.12.0</version>
+        </dependency>
     </dependencies>
 
     <profiles>
