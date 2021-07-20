@@ -80,7 +80,7 @@ public class MessageRouter implements RouterConf {
             Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
                     sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1").execute(
-                            Tuple.of(pageIndex, pageSize)
+                            Tuple.of(roomid,pageIndex, pageSize)
                     ).onComplete(ar -> sqlConnection.close())
             )
                     .onFailure(event -> {
