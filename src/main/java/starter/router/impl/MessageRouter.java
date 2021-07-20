@@ -4,6 +4,7 @@ import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.sqlclient.Tuple;
 import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
 import starter.exception.ControllerException;
@@ -51,7 +52,9 @@ public class MessageRouter implements RouterConf {
             String text = body.getString("text");
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_message (name) VALUES ($1)").execute().onComplete(ar -> sqlConnection.close())
+                    sqlConnection.preparedQuery("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
+                            execute(Tuple.of(text, roomid, System.currentTimeMillis(), id)).
+                            onComplete(ar -> sqlConnection.close())
             );
 
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
@@ -73,11 +76,17 @@ public class MessageRouter implements RouterConf {
 
             JsonObject body = ctx.getBodyAsJson();
 
-            body.getInteger("pageIndex");
-            body.getInteger("pageSize");
+            Integer pageIndex = body.getInteger("pageIndex");
+            Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
-            );
+                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1").execute(
+                            Tuple.of(pageIndex, pageSize)
+                    ).onComplete(ar -> sqlConnection.close())
+            )
+                    .onFailure(event -> {
+                    })
+                    .onSuccess(event -> {
+                    });
 
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             response.end();
