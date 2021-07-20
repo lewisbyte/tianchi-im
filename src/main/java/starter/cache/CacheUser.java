@@ -2,6 +2,7 @@ package starter.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import lombok.Builder;
 
 import java.util.Objects;
 
@@ -21,8 +22,8 @@ public class CacheUser {
         return Objects.nonNull(userInfo.getIfPresent(username));
     }
 
-    public static void add(String username, String password) {
-        userInfo.put(username, new User());
+    public static void add(String username, User user) {
+        userInfo.put(username, user);
     }
 
     public static User get(String username) {
@@ -30,7 +31,10 @@ public class CacheUser {
     }
 
 
+    @Builder
     public static class User {
+
+        private boolean valid = false;
         private String username;
         private String firstName;
         private String lastName;
@@ -84,6 +88,10 @@ public class CacheUser {
 
         public void setPhone(String phone) {
             this.phone = phone;
+        }
+
+        public boolean isValid() {
+            return valid;
         }
     }
 }
