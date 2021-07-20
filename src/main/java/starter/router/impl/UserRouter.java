@@ -10,6 +10,7 @@ import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
 import starter.router.RouterConf;
 import starter.cache.CacheUser;
+import starter.utils.SessionUtils;
 
 /**
  * @program: tianchi-im-vert.x
@@ -80,6 +81,9 @@ public class UserRouter implements RouterConf {
             // 用户存在，检查用户密码
             if (cacheUser != null && cacheUser.isValid()) {
                 boolean success = password.equals(cacheUser.getPassword());
+                if (success){
+                    SessionUtils.login(username, username);
+                }
                 response.setStatusCode(success ? 200 : 400).end(success ? username : "");
                 return;
             }
@@ -100,6 +104,7 @@ public class UserRouter implements RouterConf {
                             phone(row.getString("phone")).
                             valid(true).
                             build());
+                    SessionUtils.login(username, username);
                 }
                 response.end();
             }).onFailure(event -> {
