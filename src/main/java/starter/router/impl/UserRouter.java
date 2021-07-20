@@ -82,12 +82,21 @@ public class UserRouter implements RouterConf {
         router.get("/user/:username").handler(ctx -> {
             HttpServerResponse response = ctx.response();
             HttpServerRequest request = ctx.request();
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             String username = request.getParam("username");
+            CacheUser.User user = CacheUser.get(username);
+            if (user!=null){
+                response.end(user.toString());
+                return;
+            }
+
+
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("").execute().onComplete(ar -> sqlConnection.close())
+                    sqlConnection.
+                            preparedQuery("select username, first_name,last_name,email,password,phone from t_user where username=$1").
+                            execute().onComplete(ar -> sqlConnection.close())
             );
 
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
             response.end();
         });
     }
