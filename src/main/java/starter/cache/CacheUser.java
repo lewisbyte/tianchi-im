@@ -19,7 +19,7 @@ public class CacheUser {
             .build();
 
     public static boolean exist(String username) {
-        return Objects.nonNull(userInfo.getIfPresent(username));
+        return userInfo.getIfPresent(username).isValid();
     }
 
     public static void add(String username, User user) {
@@ -27,7 +27,7 @@ public class CacheUser {
     }
 
     public static User get(String username) {
-        return null;
+        return userInfo.getIfPresent(username);
     }
 
 

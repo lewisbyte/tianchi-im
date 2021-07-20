@@ -132,7 +132,7 @@ public class UserRouter implements RouterConf {
             PGSQLUtils.getConnection().compose(sqlConnection ->
                     sqlConnection.
                             preparedQuery("select first_name,last_name,email,password,phone from t_user where username=$1").
-                            execute().onComplete(ar -> sqlConnection.close())
+                            execute(Tuple.of(username)).onComplete(ar -> sqlConnection.close())
             ).
                     onSuccess(rows -> {
                         for (Row row : rows) {
@@ -157,7 +157,6 @@ public class UserRouter implements RouterConf {
                     .onFailure(event -> {
                         response.setStatusCode(400).end();
                     });
-            response.end();
         });
     }
 
