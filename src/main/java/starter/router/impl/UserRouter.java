@@ -126,7 +126,7 @@ public class UserRouter implements RouterConf {
             CacheUser.User user = CacheUser.get(username);
             if (user != null && user.isValid()) {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.put("firstName", user.getEmail());
+                jsonObject.put("firstName", user.getFirstName());
                 jsonObject.put("lastName", user.getLastName());
                 jsonObject.put("email", user.getEmail());
                 jsonObject.put("phone", user.getPhone());

@@ -3,6 +3,7 @@ package starter.cache;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Builder;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 // 用户缓存类
 public class CacheUser {
@@ -17,7 +18,8 @@ public class CacheUser {
             .build();
 
     public static boolean exist(String username) {
-        return userInfo.getIfPresent(username).isValid();
+        CacheUser.User info = userInfo.getIfPresent(username);
+        return info != null && info.isValid();
     }
 
     public static void add(String username, User user) {
