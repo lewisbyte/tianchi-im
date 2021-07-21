@@ -58,12 +58,8 @@ public class MessageRouter implements RouterConf {
                     sqlConnection.preparedQuery("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
                             execute(Tuple.of(text, Long.valueOf(roomid), System.currentTimeMillis(), id)).
                             onComplete(ar -> sqlConnection.close())
-            ).
-                    onFailure(event -> {
-                        response.setStatusCode(400).end(event.getMessage());
-                    }).onSuccess(event -> {
-                response.end();
-            });
+            );
+            response.end();
         });
     }
 
