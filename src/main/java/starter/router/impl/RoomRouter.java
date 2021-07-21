@@ -73,7 +73,7 @@ public class RoomRouter implements RouterConf {
             }
             PGSQLUtils.getConnection().compose(sqlConnection ->
                     sqlConnection.preparedQuery("select name from t_room where id=$1").
-                            execute(Tuple.of(roomid)).
+                            execute(Tuple.of(Long.valueOf(roomid))).
                             onComplete(ar -> sqlConnection.close())
             ).
                     onSuccess(rows -> {
@@ -123,7 +123,7 @@ public class RoomRouter implements RouterConf {
                 // 检查 房间id 是否合法
                 PGSQLUtils.getConnection().compose(sqlConnection ->
                         sqlConnection.preparedQuery("select name from t_room where id=$1").
-                                execute(Tuple.of(roomid)).
+                                execute(Tuple.of(Long.valueOf(roomid))).
                                 onComplete(ar -> sqlConnection.close())
                 ).
                         onSuccess(rows -> {
@@ -180,8 +180,8 @@ public class RoomRouter implements RouterConf {
                         JsonArray jsonArray = new JsonArray();
                         for (Row row : rows) {
                             JsonObject obj = new JsonObject();
-                            obj.put("id", row.getString("name"));
-                            obj.put("name", row.getString("id"));
+                            obj.put("name", row.getString("name"));
+                            obj.put("id", row.getLong("id").toString());
                             jsonArray.add(obj);
                         }
                         response.end(jsonArray.toString());

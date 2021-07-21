@@ -106,7 +106,7 @@ public class UserRouter implements RouterConf {
                             build());
                     SessionUtils.login(username, username);
                 }
-                response.end();
+                response.end(username);
             }).onFailure(event -> {
                         // 添加一个空用户，用于标识此用户不存在
                         CacheUser.add(username, CacheUser.User.builder().valid(false).build());
