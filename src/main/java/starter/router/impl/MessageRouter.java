@@ -2,8 +2,10 @@ package starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
 import starter.constants.HttpHeaderConstant;
 import starter.dao.PGSQLUtils;
@@ -79,17 +81,25 @@ public class MessageRouter implements RouterConf {
             Integer pageIndex = body.getInteger("pageIndex");
             Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1").execute(
-                            Tuple.of(roomid,pageIndex, pageSize)
+                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 limit $2 offset $3 order by id desc").execute(
+                            Tuple.of(roomid, pageSize, Math.abs(pageIndex + 1) * pageSize)
                     ).onComplete(ar -> sqlConnection.close())
             )
-                    .onFailure(event -> {
+                    .onFailure(throwable -> {
+                        response.setStatusCode(400).end(throwable.getMessage());
                     })
-                    .onSuccess(event -> {
+                    .onSuccess(rows -> {
+                        response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+                        JsonArray jsonArray = new JsonArray();
+                        for (Row row : rows) {
+                            JsonObject obj = new JsonObject();
+                            obj.put("id", row.getString("mid"));
+                            obj.put("text", row.getString("text"));
+                            obj.put("timestamp", row.getLong("stamp").toString());
+                            jsonArray.add(obj);
+                        }
+                        response.end(jsonArray.toString());
                     });
-
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
-            response.end();
         });
     }
 }

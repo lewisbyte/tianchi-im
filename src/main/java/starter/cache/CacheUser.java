@@ -4,8 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Builder;
 
-import java.util.Objects;
-
 // 用户缓存类
 public class CacheUser {
 

@@ -3,6 +3,7 @@ package starter.router.impl;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Row;
@@ -14,7 +15,6 @@ import starter.exception.ControllerException;
 import starter.router.RouterConf;
 import starter.utils.CollectionUtils;
 import starter.utils.SessionUtils;
-import starter.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,9 +126,15 @@ public class RoomRouter implements RouterConf {
                                 execute(Tuple.of(roomid)).
                                 onComplete(ar -> sqlConnection.close())
                 ).
-                        onSuccess(event -> {
+                        onSuccess(rows -> {
                             SessionUtils.leaveRoom(token);
                             SessionUtils.entryRoom(token, roomid);
+                            // 缓存房间信息
+                            for (Row row : rows) {
+                                CacheRoom.add(roomid, CacheRoom.Room.builder().
+                                        name(row.getString("name")).valid(true).build());
+                            }
+
                             response.end();
                         })
                         .onFailure(event -> {
@@ -165,14 +171,23 @@ public class RoomRouter implements RouterConf {
             }
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select name,id from t_room").
-                            execute(Tuple.of(pageIndex,pageSize)).
+                    sqlConnection.preparedQuery("select name,id from t_room limit $1 offset $2").
+                            execute(Tuple.of(pageSize, pageSize * pageIndex)).
                             onComplete(ar -> sqlConnection.close())
             )
-                    .onSuccess(event -> {
-
+                    .onSuccess(rows -> {
+                        response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
+                        JsonArray jsonArray = new JsonArray();
+                        for (Row row : rows) {
+                            JsonObject obj = new JsonObject();
+                            obj.put("id", row.getString("name"));
+                            obj.put("name", row.getString("id"));
+                            jsonArray.add(obj);
+                        }
+                        response.end(jsonArray.toString());
                     })
                     .onFailure(event -> {
+                        response.setStatusCode(400);
                     });
         });
     }
