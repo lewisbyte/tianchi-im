@@ -1,10 +1,10 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 60.205.216.34-pg
+ Source Server         : pgsql
  Source Server Type    : PostgreSQL
  Source Server Version : 130003
- Source Host           : 60.205.216.34:5432
+ Source Host           : localhost:5432
  Source Catalog        : postgres
  Source Schema         : public
 
@@ -12,7 +12,7 @@
  Target Server Version : 130003
  File Encoding         : 65001
 
- Date: 18/07/2021 20:33:59
+ Date: 22/07/2021 01:14:18
 */
 
 
@@ -61,7 +61,7 @@ CREATE TABLE "public"."t_message" (
   "text" varchar(200) COLLATE "pg_catalog"."default",
   "roomid" int8,
   "stamp" int8,
-  "mid" int8
+  "mid" varchar(200) COLLATE "pg_catalog"."default"
 )
 ;
 ALTER TABLE "public"."t_message" OWNER TO "postgres";
@@ -98,21 +98,28 @@ ALTER TABLE "public"."t_user" OWNER TO "postgres";
 -- ----------------------------
 ALTER SEQUENCE "public"."t_message_id_seq"
 OWNED BY "public"."t_message"."id";
-SELECT setval('"public"."t_message_id_seq"', 3, false);
+SELECT setval('"public"."t_message_id_seq"', 13, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."t_room_id_seq"
 OWNED BY "public"."t_room"."id";
-SELECT setval('"public"."t_room_id_seq"', 3, false);
+SELECT setval('"public"."t_room_id_seq"', 20, true);
 
 -- ----------------------------
 -- Alter sequences owned by
 -- ----------------------------
 ALTER SEQUENCE "public"."t_user_id_seq"
 OWNED BY "public"."t_user"."id";
-SELECT setval('"public"."t_user_id_seq"', 3, false);
+SELECT setval('"public"."t_user_id_seq"', 12, true);
+
+-- ----------------------------
+-- Indexes structure for table t_message
+-- ----------------------------
+CREATE INDEX "t_message_roomid" ON "public"."t_message" USING btree (
+  "roomid" "pg_catalog"."int8_ops" ASC NULLS LAST
+);
 
 -- ----------------------------
 -- Primary Key structure for table t_message
@@ -128,6 +135,10 @@ ALTER TABLE "public"."t_room" ADD CONSTRAINT "t_room_pkey" PRIMARY KEY ("id");
 -- Indexes structure for table t_user
 -- ----------------------------
 CREATE UNIQUE INDEX "t_user_idx1" ON "public"."t_user" USING btree (
+  "username" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "password" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+CREATE UNIQUE INDEX "t_user_idx2" ON "public"."t_user" USING btree (
   "username" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
   "password" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
 );
