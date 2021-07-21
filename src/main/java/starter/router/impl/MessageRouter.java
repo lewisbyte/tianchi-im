@@ -52,15 +52,18 @@ public class MessageRouter implements RouterConf {
             JsonObject body = ctx.getBodyAsJson();
             String id = body.getString("id");
             String text = body.getString("text");
+            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
                     sqlConnection.preparedQuery("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
-                            execute(Tuple.of(text, roomid, System.currentTimeMillis(), id)).
+                            execute(Tuple.of(text, Long.valueOf(roomid), System.currentTimeMillis(), id)).
                             onComplete(ar -> sqlConnection.close())
-            );
-
-            response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            response.end();
+            ).
+                    onFailure(event -> {
+                        response.setStatusCode(400).end(event.getMessage());
+                    }).onSuccess(event -> {
+                response.end();
+            });
         });
     }
 
@@ -81,8 +84,8 @@ public class MessageRouter implements RouterConf {
             Integer pageIndex = body.getInteger("pageIndex");
             Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 limit $2 offset $3 order by id desc").execute(
-                            Tuple.of(roomid, pageSize, Math.abs(pageIndex + 1) * pageSize)
+                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 order by id desc limit $2 offset $3").execute(
+                            Tuple.of(Long.valueOf(roomid), pageSize, Math.abs(pageIndex + 1) * pageSize)
                     ).onComplete(ar -> sqlConnection.close())
             )
                     .onFailure(throwable -> {
