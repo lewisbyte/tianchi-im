@@ -42,4 +42,4 @@ metastore_db
 
 /deploy_application/application/
 /deploy_application/application.zip
-/deploy_application/im-webapp-0.0.1-SNAPSHOT.jar
+/deploy_application/tianchi-im-1.0.0-SNAPSHOT-fat.jar
