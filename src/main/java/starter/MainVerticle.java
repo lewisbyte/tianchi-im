@@ -22,6 +22,10 @@ public class MainVerticle extends AbstractVerticle {
         // 创建数据库连接池
         PGSQLUtils.configAndCreatePool(vertx);
 
+        router.errorHandler(500, ctx -> {
+            ctx.response().setStatusCode(400).end(ctx.failure().getMessage());
+        });
+
         // 业务配置
         configRouter(router);
 
