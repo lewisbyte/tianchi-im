@@ -1,4 +1,4 @@
-package starter.exception;
+package tianchi.im.starter.exception;
 
 /**
  * @program: tianchi-im

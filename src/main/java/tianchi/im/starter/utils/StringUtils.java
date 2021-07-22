@@ -1,4 +1,4 @@
-package starter.utils;
+package tianchi.im.starter.utils;
 
 /**
  * @program: tianchi-im-vert.x

@@ -1,14 +1,14 @@
-package starter;
+package tianchi.im.starter;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
-import starter.dao.PGSQLUtils;
-import starter.router.impl.MessageRouter;
-import starter.router.impl.RoomRouter;
-import starter.router.impl.UserRouter;
+import tianchi.im.starter.dao.PGSQLUtils;
+import tianchi.im.starter.router.impl.MessageRouter;
+import tianchi.im.starter.router.impl.RoomRouter;
+import tianchi.im.starter.router.impl.UserRouter;
 
 public class MainVerticle extends AbstractVerticle {
 

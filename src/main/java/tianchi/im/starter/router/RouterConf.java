@@ -1,4 +1,4 @@
-package starter.router;
+package tianchi.im.starter.router;
 
 import io.vertx.ext.web.Router;
 

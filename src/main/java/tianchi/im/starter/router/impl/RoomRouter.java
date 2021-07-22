@@ -1,4 +1,4 @@
-package starter.router.impl;
+package tianchi.im.starter.router.impl;
 
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
@@ -8,13 +8,13 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
-import starter.cache.CacheRoom;
-import starter.constants.HttpHeaderConstant;
-import starter.dao.PGSQLUtils;
-import starter.exception.ControllerException;
-import starter.router.RouterConf;
-import starter.utils.CollectionUtils;
-import starter.utils.SessionUtils;
+import tianchi.im.starter.cache.CacheRoom;
+import tianchi.im.starter.constants.HttpHeaderConstant;
+import tianchi.im.starter.dao.PGSQLUtils;
+import tianchi.im.starter.exception.ControllerException;
+import tianchi.im.starter.router.RouterConf;
+import tianchi.im.starter.utils.CollectionUtils;
+import tianchi.im.starter.utils.SessionUtils;
 
 import java.util.ArrayList;
 import java.util.List;

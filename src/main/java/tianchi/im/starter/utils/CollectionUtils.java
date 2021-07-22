@@ -1,4 +1,4 @@
-package starter.utils;
+package tianchi.im.starter.utils;
 
 import java.util.Collection;
 

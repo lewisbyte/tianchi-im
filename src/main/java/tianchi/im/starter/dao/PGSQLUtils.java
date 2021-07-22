@@ -1,4 +1,4 @@
-package starter.dao;
+package tianchi.im.starter.dao;
 
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;

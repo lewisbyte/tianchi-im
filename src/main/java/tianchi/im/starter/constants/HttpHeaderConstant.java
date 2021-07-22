@@ -1,4 +1,4 @@
-package starter.constants;
+package tianchi.im.starter.constants;
 
 /**
  * @program: tianchi-im-vert.x

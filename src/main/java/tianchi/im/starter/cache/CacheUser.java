@@ -1,9 +1,8 @@
-package starter.cache;
+package tianchi.im.starter.cache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.Builder;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 // 用户缓存类
 public class CacheUser {
