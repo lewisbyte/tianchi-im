@@ -40,8 +40,7 @@ function run() {
 }
 start() {
     echo "start ..."
-    nohup java -XX:+UseConcMarkSweepGC \
-    -Xms5120m -Xmx5120m -XX:+PrintGCDateStamps \
+    nohup java -Xms5120m -Xmx5120m \
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
