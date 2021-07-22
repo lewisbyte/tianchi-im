@@ -38,15 +38,16 @@ public class MessageRouter implements RouterConf {
             HttpServerResponse response = ctx.response();
             HttpServerRequest request = ctx.request();
             String token = SessionUtils.getToken(request);
+            String roomid = SessionUtils.getRoomInfoByToken(token);
 
-            // 用户未登录
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                ControllerException.InvalidExceptionAccess.error(new RuntimeException("auth token 非法"));
+                response.setStatusCode(400).end("非法token");
+                return;
             }
 
-            String roomid = SessionUtils.getRoomInfoByToken(token);
             if (StringUtils.isEmpty(roomid)) {
-                ControllerException.InvalidExceptionAccess.error(new RuntimeException("用户没有进入房间"));
+                response.setStatusCode(400).end("用户没有进入房间");
+                return;
             }
 
             JsonObject body = ctx.getBodyAsJson();
@@ -75,6 +76,16 @@ public class MessageRouter implements RouterConf {
             String token = SessionUtils.getToken(request);
             String roomid = SessionUtils.getRoomInfoByToken(token);
 
+
+            if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                response.setStatusCode(400).end("非法token");
+                return;
+            }
+
+            if (StringUtils.isEmpty(roomid)) {
+                response.setStatusCode(400).end("用户没有进入房间");
+                return;
+            }
             JsonObject body = ctx.getBodyAsJson();
 
             Integer pageIndex = body.getInteger("pageIndex");
