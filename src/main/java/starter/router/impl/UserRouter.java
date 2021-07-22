@@ -46,7 +46,11 @@ public class UserRouter implements RouterConf {
                                     body.getString("phone"))
                             ).onComplete(ar -> sqlConnection.close())
             )
-                    .onFailure(event -> response.setStatusCode(400).end())
+                    .onFailure(event -> {
+                                CacheUser.add(body.getString("username"), CacheUser.User.builder().valid(false).build());
+                                response.setStatusCode(400).end();
+                            }
+                    )
                     .onSuccess(event -> {
                                 CacheUser.add(body.getString("username"), CacheUser.User.builder()
                                         .username(body.getString("username"))
@@ -81,7 +85,7 @@ public class UserRouter implements RouterConf {
             // 用户存在，检查用户密码
             if (cacheUser != null && cacheUser.isValid()) {
                 boolean success = password.equals(cacheUser.getPassword());
-                if (success){
+                if (success) {
                     SessionUtils.login(username, username);
                 }
                 response.setStatusCode(success ? 200 : 400).end(success ? username : "");
