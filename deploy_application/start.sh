@@ -45,7 +45,7 @@ start() {
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -Duser.timezone=Asia/Shanghai \
     -XX:+HeapDumpOnOutOfMemoryError -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
-    service mysqld start
+    systemctl start postgresql.service
     sleep 15;
     warmup
     echo "start end ..."
