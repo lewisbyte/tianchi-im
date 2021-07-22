@@ -65,7 +65,7 @@ public class UserRouter implements RouterConf {
                                         SessionUtils.login(body.getString("username"), body.getString("username"));
                                     }
                                 });
-                                response.setStatusCode(400).end();
+                                response.setStatusCode(400).end(event.getCause().toString());
                             }
                     )
                     .onSuccess(event -> {
