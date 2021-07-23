@@ -69,7 +69,6 @@ public class UserRouter implements RouterConf {
                                     ).onComplete(ar -> sqlConnection.close())
                     );
                     response.setStatusCode(200);
-                    System.out.println("cccx");
                 } else {
                     // 查询到了，代表不可以插入，但是需要缓存到cache中
                     for (Row row : rows) {
@@ -81,11 +80,9 @@ public class UserRouter implements RouterConf {
                                 valid(true).
                                 build());
                         SessionUtils.login(body.getString("username"), body.getString("username"));
-                        System.out.println("ccc4");
 
                     }
                     response.setStatusCode(400);
-                    System.out.println("ccc2");
                 }
                 response.end();
 
@@ -102,10 +99,7 @@ public class UserRouter implements RouterConf {
                                 ).onComplete(ar -> sqlConnection.close())
                 );
                 response.setStatusCode(400).end();
-                System.out.println("ccc1");
             });
-
-
         });
     }
 
