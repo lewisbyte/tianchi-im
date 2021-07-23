@@ -11,7 +11,6 @@ import io.vertx.sqlclient.Tuple;
 import tianchi.im.starter.cache.CacheRoom;
 import tianchi.im.starter.constants.HttpHeaderConstant;
 import tianchi.im.starter.dao.PGSQLUtils;
-import tianchi.im.starter.exception.ControllerException;
 import tianchi.im.starter.router.RouterConf;
 import tianchi.im.starter.utils.CollectionUtils;
 import tianchi.im.starter.utils.SessionUtils;
