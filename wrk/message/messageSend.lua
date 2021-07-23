@@ -1,8 +1,4 @@
 wrk.method = "POST"
-wrk.body   = "foo=bar&baz=quux"
-wrk.headers["Content-Type"] = "application/x-www-form-urlencoded"
-
-
--- wrk.method = "POST"
--- wrk.body   = "foo=bar&baz=quux"
--- wrk.headers["Content-Type"] = "application/x-www-form-urlencoded"
+wrk.headers["Content-Type"] =  "application/json"
+wrk.headers["Authorization"] =  "Bearer asdqw8"
+wrk.body = "{\"id\": \"test\",\"text\":\"dasdad12ffffff\"}"
