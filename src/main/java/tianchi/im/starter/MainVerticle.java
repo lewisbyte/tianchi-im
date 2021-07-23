@@ -25,8 +25,10 @@ public class MainVerticle extends AbstractVerticle {
         router.errorHandler(500, ctx -> {
             ctx.response().setStatusCode(400).end(ctx.failure().getMessage());
         });
-
-        // 业务配置
+        router.route().failureHandler(route -> {
+            String error = route.failure().getMessage();
+            route.response().setStatusCode(400).end(error);
+        });
         configRouter(router);
 
         server.requestHandler(router).listen(8080);

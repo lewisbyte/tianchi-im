@@ -15,6 +15,7 @@ import tianchi.im.starter.exception.ControllerException;
 import tianchi.im.starter.router.RouterConf;
 import tianchi.im.starter.utils.CollectionUtils;
 import tianchi.im.starter.utils.SessionUtils;
+import tianchi.im.starter.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,13 @@ public class RoomRouter implements RouterConf {
             HttpServerResponse response = ctx.response();
             HttpServerRequest request = ctx.request();
             String token = SessionUtils.getToken(request);
+
+            if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                response.setStatusCode(400).end("非法token");
+                return;
+            }
+
+
             JsonObject body = ctx.getBodyAsJson();
             String name = body.getString("name");
             PGSQLUtils.getConnection().compose(sqlConnection ->
@@ -96,6 +104,12 @@ public class RoomRouter implements RouterConf {
             HttpServerResponse response = ctx.response();
             HttpServerRequest request = ctx.request();
             String token = SessionUtils.getToken(request);
+
+            if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                response.setStatusCode(400).end("非法token");
+                return;
+            }
+
             SessionUtils.leaveRoom(token);
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
             response.end();
@@ -112,13 +126,25 @@ public class RoomRouter implements RouterConf {
             String roomid = request.getParam("roomid");
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
 
+            if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
+                response.setStatusCode(400).end("非法token");
+                return;
+            }
+
+            if (StringUtils.isEmpty(roomid)) {
+                response.setStatusCode(400).end("用户没有进入房间");
+                return;
+            }
             CacheRoom.Room room = CacheRoom.get(roomid);
 
             if (room != null && room.isValid()) {
                 SessionUtils.leaveRoom(token);
-                SessionUtils.entryRoom(token, roomid);
-                response.end();
-                return;
+                boolean success = SessionUtils.entryRoom(token, roomid);
+                if (!success){
+                    response.setStatusCode(400).end();
+                }else {
+                    response.end();
+                }
             } else {
                 // 检查 房间id 是否合法
                 PGSQLUtils.getConnection().compose(sqlConnection ->
@@ -128,7 +154,11 @@ public class RoomRouter implements RouterConf {
                 ).
                         onSuccess(rows -> {
                             SessionUtils.leaveRoom(token);
-                            SessionUtils.entryRoom(token, roomid);
+                            boolean success =SessionUtils.entryRoom(token, roomid);
+                            if (!success){
+                                response.setStatusCode(400).end();
+                            }
+
                             // 缓存房间信息
                             for (Row row : rows) {
                                 CacheRoom.add(roomid, CacheRoom.Room.builder().

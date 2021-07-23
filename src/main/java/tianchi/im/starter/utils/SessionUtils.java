@@ -44,11 +44,7 @@ public class SessionUtils {
      * @param request
      */
     public static String getToken(HttpServerRequest request) {
-        String auth = request.getHeader(HttpHeaderConstant.Authorization);
-        if (StringUtils.isEmpty(auth)) {
-            throw (new RuntimeException("Bearer Token 获取header令牌为空"));
-        }
-        return auth;
+        return request.getHeader(HttpHeaderConstant.Authorization);
     }
 
     /**
@@ -64,7 +60,7 @@ public class SessionUtils {
         }
         // 用户未登录
         if (StringUtils.isEmpty(userInfo.get(token))) {
-            throw (new RuntimeException("entryRoom 用户未登录"));
+            return false;
         }
         // 1. 存储用户所在房间
         roomSessionMap.put(token, roomid);
@@ -84,7 +80,7 @@ public class SessionUtils {
      */
     public static String getRoomInfoByToken(String token) {
         if (StringUtils.isEmpty(token)) {
-            throw (new RuntimeException("获取用户房间信息错误，token为空"));
+            return null;
         }
 
         // 1. 获取用户房间信息
