@@ -85,6 +85,14 @@ public class RoomRouter implements RouterConf {
                             onComplete(ar -> sqlConnection.close())
             ).
                     onSuccess(rows -> {
+
+                        if (rows.size() == 0) {
+                            CacheRoom.add(roomid, CacheRoom.Room.builder().valid(false).build());
+                            response.setStatusCode(400).end();
+                            return;
+                        }
+
+
                         for (Row row : rows) {
                             String name = row.getString("name");
                             CacheRoom.add(roomid, CacheRoom.Room.builder().name(name).valid(true).build());
@@ -140,9 +148,9 @@ public class RoomRouter implements RouterConf {
             if (room != null && room.isValid()) {
                 SessionUtils.leaveRoom(token);
                 boolean success = SessionUtils.entryRoom(token, roomid);
-                if (!success){
+                if (!success) {
                     response.setStatusCode(400).end();
-                }else {
+                } else {
                     response.end();
                 }
             } else {
@@ -154,9 +162,10 @@ public class RoomRouter implements RouterConf {
                 ).
                         onSuccess(rows -> {
                             SessionUtils.leaveRoom(token);
-                            boolean success =SessionUtils.entryRoom(token, roomid);
-                            if (!success){
+                            boolean success = SessionUtils.entryRoom(token, roomid);
+                            if (!success || rows.size() == 0) {
                                 response.setStatusCode(400).end();
+                                return;
                             }
 
                             // 缓存房间信息
@@ -209,6 +218,11 @@ public class RoomRouter implements RouterConf {
                     .onSuccess(rows -> {
                         response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                         JsonArray jsonArray = new JsonArray();
+                        if (rows.size() == 0) {
+                            response.end(jsonArray.toString());
+                            return;
+                        }
+
                         for (Row row : rows) {
                             JsonObject obj = new JsonObject();
                             obj.put("name", row.getString("name"));

@@ -48,7 +48,7 @@ public class UserRouter implements RouterConf {
             )
                     .onFailure(event -> {
 //                                失败之后查询对应的用户信息到缓存中
-                        // todo
+                                // todo
 //                                PGSQLUtils.getConnection().compose(
 //                                        sqlConnection -> sqlConnection.
 //                                                preparedQuery("select first_name,last_name,email,phone from t_user where username=$1").
@@ -117,6 +117,13 @@ public class UserRouter implements RouterConf {
                             execute(Tuple.of(username, password)).
                             onComplete(a -> sqlConnection.close())
             ).onSuccess(event -> {
+
+                if (event.size() == 0) {
+                    CacheUser.add(username, CacheUser.User.builder().valid(false).build());
+                    response.setStatusCode(400).end();
+                    return;
+                }
+
                 for (Row row : event) {
                     CacheUser.add(username, CacheUser.User.builder().
                             password(password).
@@ -162,6 +169,11 @@ public class UserRouter implements RouterConf {
                             execute(Tuple.of(username)).onComplete(ar -> sqlConnection.close())
             ).
                     onSuccess(rows -> {
+                        if (rows.size() == 0) {
+                            response.setStatusCode(400).end();
+                            return;
+                        }
+
                         for (Row row : rows) {
                             CacheUser.User newUser = CacheUser.User.builder().
                                     username(username).

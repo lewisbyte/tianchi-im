@@ -100,6 +100,12 @@ public class MessageRouter implements RouterConf {
                     .onSuccess(rows -> {
                         response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                         JsonArray jsonArray = new JsonArray();
+
+                        if (rows.size()==0){
+                            response.end(jsonArray.toString());
+                            return;
+                        }
+
                         for (Row row : rows) {
                             JsonObject obj = new JsonObject();
                             obj.put("id", row.getString("mid"));
