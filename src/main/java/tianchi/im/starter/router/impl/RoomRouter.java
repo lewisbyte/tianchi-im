@@ -53,12 +53,20 @@ public class RoomRouter implements RouterConf {
             JsonObject body = ctx.getBodyAsJson();
             String name = body.getString("name");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1)")
+                    sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1) returning id")
                             .execute(Tuple.of(name)).
                             onComplete(ar -> sqlConnection.close())
             )
-                    .onSuccess(event -> {
-                        response.end();
+                    .onSuccess(rows -> {
+                        if (rows.size() == 0) {
+                            response.setStatusCode(400).end("INTO t_room failed");
+                            return;
+                        }
+                        // 缓存房间信息
+                        for (Row row : rows) {
+                            Long id = row.getLong("id");
+                            response.end(id.toString());
+                        }
                     })
                     .onFailure(event -> {
                         response.setStatusCode(400).end(event.getCause().toString());
