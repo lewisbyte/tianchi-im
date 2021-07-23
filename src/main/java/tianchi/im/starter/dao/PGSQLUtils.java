@@ -16,7 +16,7 @@ public class PGSQLUtils {
 
     private static PgConnectOptions connectOptions = new PgConnectOptions()
             .setPort(5432)
-            .setHost("localhost")
+            .setHost("127.0.0.1")
             .setDatabase("postgres")
             .setUser("postgres")
             .setPassword("postgres");
