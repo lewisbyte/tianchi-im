@@ -36,51 +36,71 @@ public class UserRouter implements RouterConf {
                 response.setStatusCode(400).end();
                 return;
             }
-            PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
-                            .execute(Tuple.of(body.getString("username"),
-                                    body.getString("firstName"),
-                                    body.getString("lastName"),
-                                    body.getString("email"),
-                                    body.getString("password"),
-                                    body.getString("phone"))
-                            ).onComplete(ar -> sqlConnection.close())
-            )
-                    .onFailure(event -> {
-//                                失败之后查询对应的用户信息到缓存中
-                                // todo
-//                                PGSQLUtils.getConnection().compose(
-//                                        sqlConnection -> sqlConnection.
-//                                                preparedQuery("select first_name,last_name,email,phone from t_user where username=$1").
-//                                                execute(Tuple.of(body.getString("username"))).
-//                                                onComplete(a -> sqlConnection.close())
-//                                ).onSuccess(rows -> {
-//                                    for (Row row : rows) {
-//                                        CacheUser.add(body.getString("username"), CacheUser.User.builder().
-//                                                firstName(row.getString("first_name")).
-//                                                lastName(row.getString("last_name")).
-//                                                email(row.getString("email")).
-//                                                phone(row.getString("phone")).
-//                                                valid(true).
-//                                                build());
-//                                        SessionUtils.login(body.getString("username"), body.getString("username"));
-//                                    }
-//                                });
-                                response.setStatusCode(400).end(event.getCause().toString());
-                            }
-                    )
-                    .onSuccess(event -> {
-                                CacheUser.add(body.getString("username"), CacheUser.User.builder()
-                                        .username(body.getString("username"))
-                                        .firstName(body.getString("firstName"))
-                                        .lastName(body.getString("lastName"))
-                                        .email(body.getString("email"))
-                                        .password(body.getString("password"))
-                                        .phone(body.getString("phone"))
-                                        .valid(true).build());
-                                response.end();
-                            }
+
+            PGSQLUtils.getConnection().compose(
+                    sqlConnection -> sqlConnection.
+                            preparedQuery("select first_name,last_name,email,phone,password from t_user where username=$1").
+                            execute(Tuple.of(body.getString("username"))).
+                            onComplete(a -> sqlConnection.close())
+            ).onSuccess(rows -> {
+
+                // 未查询到，新增用户
+                if (rows.size() == 0) {
+                    // 缓存新增用户
+                    CacheUser.add(body.getString("username"), CacheUser.User.builder().
+                            firstName(body.getString("first_name")).
+                            lastName(body.getString("last_name")).
+                            email(body.getString("email")).
+                            phone(body.getString("phone")).
+                            password(body.getString("password")).
+                            valid(true).
+                            build());
+                    SessionUtils.login(body.getString("username"), body.getString("username"));
+
+                    //插入用户
+                    PGSQLUtils.getConnection().compose(sqlConnection ->
+                            sqlConnection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
+                                    .execute(Tuple.of(body.getString("username"),
+                                            body.getString("firstName"),
+                                            body.getString("lastName"),
+                                            body.getString("email"),
+                                            body.getString("password"),
+                                            body.getString("phone"))
+                                    ).onComplete(ar -> sqlConnection.close())
                     );
+                    response.setStatusCode(200);
+                } else {
+                    // 查询到了，代表不可以插入，但是需要缓存到cache中
+                    for (Row row : rows) {
+                        CacheUser.add(body.getString("username"), CacheUser.User.builder().
+                                firstName(row.getString("first_name")).
+                                lastName(row.getString("last_name")).
+                                email(row.getString("email")).
+                                phone(row.getString("phone")).
+                                valid(true).
+                                build());
+                        SessionUtils.login(body.getString("username"), body.getString("username"));
+                    }
+                    response.setStatusCode(400);
+                }
+                response.end();
+
+            }).onFailure(event -> {
+                // 查询失败的情况下
+                PGSQLUtils.getConnection().compose(sqlConnection ->
+                        sqlConnection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
+                                .execute(Tuple.of(body.getString("username"),
+                                        body.getString("firstName"),
+                                        body.getString("lastName"),
+                                        body.getString("email"),
+                                        body.getString("password"),
+                                        body.getString("phone"))
+                                ).onComplete(ar -> sqlConnection.close())
+                );
+                response.setStatusCode(400).end();
+            });
+
+
         });
     }
 
