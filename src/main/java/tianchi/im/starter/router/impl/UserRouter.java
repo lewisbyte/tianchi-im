@@ -48,23 +48,24 @@ public class UserRouter implements RouterConf {
             )
                     .onFailure(event -> {
 //                                失败之后查询对应的用户信息到缓存中
-                                PGSQLUtils.getConnection().compose(
-                                        sqlConnection -> sqlConnection.
-                                                preparedQuery("select first_name,last_name,email,phone from t_user where username=$1").
-                                                execute(Tuple.of(body.getString("username"))).
-                                                onComplete(a -> sqlConnection.close())
-                                ).onSuccess(rows -> {
-                                    for (Row row : rows) {
-                                        CacheUser.add(body.getString("username"), CacheUser.User.builder().
-                                                firstName(row.getString("first_name")).
-                                                lastName(row.getString("last_name")).
-                                                email(row.getString("email")).
-                                                phone(row.getString("phone")).
-                                                valid(true).
-                                                build());
-                                        SessionUtils.login(body.getString("username"), body.getString("username"));
-                                    }
-                                });
+                        // todo
+//                                PGSQLUtils.getConnection().compose(
+//                                        sqlConnection -> sqlConnection.
+//                                                preparedQuery("select first_name,last_name,email,phone from t_user where username=$1").
+//                                                execute(Tuple.of(body.getString("username"))).
+//                                                onComplete(a -> sqlConnection.close())
+//                                ).onSuccess(rows -> {
+//                                    for (Row row : rows) {
+//                                        CacheUser.add(body.getString("username"), CacheUser.User.builder().
+//                                                firstName(row.getString("first_name")).
+//                                                lastName(row.getString("last_name")).
+//                                                email(row.getString("email")).
+//                                                phone(row.getString("phone")).
+//                                                valid(true).
+//                                                build());
+//                                        SessionUtils.login(body.getString("username"), body.getString("username"));
+//                                    }
+//                                });
                                 response.setStatusCode(400).end(event.getCause().toString());
                             }
                     )
