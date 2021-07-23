@@ -98,7 +98,6 @@ public class SessionUtils {
      * @return room id
      */
     public static void leaveRoom(String token) {
-        System.out.println("leave room ---begin");
         if (StringUtils.isEmpty(token)) {
             return;
         }
@@ -115,7 +114,6 @@ public class SessionUtils {
         }
         // 注销，移除用户信息
         roomSessionMap.remove(token);
-        System.out.println("leave room ---end");
 
     }
 
