@@ -19,7 +19,7 @@ public class PGSQLUtils {
             .setHost("localhost")
             .setDatabase("postgres")
             .setUser("postgres")
-            .setPassword("tkmk@123");
+            .setPassword("postgres");
 
     // Pool options
     private static PoolOptions poolOptions = new PoolOptions().setMaxSize(100);
