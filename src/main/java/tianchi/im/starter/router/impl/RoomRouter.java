@@ -197,7 +197,8 @@ public class RoomRouter implements RouterConf {
             Integer pageIndex = body.getInteger("pageIndex");
             Integer pageSize = body.getInteger("pageSize");
             if (pageIndex < 0 || pageSize < 0) {
-                ControllerException.InvalidExceptionAccess.error(new RuntimeException("分页查询错误，页码小于0"));
+                response.setStatusCode(400).end();
+                return;
             }
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
