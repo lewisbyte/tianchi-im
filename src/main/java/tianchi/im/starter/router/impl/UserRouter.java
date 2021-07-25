@@ -58,15 +58,15 @@ public class UserRouter implements RouterConf {
                     SessionUtils.login(body.getString("username"), body.getString("username"));
 
                     //插入用户
-                    PGSQLUtils.getConnection().compose(sqlConnection ->
-                            sqlConnection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
+                    PGSQLUtils.getConnection().compose(connection ->
+                            connection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
                                     .execute(Tuple.of(body.getString("username"),
                                             body.getString("firstName"),
                                             body.getString("lastName"),
                                             body.getString("email"),
                                             body.getString("password"),
                                             body.getString("phone"))
-                                    ).onComplete(ar -> sqlConnection.close())
+                                    ).onComplete(ar -> connection.close())
                     );
                     response.setStatusCode(200);
                 } else {
