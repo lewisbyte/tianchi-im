@@ -39,7 +39,7 @@ public class MainVerticle extends AbstractVerticle {
                 .onSuccess(event -> {
                     System.out.println("初始化链接数据库成功");
                 }).onFailure(event -> {
-            System.out.println("初始化链接数据库失败"+event.getLocalizedMessage());
+            System.out.println("初始化链接数据库失败" + event.getLocalizedMessage());
         });
 
 
