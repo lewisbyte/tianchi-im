@@ -13,7 +13,7 @@ public class CacheUser {
             //设置缓存容器的初始容量为10
             .initialCapacity(1 << 10)
             //设置缓存最大容量为100，超过100之后就会按照LRU最近虽少使用算法来移除缓存项
-            .maximumSize(1 << 18)
+            .maximumSize(1 << 20)
             .build();
 
     public static boolean exist(String username) {
