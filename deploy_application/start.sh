@@ -44,6 +44,7 @@ start() {
     -Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8 -jar ~/"${app_file_name}" \
     --isJar=true > ./im.log 2>&1 &
     systemctl start postgresql-13
+    source ~/.bash_profile
     sleep 15;
     warmup
     echo "start end ..."
