@@ -33,15 +33,16 @@ public class MainVerticle extends AbstractVerticle {
 
         server.requestHandler(router).listen(8080);
 
-        PGSQLUtils.getConnection().compose(sqlConnection -> sqlConnection.preparedQuery("select 1").
-                execute().
-                onComplete(ar -> sqlConnection.close()))
-                .onSuccess(event -> {
-                    System.out.println("初始化链接数据库成功");
-                }).onFailure(event -> {
-            System.out.println("初始化链接数据库失败" + event.getLocalizedMessage());
-        });
-
+        for (int i = 0; i < 100; i++) {
+            PGSQLUtils.getConnection().compose(sqlConnection -> sqlConnection.preparedQuery("select 1").
+                    execute().
+                    onComplete(ar -> sqlConnection.close()))
+                    .onSuccess(event -> {
+                        System.out.println("初始化链接数据库成功");
+                    }).onFailure(event -> {
+                System.out.println("初始化链接数据库失败" + event.getLocalizedMessage());
+            });
+        }
 
         System.out.println("server start ......");
     }
@@ -52,7 +53,7 @@ public class MainVerticle extends AbstractVerticle {
         new RoomRouter().configRouter(router);
         new UserRouter().configRouter(router);
 
-        router.get("/baseline").handler(ctx ->{
+        router.get("/baseline").handler(ctx -> {
             ctx.response().end("baseline");
         });
     }
