@@ -7,6 +7,8 @@ cd /Users/lewis/repo/tianchi-im-vert.x/deploy_application/;
 
 zip -r application.zip tianchi-im-1.0.0-SNAPSHOT-fat.jar;
 
+rm -rf tianchi-im-1.0.0-SNAPSHOT-fat.jar;
+
 zip -r deploy_application.zip ./*;
 
 mv deploy_application.zip /Users/lewis/Desktop/
