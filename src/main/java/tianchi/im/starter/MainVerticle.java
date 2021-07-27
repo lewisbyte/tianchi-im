@@ -51,5 +51,9 @@ public class MainVerticle extends AbstractVerticle {
         new MessageRouter().configRouter(router);
         new RoomRouter().configRouter(router);
         new UserRouter().configRouter(router);
+
+        router.get("/baseline").handler(ctx ->{
+            ctx.response().end("baseline");
+        });
     }
 }
