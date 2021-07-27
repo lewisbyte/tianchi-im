@@ -44,7 +44,7 @@ public class RoomRouter implements RouterConf {
             String token = SessionUtils.getToken(request);
 
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                response.setStatusCode(400).end("非法token");
+                response.setStatusCode(400).end();
                 return;
             }
 
@@ -58,7 +58,7 @@ public class RoomRouter implements RouterConf {
             )
                     .onSuccess(rows -> {
                         if (rows.size() == 0) {
-                            response.setStatusCode(400).end("INTO t_room failed");
+                            response.setStatusCode(400).end();
                             return;
                         }
                         // 缓存房间信息
@@ -68,7 +68,7 @@ public class RoomRouter implements RouterConf {
                         }
                     })
                     .onFailure(event -> {
-                        response.setStatusCode(400).end(event.getCause().toString());
+                        response.setStatusCode(400).end();
                     });
         });
     }
@@ -121,7 +121,7 @@ public class RoomRouter implements RouterConf {
             String token = SessionUtils.getToken(request);
 
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                response.setStatusCode(400).end("非法token");
+                response.setStatusCode(400).end();
                 return;
             }
 
@@ -142,12 +142,12 @@ public class RoomRouter implements RouterConf {
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
 
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                response.setStatusCode(400).end("非法token");
+                response.setStatusCode(400).end();
                 return;
             }
 
             if (StringUtils.isEmpty(roomid)) {
-                response.setStatusCode(400).end("用户没有进入房间");
+                response.setStatusCode(400).end();
                 return;
             }
             CacheRoom.Room room = CacheRoom.get(roomid);

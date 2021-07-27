@@ -40,12 +40,12 @@ public class MessageRouter implements RouterConf {
             String roomid = SessionUtils.getRoomInfoByToken(token);
 
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                response.setStatusCode(400).end("非法token");
+                response.setStatusCode(400).end();
                 return;
             }
 
             if (StringUtils.isEmpty(roomid)) {
-                response.setStatusCode(400).end("用户没有进入房间");
+                response.setStatusCode(400).end();
                 return;
             }
 
@@ -80,12 +80,12 @@ public class MessageRouter implements RouterConf {
 
 
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
-                response.setStatusCode(400).end("非法token");
+                response.setStatusCode(400).end();
                 return;
             }
 
             if (StringUtils.isEmpty(roomid)) {
-                response.setStatusCode(400).end("用户没有进入房间");
+                response.setStatusCode(400).end();
                 return;
             }
             JsonObject body = ctx.getBodyAsJson();
@@ -98,7 +98,7 @@ public class MessageRouter implements RouterConf {
                     ).onComplete(ar -> sqlConnection.close())
             )
                     .onFailure(throwable -> {
-                        response.setStatusCode(400).end(throwable.getMessage());
+                        response.setStatusCode(400).end();
                     })
                     .onSuccess(rows -> {
                         response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
