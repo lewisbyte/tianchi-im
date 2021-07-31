@@ -17,7 +17,7 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
 
-        <vertx.version>4.1.1</vertx.version>
+        <vertx.version>4.1.2</vertx.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
 
         <main.verticle>tianchi.im.starter.MainVerticle</main.verticle>
@@ -63,11 +63,9 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-kafka-client</artifactId>
-            <version>4.1.2</version>
         </dependency>
         <!--  非vert.x 依赖分界线  -->
         <dependency>
