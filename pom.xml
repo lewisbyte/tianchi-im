@@ -64,7 +64,11 @@
             <scope>test</scope>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-kafka-client</artifactId>
+            <version>4.1.2</version>
+        </dependency>
         <!--  非vert.x 依赖分界线  -->
         <dependency>
             <groupId>cn.hutool</groupId>
