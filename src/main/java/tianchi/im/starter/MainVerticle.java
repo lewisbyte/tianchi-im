@@ -6,6 +6,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import tianchi.im.starter.dao.PGSQLUtils;
+import tianchi.im.starter.mq.KafkaManager;
 import tianchi.im.starter.router.impl.MessageRouter;
 import tianchi.im.starter.router.impl.RoomRouter;
 import tianchi.im.starter.router.impl.UserRouter;
@@ -21,6 +22,9 @@ public class MainVerticle extends AbstractVerticle {
 
         // 创建数据库连接池
         PGSQLUtils.configAndCreatePool(vertx);
+
+        // 配置kafka
+        KafkaManager.configKafka(vertx);
 
         router.errorHandler(500, ctx -> {
             ctx.response().setStatusCode(400).end(ctx.failure().getMessage());
