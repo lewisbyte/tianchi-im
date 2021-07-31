@@ -45,6 +45,10 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-pg-client</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-kafka-client</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
@@ -63,10 +67,7 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-kafka-client</artifactId>
-        </dependency>
+
         <!--  非vert.x 依赖分界线  -->
         <dependency>
             <groupId>cn.hutool</groupId>
