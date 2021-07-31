@@ -55,7 +55,7 @@ public class MessageRouter implements RouterConf {
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
+                    sqlConnection.preparedQuery("INSERT INTO t_message_" + getSharding(roomid) + " (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
                             execute(Tuple.of(text, Long.valueOf(roomid), System.currentTimeMillis(), id)).
                             onComplete(ar -> sqlConnection.close())
             ).onFailure(event -> {
@@ -64,6 +64,10 @@ public class MessageRouter implements RouterConf {
                 response.end();
             });
         });
+    }
+
+    private long getSharding(String roomid) {
+        return Long.parseLong(roomid) % 32;
     }
 
     /**
@@ -93,7 +97,7 @@ public class MessageRouter implements RouterConf {
             Integer pageIndex = body.getInteger("pageIndex");
             Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 order by id desc limit $2 offset $3").execute(
+                    sqlConnection.preparedQuery("select mid,stamp,text from t_message_" + getSharding(roomid) + " where roomid=$1 order by id desc limit $2 offset $3").execute(
                             Tuple.of(Long.valueOf(roomid), pageSize, Math.abs(pageIndex + 1) * pageSize)
                     ).onComplete(ar -> sqlConnection.close())
             )
@@ -104,7 +108,7 @@ public class MessageRouter implements RouterConf {
                         response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                         JsonArray jsonArray = new JsonArray();
 
-                        if (rows.size()==0){
+                        if (rows.size() == 0) {
                             response.end(jsonArray.toString());
                             return;
                         }
