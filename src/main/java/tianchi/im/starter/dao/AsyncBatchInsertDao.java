@@ -9,7 +9,7 @@ import io.vertx.sqlclient.Tuple;
 public class AsyncBatchInsertDao {
 
     // 用于存储批量环境
-    private StringBuffer stringBuffer = new StringBuffer(size * 2);
+    private StringBuffer stringBuffer = new StringBuffer("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ");
 
     // 时钟周期大小
     // 预防出现多次轮训发现没有触发
@@ -38,9 +38,10 @@ public class AsyncBatchInsertDao {
                 sqlConnection.preparedQuery(stringBuffer.toString()).
                         execute().
                         onComplete(ar -> sqlConnection.close())
-        );
+        ).onSuccess(event->{
+            System.out.println("插入成功");
+        });
         tick = 0;
-        stringBuffer = new StringBuffer(size * 2);
+        stringBuffer = new StringBuffer("INSERT INTO t_message (text,roomid,stamp,mid) VALUES");
     }
-
 }
