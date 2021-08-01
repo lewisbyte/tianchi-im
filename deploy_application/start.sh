@@ -45,10 +45,7 @@ start() {
     --isJar=true > ./im.log 2>&1 &
     systemctl restart postgresql-13
     sleep 15;
-    warmup
     echo "start end ..."
-}
-warmup(){
 }
 
 # shellcheck disable=SC2166
