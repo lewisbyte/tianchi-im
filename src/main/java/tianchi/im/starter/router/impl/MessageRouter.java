@@ -57,7 +57,7 @@ public class MessageRouter implements RouterConf {
             String id = body.getString("id");
             String text = body.getString("text");
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            String s = String.format("(%s,%s,%s,%s);", text, Long.valueOf(roomid), System.currentTimeMillis(), id);
+            String s = String.format("('%s','%s','%s','%s');", text, Long.valueOf(roomid), System.currentTimeMillis(), id);
             asyncBatchInsertDao.submitMessage(s);
             response.end();
         });
