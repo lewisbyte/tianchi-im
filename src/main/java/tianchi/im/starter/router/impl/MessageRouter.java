@@ -8,6 +8,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
 import tianchi.im.starter.constants.HttpHeaderConstant;
+import tianchi.im.starter.dao.AsyncBatchInsertDao;
 import tianchi.im.starter.dao.PGSQLUtils;
 import tianchi.im.starter.router.RouterConf;
 import tianchi.im.starter.utils.SessionUtils;
@@ -20,6 +21,9 @@ import tianchi.im.starter.utils.StringUtils;
  * @create: 2021-07-17 16:43
  */
 public class MessageRouter implements RouterConf {
+
+
+    AsyncBatchInsertDao asyncBatchInsertDao = new AsyncBatchInsertDao();
 
     @Override
     public void configRouter(Router router) {
@@ -53,16 +57,9 @@ public class MessageRouter implements RouterConf {
             String id = body.getString("id");
             String text = body.getString("text");
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-
-            PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_message_" + getSharding(roomid) + " (text,roomid,stamp,mid) VALUES ($1,$2,$3,$4)").
-                            execute(Tuple.of(text, Long.valueOf(roomid), System.currentTimeMillis(), id)).
-                            onComplete(ar -> sqlConnection.close())
-            ).onFailure(event -> {
-                response.setStatusCode(400).end();
-            }).onSuccess(event -> {
-                response.end();
-            });
+            String s = String.format("INSERT INTO t_message_%s (text,roomid,stamp,mid) VALUES (%s,%s,%s,%s)", getSharding(roomid), text, Long.valueOf(roomid), System.currentTimeMillis(), id);
+            asyncBatchInsertDao.submitMessage(s);
+            response.end();
         });
     }
 
