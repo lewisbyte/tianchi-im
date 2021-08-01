@@ -38,8 +38,10 @@ public class AsyncBatchInsertDao {
                 sqlConnection.preparedQuery(stringBuffer.toString()).
                         execute().
                         onComplete(ar -> sqlConnection.close())
-        ).onSuccess(event->{
+        ).onSuccess(event -> {
             System.out.println("插入成功");
+        }).onFailure(event -> {
+            System.out.println("插入失败" + event);
         });
         tick = 0;
         stringBuffer = new StringBuffer("INSERT INTO t_message (text,roomid,stamp,mid) VALUES");
