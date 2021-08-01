@@ -49,7 +49,6 @@ start() {
     echo "start end ..."
 }
 warmup(){
- /usr/local/bin/wrk -t10 -c100 -d10s --latency http://localhost:8080/baseline
 }
 
 # shellcheck disable=SC2166
