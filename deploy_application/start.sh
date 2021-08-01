@@ -49,9 +49,7 @@ start() {
     echo "start end ..."
 }
 warmup(){
-  curl -X 'GET' \
-  'http://localhost:8080/userLogin?username=1&password=1' \
-  -H 'accept: */*';
+ /usr/local/bin/wrk -t10 -c100 -d10s --latency http://localhost:8080/baseline
 }
 
 # shellcheck disable=SC2166
