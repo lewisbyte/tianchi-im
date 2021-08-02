@@ -12,7 +12,7 @@ public class AsyncBatchInsertDao {
 
     private static volatile int count = 0;
 
-    private static ArrayBlockingQueue<String> arrayBlockingQueue = new ArrayBlockingQueue(1 << 21);
+    private static ArrayBlockingQueue<String> arrayBlockingQueue = new ArrayBlockingQueue(1 << 18);
 
     public static final String T_MESSAGE_PREFIX = "INSERT INTO t_message (text,roomid,stamp,mid) VALUES ";
 
