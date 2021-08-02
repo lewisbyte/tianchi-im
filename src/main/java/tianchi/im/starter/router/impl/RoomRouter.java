@@ -55,10 +55,11 @@ public class RoomRouter implements RouterConf {
             }
             JsonObject body = ctx.getBodyAsJson();
             String name = body.getString("name");
-            long id = snowflake.nextId();
+            Long id = snowflake.nextId();
             String s = String.format("('%s','%s')", id, name);
             AsyncBatchInsertDao.submitRoom(s);
-            response.end(String.valueOf(id));
+            CacheRoom.add(id.toString(), CacheRoom.Room.builder().name(name).valid(true).build());
+            response.end(id.toString());
         });
     }
 
