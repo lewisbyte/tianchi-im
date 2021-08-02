@@ -23,8 +23,6 @@ import tianchi.im.starter.utils.StringUtils;
 public class MessageRouter implements RouterConf {
 
 
-    AsyncBatchInsertDao asyncBatchInsertDao = new AsyncBatchInsertDao();
-
     @Override
     public void configRouter(Router router) {
         messageSend(router);
@@ -52,13 +50,12 @@ public class MessageRouter implements RouterConf {
                 response.setStatusCode(400).end();
                 return;
             }
-
             JsonObject body = ctx.getBodyAsJson();
             String id = body.getString("id");
             String text = body.getString("text");
             response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.text_plain);
-            String s = String.format("('%s','%s','%s','%s');", text, Long.valueOf(roomid), System.currentTimeMillis(), id);
-            asyncBatchInsertDao.submitMessage(s);
+            String s = String.format("('%s','%s','%s','%s')", text, Long.valueOf(roomid), System.currentTimeMillis(), id);
+            AsyncBatchInsertDao.submitMessage(s);
             response.end();
         });
     }

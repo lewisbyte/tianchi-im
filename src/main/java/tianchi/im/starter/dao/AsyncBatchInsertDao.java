@@ -1,49 +1,50 @@
 package tianchi.im.starter.dao;
 
 
-import io.vertx.sqlclient.Tuple;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * 异步批量插入
  */
 public class AsyncBatchInsertDao {
 
-    // 用于存储批量环境
-    private StringBuffer stringBuffer = new StringBuffer("INSERT INTO t_message (text,roomid,stamp,mid) VALUES ");
+    private static volatile int count = 0;
 
-    // 时钟周期大小
-    // 预防出现多次轮训发现没有触发
-    private volatile int tick = 0;
+    private static ArrayBlockingQueue<String> arrayBlockingQueue = new ArrayBlockingQueue(1 << 21);
 
+    public static final String T_MESSAGE_PREFIX = "INSERT INTO t_message (text,roomid,stamp,mid) VALUES ";
 
-    //65536 批量语句长度大小的阈值
-    private static final int size = 1 << 16;
-
-    public void submitMessage(String s) {
-        stringBuffer.append(s);
-        executeTask();
-    }
-
-
-    public void executeTask() {
-        if (tick++ > 1000) {
-            insertDb();
-        } else if (stringBuffer.length() > size) {
-            insertDb();
+    public static void submitMessage(String s) {
+        try {
+            arrayBlockingQueue.put(s);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    private void insertDb() {
+    public static void handleMessage() {
+        List<String> stringList = new ArrayList<>();
+        arrayBlockingQueue.drainTo(stringList);
+        int size = stringList.size();
+        if (size == 0) {
+            return;
+        }
+        StringBuffer stringBuffer = new StringBuffer(T_MESSAGE_PREFIX);
+        for (int i = 0; i < size; i++) {
+            String s = stringList.get(i);
+            stringBuffer.append(s).append(i == size - 1 ? ';' : ',');
+        }
         PGSQLUtils.getConnection().compose(sqlConnection ->
                 sqlConnection.preparedQuery(stringBuffer.toString()).
                         execute().
                         onComplete(ar -> sqlConnection.close())
         ).onSuccess(event -> {
-            System.out.println("插入成功");
+            count++;
+            System.out.println("插入成功" + size);
         }).onFailure(event -> {
-            System.out.println("插入失败" + event);
+            count++;
         });
-        tick = 0;
-        stringBuffer = new StringBuffer("INSERT INTO t_message (text,roomid,stamp,mid) VALUES");
     }
 }

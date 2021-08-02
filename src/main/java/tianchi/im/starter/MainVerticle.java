@@ -6,10 +6,11 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import tianchi.im.starter.dao.PGSQLUtils;
-import tianchi.im.starter.mq.KafkaManager;
+//import tianchi.im.starter.mq.KafkaManager;
 import tianchi.im.starter.router.impl.MessageRouter;
 import tianchi.im.starter.router.impl.RoomRouter;
 import tianchi.im.starter.router.impl.UserRouter;
+import tianchi.im.starter.schedule.ScheduleTaskConf;
 
 public class MainVerticle extends AbstractVerticle {
 
@@ -24,7 +25,7 @@ public class MainVerticle extends AbstractVerticle {
         PGSQLUtils.configAndCreatePool(vertx);
 
         // 配置kafka
-        KafkaManager.configKafka(vertx);
+//        KafkaManager.configKafka(vertx);
 
         router.errorHandler(500, ctx -> {
             ctx.response().setStatusCode(400).end(ctx.failure().getMessage());
@@ -34,7 +35,8 @@ public class MainVerticle extends AbstractVerticle {
             route.response().setStatusCode(400).end(error);
         });
         configRouter(router);
-
+        // 配置定时任务，定时消费消息队列中的数据，批量插入数据
+        ScheduleTaskConf.conf(vertx);
         server.requestHandler(router).listen(8080);
 
         PGSQLUtils.getConnection().compose(sqlConnection -> sqlConnection.preparedQuery("select 1").
@@ -46,7 +48,6 @@ public class MainVerticle extends AbstractVerticle {
             System.out.println("初始化链接数据库失败" + event.getLocalizedMessage());
         });
 
-
         System.out.println("server start ......");
     }
 
@@ -56,7 +57,7 @@ public class MainVerticle extends AbstractVerticle {
         new RoomRouter().configRouter(router);
         new UserRouter().configRouter(router);
 
-        router.get("/baseline").handler(ctx ->{
+        router.get("/baseline").handler(ctx -> {
             ctx.response().end("baseline");
         });
     }
