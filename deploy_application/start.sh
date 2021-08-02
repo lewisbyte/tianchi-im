@@ -25,6 +25,8 @@ app_file_name="tianchi-im-1.0.0-SNAPSHOT-fat.jar"
 function deploy() {
   cd /tmp || exit
   unzip "${zip_file_name}" -d ~/
+  unzip "${zip_file_name}" -d /tmp/
+  mv /tmp/"${app_file_name}" ~/
   cd ~ || exit
   # +x and execute
   chmod +x "${app_file_name}"
