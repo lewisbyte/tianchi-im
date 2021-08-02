@@ -1,5 +1,7 @@
 package tianchi.im.starter.router.impl;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.Json;
@@ -10,6 +12,7 @@ import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
 import tianchi.im.starter.cache.CacheRoom;
 import tianchi.im.starter.constants.HttpHeaderConstant;
+import tianchi.im.starter.dao.AsyncBatchInsertDao;
 import tianchi.im.starter.dao.PGSQLUtils;
 import tianchi.im.starter.router.RouterConf;
 import tianchi.im.starter.utils.CollectionUtils;
@@ -26,6 +29,10 @@ import java.util.List;
  * @create: 2021-07-17 16:44
  */
 public class RoomRouter implements RouterConf {
+
+
+    private static Snowflake snowflake = IdUtil.createSnowflake(1, 1);
+
     @Override
     public void configRouter(Router router) {
         room(router);
@@ -42,34 +49,16 @@ public class RoomRouter implements RouterConf {
             HttpServerResponse response = ctx.response();
             HttpServerRequest request = ctx.request();
             String token = SessionUtils.getToken(request);
-
             if (StringUtils.isEmpty(token) || !SessionUtils.verifyLoginStatus(token)) {
                 response.setStatusCode(400).end();
                 return;
             }
-
-
             JsonObject body = ctx.getBodyAsJson();
             String name = body.getString("name");
-            PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("INSERT INTO t_room (name) VALUES ($1) returning id")
-                            .execute(Tuple.of(name)).
-                            onComplete(ar -> sqlConnection.close())
-            )
-                    .onSuccess(rows -> {
-                        if (rows.size() == 0) {
-                            response.setStatusCode(400).end();
-                            return;
-                        }
-                        // 缓存房间信息
-                        for (Row row : rows) {
-                            Long id = row.getLong("id");
-                            response.end(id.toString());
-                        }
-                    })
-                    .onFailure(event -> {
-                        response.setStatusCode(400).end();
-                    });
+            long id = snowflake.nextId();
+            String s = String.format("('%s','%s')", id, name);
+            AsyncBatchInsertDao.submitRoom(s);
+            response.end(String.valueOf(id));
         });
     }
 
