@@ -6,7 +6,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import tianchi.im.starter.dao.PGSQLUtils;
-//import tianchi.im.starter.mq.KafkaManager;
 import tianchi.im.starter.router.impl.MessageRouter;
 import tianchi.im.starter.router.impl.RoomRouter;
 import tianchi.im.starter.router.impl.UserRouter;
