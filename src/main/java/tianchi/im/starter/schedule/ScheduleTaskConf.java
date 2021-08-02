@@ -5,7 +5,7 @@ import tianchi.im.starter.dao.AsyncBatchInsertDao;
 
 public class ScheduleTaskConf {
     public static void conf(Vertx vertx) {
-        vertx.setPeriodic(2, (l) -> {
+        vertx.setPeriodic(100, (l) -> {
             AsyncBatchInsertDao.handleMessage();
         });
     }

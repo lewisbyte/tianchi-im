@@ -42,6 +42,7 @@ public class AsyncBatchInsertDao {
                         onComplete(ar -> sqlConnection.close())
         ).onSuccess(event -> {
             count++;
+            System.out.println(size);
         }).onFailure(event -> {
             count++;
         });
