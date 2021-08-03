@@ -14,7 +14,7 @@ import io.vertx.sqlclient.*;
  */
 public class PGSQLUtils {
 
-    private static PgConnectOptions connectOptions = new PgConnectOptions()
+    private static final PgConnectOptions connectOptions = new PgConnectOptions()
             .setPort(5432)
             .setHost("127.0.0.1")
             .setDatabase("postgres")
@@ -22,7 +22,7 @@ public class PGSQLUtils {
             .setPassword("postgres");
 
     // Pool options
-    private static PoolOptions poolOptions = new PoolOptions().setMaxSize(84);
+    private static final PoolOptions poolOptions = new PoolOptions().setMaxSize(84);
 
     // 保存池对象
     private static PgPool pool;

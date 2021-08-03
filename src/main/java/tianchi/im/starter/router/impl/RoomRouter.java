@@ -31,7 +31,7 @@ import java.util.List;
 public class RoomRouter implements RouterConf {
 
 
-    private static Snowflake snowflake = IdUtil.createSnowflake(1, 1);
+    private static final Snowflake snowflake = IdUtil.createSnowflake(1, 1);
 
     @Override
     public void configRouter(Router router) {
