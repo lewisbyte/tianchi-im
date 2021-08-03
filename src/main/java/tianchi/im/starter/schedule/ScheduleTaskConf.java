@@ -9,6 +9,6 @@ public class ScheduleTaskConf {
 
     public static void conf(Vertx vertx) {
         vertx.setPeriodic(DURATION, (l) -> AsyncBatchInsertDao.handleMessage());
-        vertx.setPeriodic(DURATION, (l) -> AsyncBatchInsertDao.handleRoom());
+        vertx.setPeriodic(DURATION-30, (l) -> AsyncBatchInsertDao.handleRoom());
     }
 }
