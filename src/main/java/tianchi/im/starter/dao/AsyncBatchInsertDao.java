@@ -15,26 +15,31 @@ public class AsyncBatchInsertDao {
 
     private static final ArrayBlockingQueue<String> messageArrayBlockingQueue = new ArrayBlockingQueue<>(1 << 18);
     private static final ArrayBlockingQueue<String> roomArrayBlockingQueue = new ArrayBlockingQueue<>(1 << 18);
+    private static final ArrayBlockingQueue<String> userArrayBlockingQueue = new ArrayBlockingQueue<>(1 << 18);
 
     public static final String T_MESSAGE_PREFIX = "INSERT INTO t_message (text,roomid,stamp,mid) VALUES ";
     public static final String T_ROOM_PREFIX = "INSERT INTO t_room (id,name) VALUES ";
+    public static final String T_USER_PREFIX = "INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ";
 
     public static void submitMessage(String s) {
-        try {
-            messageArrayBlockingQueue.put(s);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        submitToQueue(messageArrayBlockingQueue, s);
     }
 
     public static void submitRoom(String s) {
+        submitToQueue(roomArrayBlockingQueue, s);
+    }
+
+    public static void submitUser(String s) {
+        submitToQueue(userArrayBlockingQueue, s);
+    }
+
+    private static void submitToQueue(ArrayBlockingQueue<String> queue, String s) {
         try {
-            roomArrayBlockingQueue.put(s);
+            queue.put(s);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
-
 
     /**
      * 消息处理器
@@ -50,6 +55,12 @@ public class AsyncBatchInsertDao {
         handle(roomArrayBlockingQueue, T_ROOM_PREFIX);
     }
 
+    /**
+     * 用户处理器
+     */
+    public static void handleUser() {
+        handle(userArrayBlockingQueue, T_USER_PREFIX);
+    }
 
     /**
      * 数据处理模板
@@ -70,8 +81,8 @@ public class AsyncBatchInsertDao {
             stringBuffer.append(s).append(i == size - 1 ? ';' : ',');
         }
         PGSQLUtils.getConnection().compose(sqlConnection ->
-                sqlConnection.preparedQuery(stringBuffer.toString()).execute().
-                        onComplete(ar -> sqlConnection.close())).
+                        sqlConnection.preparedQuery(stringBuffer.toString()).execute().
+                                onComplete(ar -> sqlConnection.close())).
                 onSuccess(event -> gcRoot++).onFailure(event -> gcRoot++);
     }
 }

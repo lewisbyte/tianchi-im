@@ -7,6 +7,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
 import tianchi.im.starter.constants.HttpHeaderConstant;
+import tianchi.im.starter.dao.AsyncBatchInsertDao;
 import tianchi.im.starter.dao.PGSQLUtils;
 import tianchi.im.starter.router.RouterConf;
 import tianchi.im.starter.cache.CacheUser;
@@ -56,18 +57,14 @@ public class UserRouter implements RouterConf {
                             valid(true).
                             build());
                     SessionUtils.login(body.getString("username"), body.getString("username"));
-
                     //插入用户
-                    PGSQLUtils.getConnection().compose(connection ->
-                            connection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
-                                    .execute(Tuple.of(body.getString("username"),
-                                            body.getString("firstName"),
-                                            body.getString("lastName"),
-                                            body.getString("email"),
-                                            body.getString("password"),
-                                            body.getString("phone"))
-                                    ).onComplete(ar -> connection.close())
-                    );
+                    AsyncBatchInsertDao.submitUser(String.format("('%s', '%s', '%s', '%s', '%s', '%s')",
+                            body.getString("username"),
+                            body.getString("firstName"),
+                            body.getString("lastName"),
+                            body.getString("email"),
+                            body.getString("password"),
+                            body.getString("phone")));
                     response.setStatusCode(200);
                 } else {
                     // 查询到了，代表不可以插入，但是需要缓存到cache中
@@ -183,10 +180,10 @@ public class UserRouter implements RouterConf {
             }
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.
-                            preparedQuery("select first_name,last_name,email,password,phone from t_user where username=$1").
-                            execute(Tuple.of(username)).onComplete(ar -> sqlConnection.close())
-            ).
+                            sqlConnection.
+                                    preparedQuery("select first_name,last_name,email,password,phone from t_user where username=$1").
+                                    execute(Tuple.of(username)).onComplete(ar -> sqlConnection.close())
+                    ).
                     onSuccess(rows -> {
                         if (rows.size() == 0) {
                             response.setStatusCode(400).end();
