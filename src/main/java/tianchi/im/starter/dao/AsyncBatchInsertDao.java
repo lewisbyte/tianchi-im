@@ -10,10 +10,11 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class AsyncBatchInsertDao {
 
+    // 保证异步线程内持有一个static field 的 gcRoot 引用，确保线程任务不会中断
     private static volatile int gcRoot = 0;
 
-    private static ArrayBlockingQueue<String> messageArrayBlockingQueue = new ArrayBlockingQueue(1 << 18);
-    private static ArrayBlockingQueue<String> roomArrayBlockingQueue = new ArrayBlockingQueue(1 << 18);
+    private static final ArrayBlockingQueue<String> messageArrayBlockingQueue = new ArrayBlockingQueue<>(1 << 18);
+    private static final ArrayBlockingQueue<String> roomArrayBlockingQueue = new ArrayBlockingQueue<>(1 << 18);
 
     public static final String T_MESSAGE_PREFIX = "INSERT INTO t_message (text,roomid,stamp,mid) VALUES ";
     public static final String T_ROOM_PREFIX = "INSERT INTO t_room (id,name) VALUES ";
