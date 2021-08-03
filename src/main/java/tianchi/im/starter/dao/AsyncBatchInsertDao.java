@@ -75,7 +75,8 @@ public class AsyncBatchInsertDao {
         if (size == 0) {
             return;
         }
-        StringBuffer stringBuffer = new StringBuffer(dml);
+        StringBuffer stringBuffer = new StringBuffer(1 << 16);
+        stringBuffer.append(dml);
         for (int i = 0; i < size; i++) {
             String s = stringList.get(i);
             stringBuffer.append(s).append(i == size - 1 ? ';' : ',');
