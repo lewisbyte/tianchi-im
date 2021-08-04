@@ -24,7 +24,7 @@ public class CacheRoom {
     }
 
     @Builder
-    public static class Room{
+    public static class Room {
         private String name;
         private boolean valid = false;
 

@@ -6,11 +6,11 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.sqlclient.Row;
 import io.vertx.sqlclient.Tuple;
+import tianchi.im.starter.cache.CacheUser;
 import tianchi.im.starter.constants.HttpHeaderConstant;
 import tianchi.im.starter.dao.AsyncBatchInsertDao;
 import tianchi.im.starter.dao.PGSQLUtils;
 import tianchi.im.starter.router.RouterConf;
-import tianchi.im.starter.cache.CacheUser;
 import tianchi.im.starter.utils.SessionUtils;
 
 /**

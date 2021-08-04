@@ -77,10 +77,10 @@ public class RoomRouter implements RouterConf {
                 return;
             }
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select name from t_room where id=$1").
-                            execute(Tuple.of(Long.valueOf(roomid))).
-                            onComplete(ar -> sqlConnection.close())
-            ).
+                            sqlConnection.preparedQuery("select name from t_room where id=$1").
+                                    execute(Tuple.of(Long.valueOf(roomid))).
+                                    onComplete(ar -> sqlConnection.close())
+                    ).
                     onSuccess(rows -> {
 
                         if (rows.size() == 0) {
@@ -153,10 +153,10 @@ public class RoomRouter implements RouterConf {
             } else {
                 // 检查 房间id 是否合法
                 PGSQLUtils.getConnection().compose(sqlConnection ->
-                        sqlConnection.preparedQuery("select name from t_room where id=$1").
-                                execute(Tuple.of(Long.valueOf(roomid))).
-                                onComplete(ar -> sqlConnection.close())
-                ).
+                                sqlConnection.preparedQuery("select name from t_room where id=$1").
+                                        execute(Tuple.of(Long.valueOf(roomid))).
+                                        onComplete(ar -> sqlConnection.close())
+                        ).
                         onSuccess(rows -> {
                             SessionUtils.leaveRoom(token);
                             boolean success = SessionUtils.entryRoom(token, roomid);
@@ -208,10 +208,10 @@ public class RoomRouter implements RouterConf {
             }
 
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select name,id from t_room limit $1 offset $2").
-                            execute(Tuple.of(pageSize, pageSize * pageIndex)).
-                            onComplete(ar -> sqlConnection.close())
-            )
+                            sqlConnection.preparedQuery("select name,id from t_room limit $1 offset $2").
+                                    execute(Tuple.of(pageSize, pageSize * pageIndex)).
+                                    onComplete(ar -> sqlConnection.close())
+                    )
                     .onSuccess(rows -> {
                         response.putHeader(HttpHeaderConstant.content_type, HttpHeaderConstant.application_json);
                         JsonArray jsonArray = new JsonArray();

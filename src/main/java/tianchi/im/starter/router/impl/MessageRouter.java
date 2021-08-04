@@ -91,10 +91,10 @@ public class MessageRouter implements RouterConf {
             Integer pageIndex = body.getInteger("pageIndex");
             Integer pageSize = body.getInteger("pageSize");
             PGSQLUtils.getConnection().compose(sqlConnection ->
-                    sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 order by id desc limit $2 offset $3").execute(
-                            Tuple.of(Long.valueOf(roomid), pageSize, Math.abs(pageIndex + 1) * pageSize)
-                    ).onComplete(ar -> sqlConnection.close())
-            )
+                            sqlConnection.preparedQuery("select mid,stamp,text from t_message where roomid=$1 order by id desc limit $2 offset $3").execute(
+                                    Tuple.of(Long.valueOf(roomid), pageSize, Math.abs(pageIndex + 1) * pageSize)
+                            ).onComplete(ar -> sqlConnection.close())
+                    )
                     .onFailure(throwable -> {
                         response.setStatusCode(400).end();
                     })

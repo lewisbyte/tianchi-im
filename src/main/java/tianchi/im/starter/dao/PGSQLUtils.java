@@ -4,7 +4,8 @@ import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.pgclient.PgConnectOptions;
 import io.vertx.pgclient.PgPool;
-import io.vertx.sqlclient.*;
+import io.vertx.sqlclient.PoolOptions;
+import io.vertx.sqlclient.SqlConnection;
 
 /**
  * @program: tianchi-im-vert.x
@@ -40,6 +41,6 @@ public class PGSQLUtils {
 
 
     public static void configAndCreatePool(Vertx vertx) {
-       pool =  PgPool.pool(vertx,connectOptions, poolOptions);
+        pool = PgPool.pool(vertx, connectOptions, poolOptions);
     }
 }
