@@ -23,17 +23,17 @@ public class SessionUtils {
     // 存储用户当前的所处的房间
     // key: token
     // value: room id
-    private static Map<String, String> roomSessionMap = new ConcurrentHashMap<>();
+    private static final Map<String, String> roomSessionMap = new ConcurrentHashMap<>();
 
     // 存储房间的用户
     // key: roomid
     // value: username set list
-    private static Map<String, Set<String>> roomUserInfoMap = new ConcurrentHashMap<>();
+    private static final Map<String, Set<String>> roomUserInfoMap = new ConcurrentHashMap<>();
 
     // 存储用户信息
     //key: token
     //value: username
-    private static Map<String, String> userInfo = new ConcurrentHashMap<>();
+    private static final Map<String, String> userInfo = new ConcurrentHashMap<>();
 
 
     /**
