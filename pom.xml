@@ -36,6 +36,10 @@
         </dependencies>
     </dependencyManagement>
 
+    <profiles>
+    </profiles>
+
+
     <dependencies>
         <dependency>
             <groupId>io.vertx</groupId>
@@ -45,10 +49,11 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-pg-client</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>io.vertx</groupId>-->
-<!--            <artifactId>vertx-kafka-client</artifactId>-->
-<!--        </dependency>-->
+        <!--    shared data dependency    -->
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-hazelcast</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.vertx</groupId>
@@ -98,10 +103,6 @@
             <version>2.1</version>
         </dependency>
     </dependencies>
-
-
-    <profiles>
-    </profiles>
 
 
     <build>
