@@ -33,50 +33,56 @@ public class UserRouter implements RouterConf {
         router.post("/user").handler(ctx -> {
             HttpServerResponse response = ctx.response();
             JsonObject body = ctx.getBodyAsJson();
-            if (CacheUser.exist(body.getString("username"))) {
+            String username = body.getString("username");
+            if (CacheUser.exist(username)) {
                 response.setStatusCode(400).end();
                 return;
             }
 
+            String firstName = body.getString("firstName");
+            String lastName = body.getString("lastName");
+            String email = body.getString("email");
+            String phone = body.getString("phone");
+            String password = body.getString("password");
             PGSQLUtils.getConnection().compose(
                     sqlConnection -> sqlConnection.
                             preparedQuery("select first_name,last_name,email,phone,password from t_user where username=$1").
-                            execute(Tuple.of(body.getString("username"))).
+                            execute(Tuple.of(username)).
                             onComplete(a -> sqlConnection.close())
             ).onSuccess(rows -> {
 
                 // 未查询到，新增用户
                 if (rows.size() == 0) {
                     // 缓存新增用户
-                    CacheUser.add(body.getString("username"), CacheUser.User.builder().
-                            firstName(body.getString("firstName")).
-                            lastName(body.getString("lastName")).
-                            email(body.getString("email")).
-                            phone(body.getString("phone")).
-                            password(body.getString("password")).
+                    CacheUser.add(username, CacheUser.User.builder().
+                            firstName(firstName).
+                            lastName(lastName).
+                            email(email).
+                            phone(phone).
+                            password(password).
                             valid(true).
                             build());
-                    SessionUtils.login(body.getString("username"), body.getString("username"));
+                    SessionUtils.login(username, username);
                     //插入用户
                     AsyncBatchInsertDao.submitUser(String.format("('%s', '%s', '%s', '%s', '%s', '%s')",
-                            body.getString("username"),
-                            body.getString("firstName"),
-                            body.getString("lastName"),
-                            body.getString("email"),
-                            body.getString("password"),
-                            body.getString("phone")));
+                            username,
+                            firstName,
+                            lastName,
+                            email,
+                            password,
+                            phone));
                     response.setStatusCode(200);
                 } else {
                     // 查询到了，代表不可以插入，但是需要缓存到cache中
                     for (Row row : rows) {
-                        CacheUser.add(body.getString("username"), CacheUser.User.builder().
+                        CacheUser.add(username, CacheUser.User.builder().
                                 firstName(row.getString("first_name")).
                                 lastName(row.getString("last_name")).
                                 email(row.getString("email")).
                                 phone(row.getString("phone")).
                                 valid(true).
                                 build());
-                        SessionUtils.login(body.getString("username"), body.getString("username"));
+                        SessionUtils.login(username, username);
 
                     }
                     response.setStatusCode(400);
@@ -87,12 +93,12 @@ public class UserRouter implements RouterConf {
                 // 查询失败的情况下
                 PGSQLUtils.getConnection().compose(sqlConnection ->
                         sqlConnection.preparedQuery("INSERT INTO t_user (username, first_name,last_name,email,password,phone) VALUES ($1, $2, $3, $4, $5, $6)")
-                                .execute(Tuple.of(body.getString("username"),
-                                        body.getString("firstName"),
-                                        body.getString("lastName"),
-                                        body.getString("email"),
-                                        body.getString("password"),
-                                        body.getString("phone"))
+                                .execute(Tuple.of(username,
+                                        firstName,
+                                        lastName,
+                                        email,
+                                        password,
+                                        phone)
                                 ).onComplete(ar -> sqlConnection.close())
                 );
                 response.setStatusCode(400).end();
