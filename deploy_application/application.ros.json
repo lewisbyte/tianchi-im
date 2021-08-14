@@ -210,7 +210,7 @@
             ],
             "Properties": {
                 "Timeout": 1800,
-                "Count": 1,
+                "Count": 3,
                 "Handle": {
                     "Ref": "EcsWebServiceWaitConditionHandle"
                 }
@@ -235,7 +235,7 @@
                     "Ref": "ecs_instance_type"
                 },
                 "InstanceChargeType": "PostPaid",
-                "MaxAmount": 1,
+                "MaxAmount": 3,
                 "InstanceName": "SampleWebService-App",
                 "ImageId": {
                     "Ref": "ecs_image_id"
@@ -279,23 +279,23 @@
                                     "zip_file_name='application.zip' \n",
                                     "shell_file_name='start.sh' \n",
                                     "# download file \n",
-                                    "######### 下载zip文件及shell脚本到路径/tmp下 ########## \n",
+                                    "######### 下载zip文件到路径/tmp，shell脚本到/root ########## \n",
                                     "cd /tmp \n",
                                     "wget \"${zip_url}\" -O \"${zip_file_name}\" \n",
-                                    "cd ~ \n",
+                                    "cd /root \n",
                                     "wget \"${sh_url}\" -O ${shell_file_name} \n",
                                     "################# shell 示例 - 开始 ################# \n",
                                     "#已注释，详见shell脚本文件 \n",
                                     "#zip_file_name=\"application.zip\" \n",
                                     "#app_file_name=\"chat_demo\" \n",
                                     "#cd /tmp || exit \n",
-                                    "#unzip \"${zip_file_name}\" -d ~/ && cd ~ || exit \n",
+                                    "#unzip \"${zip_file_name}\" -d /root/ && cd /root || exit \n",
                                     "## +x and execute \n",
                                     "#chmod +x \"${app_file_name}\" \n",
                                     "#请务必使用后台运行的方式 \n",
                                     "#./\"${app_file_name}\" & \n",
                                     "################# shell 示例 - 结束 ################# \n",
-                                    "cd ~ && bash \"${shell_file_name}\" \"${shell_option}\" \n",
+                                    "cd /root && bash \"${shell_file_name}\" \"${shell_option}\" >> deploy.log \n",
                                     "ros-notify \n"
                                 ]
                             ]
@@ -308,8 +308,8 @@
     "Outputs": {
         "instance_id": {
             "Value": {
-                "Fn::Select": [
-                    "0",
+                "Fn::Join": [
+                    ",",
                     {
                         "Fn::GetAtt": [
                             "EcsWebService",
@@ -321,8 +321,8 @@
         },
         "private_ip": {
             "Value": {
-                "Fn::Select": [
-                    "0",
+                "Fn::Join": [
+                    ",",
                     {
                         "Fn::GetAtt": [
                             "EcsWebService",
@@ -334,8 +334,8 @@
         },
         "public_ip": {
             "Value": {
-                "Fn::Select": [
-                    "0",
+                "Fn::Join": [
+                    ",",
                     {
                         "Fn::GetAtt": [
                             "EcsWebService",
